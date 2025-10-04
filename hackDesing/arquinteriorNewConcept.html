@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>Proposta Carrusels 2.1 - Arquinterior</title>
+  <!-- Google Fonts: Space Grotesk, IBM Plex Mono, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- Variables & Reset --- */
+    :root {
+      /* Hybrid Palette: Warm base + Tech accents */
+      --brand-gold: #C8A46D;
+      --text-dark: #333333;
+      --text-light: #FFFFFF;
+      --bg-light: #F5F5F0;
+      --bg-stone: #D9D6CF;
+      --bg-sand: #A8A39D;
+      --azul-electrico: #0077FF;
+      --rojo-f1: #C40000;
+
+      /* Fonts */
+      --font-arch: 'Space Grotesk', sans-serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --font-body: 'Inter', sans-serif;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: var(--font-body);
+      color: var(--text-dark);
+      background-color: var(--bg-light);
+      line-height: 1.6;
+    }
+
+    /* --- Print & Page Layout --- */
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+    .page {
+      width: 297mm;
+      height: 210mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 15mm;
+      background-color: var(--bg-light);
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+    }
+    .page:not(.slide)::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g stroke="%23333333" stroke-width="1" stroke-opacity="0.08"><path d="M0 10h40M10 0v40M0 20h40M20 0v40M0 30h40M30 0v40"/></g></svg>');
+      z-index: 0;
+    }
+    .page-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* --- Cover Page --- */
+    .cover .page-content { justify-content: center; }
+    .cover-main h1 {
+      font-family: var(--font-arch);
+      font-size: 60px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-dark);
+      letter-spacing: 1.5px;
+      border: 4px solid var(--text-dark);
+      padding: 20px 40px;
+    }
+    .cover-main h2 {
+      font-family: var(--font-code);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--brand-gold);
+      margin-top: 20px;
+    }
+    .cover-footer {
+      position: absolute;
+      bottom: 15mm;
+      font-family: var(--font-code);
+      font-size: 12px;
+      color: var(--bg-sand);
+      letter-spacing: 1px;
+    }
+
+    /* --- Technical Guide Page --- */
+    .guide-title {
+      font-family: var(--font-arch);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-dark);
+      border-bottom: 2px solid var(--brand-gold);
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+    }
+    .guide-section { width: 100%; margin-bottom: 25px; }
+    .guide-section h3 {
+      font-family: var(--font-code);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--azul-electrico);
+      text-align: left;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+    .palette { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
+    .color-swatch {
+      height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 10px;
+      font-family: var(--font-code);
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    .color-swatch span { font-weight: 400; font-size: 11px; opacity: 0.8; }
+    .principles-showcase, .typography-showcase {
+      text-align: left;
+      border: 1px solid var(--bg-stone);
+      padding: 20px;
+      background: #fff;
+    }
+    .typography-showcase p, .principles-showcase p { font-size: 14px; margin-bottom: 15px; }
+    .typography-showcase .font-arch { font-family: var(--font-arch); font-size: 24px; font-weight: 700; color: var(--text-dark); }
+    .typography-showcase .font-code { font-family: var(--font-code); font-weight: 500; color: var(--rojo-f1); }
+    .principles-showcase p { font-family: var(--font-code); color: var(--text-dark); }
+
+
+    /* --- Slide Pages --- */
+    .slide { padding: 0; }
+    .slide-content {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      padding: 40px;
+      position: relative;
+    }
+     .slide-content::after { /* Vignette effect */
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(rgba(0,0,0,0.1), transparent 30%, transparent 70%, rgba(0,0,0,0.2));
+      box-shadow: inset 0 0 150px rgba(0,0,0,0.3);
+    }
+    .slide-content.justify-start { justify-content: flex-start; }
+    .slide-content.justify-center { justify-content: center; }
+    .slide-content.justify-end { justify-content: flex-end; }
+    .slide-content.align-start { align-items: flex-start; }
+    .slide-content.align-center { align-items: center; }
+    .slide-content.align-end { align-items: flex-end; }
+
+    .slide-text {
+      max-width: 45%;
+      z-index: 2;
+      padding: 25px;
+    }
+    .slide-text.text-left { text-align: left; }
+    .slide-text.text-center { text-align: center; }
+    .slide-text.text-right { text-align: right; }
+
+    /* Variants */
+    .variant-glass {
+      color: var(--text-dark);
+      background: rgba(245, 245, 240, 0.65); /* --bg-light with transparency */
+      backdrop-filter: blur(10px);
+      border-left: 4px solid var(--azul-electrico);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .variant-glass.accent-rojo { border-left-color: var(--rojo-f1); }
+    .variant-glass.accent-dorado { border-left-color: var(--brand-gold); }
+    
+    .variant-frame {
+        color: var(--text-light);
+        text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+        border: 2px solid var(--text-light);
+        padding: 20px;
+    }
+     .variant-frame h4 { color: var(--text-light) !important; opacity: 0.8; }
+
+text-shadow: 0 2px 18px rgba(0,0,0,0.9);
+    }
+    .variant-minimal h4::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 2px;
+        background: var(--brand-gold);
+        margin: 10px auto 0;
+    }
+    .variant-minimal.text-left h4::after { margin-left: 0; }
+    .variant-minimal.text-right h4::after { margin-right: 0; }
+
+
+    .slide-text h4 {
+      font-family: var(--font-code);
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      color: var(--azul-electrico);
+    }
+     .slide-text .accent-rojo { color: var(--rojo-f1); }
+     .slide-text .accent-dorado { color: var(--brand-gold); }
+
+    .slide-text h2 {
+      font-family: var(--font-arch);
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    /* --- New Geometric Variants for Carousel 2 --- */
+    .variant-cut-corner {
+      background: rgba(245, 245, 240, 0.85); /* --bg-light with transparency */
+      backdrop-filter: blur(8px);
+      color: var(--text-dark);
+      padding: 30px;
+      clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 0 100%);
+      border-bottom: 4px solid var(--brand-gold);
+    }
+
+    .variant-angle-left {
+      background: rgba(51, 51, 51, 0.8); /* --text-dark with transparency */
+      color: var(--text-light);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      padding: 30px 40px;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 30px 100%, 0 70%);
+    }
+    .variant-angle-left h4 { color: var(--brand-gold); }
+
+    .variant-corner-lines {
+        color: var(--text-light);
+        text-shadow: 0 2px 15px rgba(0,0,0,0.8);
+        padding: 25px;
+        position: relative;
+    }
+    .variant-corner-lines::before, .variant-corner-lines::after {
+        content: '';
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        border-color: var(--rojo-f1);
+        border-style: solid;
+    }
+    .variant-corner-lines.align-top-left::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+    .variant-corner-lines.align-bottom-right::after { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+    .variant-corner-lines h4 { color: var(--rojo-f1); }
+
+    /* --- Carousel 2: "Caos Simètric" Variants --- */
+    .variant-blueprint {
+      position: relative;
+      border: 1px solid var(--azul-electrico);
+      background: rgba(245, 245, 240, 0.6); /* --bg-light with transparency */
+      color: var(--text-dark);
+      padding: 20px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .variant-blueprint::before, .variant-blueprint::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 6px;
+      left: 6px;
+      border: 1px solid var(--rojo-f1);
+      z-index: -1;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .variant-blueprint h4 { color: var(--rojo-f1); }
+
+    .variant-shards {
+      color: var(--text-light);
+      text-shadow: 0 2px 8px #000;
+      position: relative;
+      padding: 20px;
+    }
+    .variant-shards::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--brand-gold);
+      clip-path: polygon(0 0, 100% 20%, 100% 100%, 0 80%);
+      z-index: -1;
+      opacity: 0.6;
+    }
+    .variant-shards::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: -10px;
+      width: 100%;
+      height: 100%;
+      background: var(--azul-electrico);
+      clip-path: polygon(0 22%, 100% 0, 100% 78%, 0 100%);
+      z-index: -2;
+      opacity: 0.5;
+    }
+    .variant-shards h4 { color: var(--text-light); }
+
+    /* --- Legibility Enhancements --- */
+    .text-stroke-light h4, .text-stroke-light h2 {
+        color: var(--text-light);
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 8px rgba(0,0,0,0.7);
+    }
+    .slide-bottom-line {
+      position: absolute;
+      bottom: 30px;
+      left: 40px;
+      right: 40px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      z-index: 2;
+    }
+    .slide-bottom-line::before {
+      content: '';
+      height: 1px;
+      flex-grow: 1;
+      background: var(--text-light);
+      opacity: 0.4;
+    }
+    .slide-bottom-line span {
+      font-family: var(--font-code);
+      font-size: 12px;
+      color: var(--text-light);
+      opacity: 0.7;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* --- Mockup Page --- */
+    .mockup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20mm; width: 100%; align-items: center; justify-content: center; }
+    .mockup-container h4 {
+      font-family: var(--font-code);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--rojo-f1);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .mockup {
+      border: 1px solid var(--bg-stone);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      font-size: 13px;
+      width: 280px;
+      margin: 0 auto;
+    }
+    .mockup-header { display: flex; align-items: center; padding: 12px 16px; font-weight: 500; font-family: var(--font-body); border-bottom: 1px solid var(--bg-light); }
+    .mockup-header::before { content: '←'; margin-right: 10px; }
+    .mockup-header::after { content: '···'; margin-left: auto; }
+    .mockup-img { width: 100%; padding-top: 125%; background: var(--gris-acero) url('assets/i+f INAÑI 1A.jpg') center/cover no-repeat; }
+    .mockup-caption { padding: 12px 16px; text-align: left; line-height: 1.5; }
+    .mockup-caption strong { font-weight: 600; font-family: var(--font-body); }
+    .mockup-caption p { margin-top: 4px; }
+    .mockup-caption span { color: var(--azul-electrico); font-weight: 500; font-family: var(--font-code); }
+    
+    .dark-mode { background: var(--text-dark); color: var(--bg-light); border-color: #444; }
+    .dark-mode .mockup-header { background: var(--text-dark); border-color: #444; }
+    .dark-mode .mockup-caption { color: var(--bg-light); }
+    .dark-mode .mockup-caption span { color: var(--brand-gold); }
+
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Page 1: Cover -->
+  <div class="page cover">
+    <div class="page-content">
+      <main class="cover-main">
+        <h1>Arquinterior: Enginyeria de l'Hàbitat</h1>
+        <h2>Precisió i funcionalitat per a la teva vida</h2>
+      </main>
+      <footer class="cover-footer">Disseny · Càlcul · Funció · Vida</footer>
+    </div>
+  </div>
+
+  <!-- Page 2: Technical Guide -->
+  <div class="page">
+    <div class="page-content">
+      <h2 class="guide-title">Guia de Disseny</h2>
+      <section class="guide-section">
+        <h3>Paleta de Colors</h3>
+        <div class="palette">
+          <div class="color-swatch" style="background:var(--bg-light); color: var(--text-dark);">Blanc Trencat<br><span>#F5F5F0</span></div>
+          <div class="color-swatch" style="background:var(--text-dark); color: var(--text-light);">Gris Fosc<br><span>#333333</span></div>
+          <div class="color-swatch" style="background:var(--bg-sand); color: var(--text-light);">Arena Suau<br><span>#A8A39D</span></div>
+          <div class="color-swatch" style="background:var(--brand-gold); color: var(--text-light);">Daurat Accent<br><span>#C8A46D</span></div>
+          <div class="color-swatch" style="background:var(--azul-electrico); color: var(--text-light);">Azul Elèctric<br><span>#0077FF</span></div>
+          <div class="color-swatch" style="background:var(--rojo-f1); color: var(--text-light);">Rojo F1<br><span>#C40000</span></div>
+        </div>
+      </section>
+      <section class="guide-section">
+        <h3>Tipografia</h3>
+        <div class="typography-showcase">
+          <p class="font-arch">Títols (Space Grotesk) - Estructura i impacte</p>
+          <p class="font-code">Detalls (IBM Plex Mono) - Precisió tècnica</p>
+          <p style="font-family: var(--font-body); color: #777;">Textos (Inter) - Clar i funcional</p>
+        </div>
+      </section>
+      <section class="guide-section">
+        <h3>Principis Creatius</h3>
+        <div class="principles-showcase">
+          <p>// Disseny calculat: Cada element té una funció i un propòsit.</p>
+          <p>// Precisió multipropòsit: Espais que s'adapten a la teva vida.</p>
+          <p>// Bellesa funcional: L'estètica al servei de l'experiència.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Carrusel 1 -->
+  <div class="page slide">
+    <div class="slide-content justify-start align-center" style="background-image:url('assets/i+f INAÑI 1B.jpg');">
+      <div class="slide-text text-left variant-glass">
+        <h4>Col·lecció 01: Disseny Calculat</h4>
+        <h2>Espais amb un propòsit clar</h2>
+      </div>
+      <div class="slide-bottom-line"><span>01/06</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-end align-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('assets/i+f INAÑI 4B.jpg');">
+      <div class="slide-text text-right variant-minimal text-stroke-light">
+        <h4 class="accent-rojo">Precisió</h4>
+        <h2>La bellesa dels detalls que funcionen</h2>
+      </div>
+      <div class="slide-bottom-line"><span>02/06</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-start align-end" style="background-image:url('assets/i+f INAÑI 1C.jpg');">
+      <div class="slide-text text-left variant-glass accent-dorado">
+        <h4>Funcionalitat</h4>
+        <h2>Solucions intel·ligents per al dia a dia</h2>
+      </div>
+      <div class="slide-bottom-line"><span>03/06</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-center align-start" style="background-image:url('assets/i+f INAÑI 2A.jpg');">
+      <div class="slide-text text-center variant-frame">
+        <h4>Enginyeria de l'Hàbitat</h4>
+        <h2>La teva vida, la nostra inspiració</h2>
+      </div>
+      <div class="slide-bottom-line"><span>04/06</span></div>
+    </div>
+  </div>
+    <div class="page slide">
+    <div class="slide-content justify-end align-start" style="background-image:url('assets/i+f INAÑI 3B.jpg');">
+      <div class="slide-text text-right variant-glass accent-rojo">
+        <h4 class="accent-rojo">Precisió Multipropòsit</h4>
+        <h2>Un espai, infinites possibilitats</h2>
+      </div>
+      <div class="slide-bottom-line"><span>05/06</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-center align-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('assets/i+f INAÑI 2B.jpg');">
+      <div class="slide-text text-center variant-minimal text-stroke-light">
+        <h4 class="accent-dorado">El Teu Espai, Reinventat</h4>
+        <h2>Viu millor, viu amb sentit</h2>
+      </div>
+      <div class="slide-bottom-line"><span>06/06</span></div>
+    </div>
+  </div>
+
+  <div class="page slide">
+    <div class="slide-content justify-end align-center" style="background-image:url('assets/i+f INAÑI 2C.jpg');">
+      <div class="slide-text text-right text-stroke-light">
+        <h4>CONTACTA'NS</h4>
+        <h2>Descobreix el nostre univers</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+
+  <!-- Carrusel 2: Concepte "Caos Simètric" -->
+  <div class="page slide">
+    <div class="slide-content justify-end align-end" style="background-image:url('assets/i+f INAÑI 3A.jpg');">
+      <div class="slide-text text-right variant-shards">
+        <h4>Deconstrucció Funcional</h4>
+        <h2>Fragmentant la forma, reconstruint l'espai</h2>
+      </div>
+      <div class="slide-bottom-line"><span>01/06</span></div>
+    </div>
+  </div>
+    <div class="page slide">
+    <div class="slide-content justify-start align-center" style="background-image:url('assets/i+f INAÑI 3B.jpg');">
+      <div class="slide-text text-left variant-blueprint">
+        <h4 class="accent-rojo">Eixos i Tensions</h4>
+        <h2>Línies de força que defineixen l'hàbitat</h2>
+      </div>
+      <div class="slide-bottom-line"><span>02/06</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-center align-start" style="background-image:url('assets/i+f INAÑI 3C.jpg');">
+      <div class="slide-text text-center variant-shards">
+        <h4>Geometria Vectorial</h4>
+        <h2>Vectors que guien la llum i el moviment</h2>
+      </div>
+      <div class="slide-bottom-line"><span>03/06</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-start align-end" style="background-image:url('assets/i+f INAÑI 4A.jpg');">
+      <div class="slide-text text-left variant-blueprint">
+        <h4>Estructura Nua</h4>
+        <h2>La bellesa de l'esquelet arquitectònic</h2>
+      </div>
+      <div class="slide-bottom-line"><span>04/06</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-end align-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('assets/i+f INAÑI 4B.jpg');">
+       <div class="slide-text text-right variant-shards">
+        <h4 class="accent-dorado">Caos Harmònic</h4>
+        <h2>L'ordre natural desenvolupat des del principi</h2>
+      </div>
+      <div class="slide-bottom-line"><span>05/06</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-center align-center" style="background-image:url('assets/i+f INAÑI 4C.jpg');">
+      <div class="slide-text text-center variant-blueprint">
+        <h4>Visió [Enginyeria]</h4>
+        <h2>Més enllà del pla. La realitat construïda.</h2>
+      </div>
+      <div class="slide-bottom-line"><span>06/06</span></div>
+    </div>
+  </div>
+
+
+
+  
+
+</body>
+</html>

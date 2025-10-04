@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>Proposta Carrusels - Arquinterior</title>
+  <!-- Google Fonts: Space Grotesk (títulos), IBM Plex Mono (subtítulos), Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=IBM+Plex+Mono:wght@300;500&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* --- Variables & Reset --- */
+    :root {
+      --azul-estructural: #1A3C5E; /* Base: Blueprint, software depth */
+      --dorado-ingenieril: #D4AF37; /* Acento: Metal pulido, premium */
+      --rojo-industrial: #A62324; /* Foco: Alertas, energía */
+      --gris-acero: #4A4A4A; /* Neutro: Estructuras modulares */
+      --blanco-crudo: #F8F8F8; /* Fondo: Canvas limpio */
+      --negro-carbon: #1C2526; /* Énfasis: Contraste fuerte */
+      --arena-suau: #A8A39D; /* Contraste secundario */
+      --beige-pedra: #D9D6CF; /* Contraste secundario */
+      --font-arch: 'Space Grotesk', sans-serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --font-body: 'Inter', sans-serif;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: var(--font-body);
+      color: var(--gris-acero);
+      background-color: var(--blanco-crudo);
+      line-height: 1.6;
+    }
+    /* --- Print & Page Layout --- */
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+    .page {
+      width: 297mm;
+      height: 210mm;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      padding: 15mm;
+      background-color: var(--blanco-crudo);
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+    }
+    .page:not(.slide)::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml,<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><g stroke="%231A3C5E" stroke-opacity="0.05"><path d="M0 25h50M25 0v50"/></g></svg>');
+      z-index: 0;
+    }
+    .page-content {
+      position: relative;
+      z-index: 1;
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    /* --- Cover Page --- */
+    .cover .page-content {
+      justify-content: space-between;
+      padding: 20mm;
+    }
+    .cover-header {
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
+      text-align: left;
+      font-family: var(--font-code);
+      font-size: 14px;
+      color: var(--azul-estructural);
+      border-left: 3px solid var(--rojo-industrial);
+      padding-left: 10px;
+    }
+    .cover-main {
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      position: relative;
+    }
+    .cover-main h1 {
+      font-family: var(--font-arch);
+      font-size: 56px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--dorado-ingenieril);
+      letter-spacing: 2px;
+      position: relative;
+    }
+    .cover-main h1::before {
+      content: '[';
+      color: var(--rojo-industrial);
+      position: absolute;
+      left: -20px;
+    }
+    .cover-main h1::after {
+      content: ']';
+      color: var(--rojo-industrial);
+      position: absolute;
+      right: -20px;
+    }
+    .cover-main h2 {
+      font-family: var(--font-code);
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--azul-estructural);
+      margin-top: 10px;
+    }
+    .cover-footer {
+      grid-column: 3 / 4;
+      grid-row: 3 / 4;
+      text-align: right;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--gris-acero);
+      font-style: italic;
+    }
+    /* --- Technical Guide Page --- */
+    .guide-title {
+      font-family: var(--font-arch);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--azul-estructural);
+      border-bottom: 2px solid var(--dorado-ingenieril);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .guide-section {
+      width: 100%;
+      margin-bottom: 30px;
+    }
+    .guide-section h3 {
+      font-family: var(--font-code);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--rojo-industrial);
+      text-align: left;
+      margin-bottom: 15px;
+    }
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+    }
+    .color-swatch {
+      height: 120px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 10px;
+      font-family: var(--font-code);
+      font-size: 12px;
+      color: var(--blanco-crudo);
+      border: 1px solid var(--gris-acero);
+      clip-path: polygon(0 10%, 10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+    }
+    .color-swatch span {
+      font-weight: 300;
+      font-size: 10px;
+    }
+    .typography-showcase {
+      text-align: left;
+      border: 1px solid var(--gris-acero);
+      padding: 20px;
+      border-radius: 4px;
+      background: var(--negro-carbon);
+      color: var(--blanco-crudo);
+    }
+    .typography-showcase p {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    .typography-showcase .font-arch {
+      font-family: var(--font-arch);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--dorado-ingenieril);
+    }
+    .typography-showcase .font-code {
+      font-family: var(--font-code);
+      font-weight: 500;
+      color: var(--rojo-industrial);
+    }
+    .typography-showcase .font-body {
+      font-family: var(--font-body);
+      font-weight: 300;
+      color: var(--arena-suau);
+    }
+    /* --- Slide Pages --- */
+    .slide {
+      padding: 0;
+    }
+    .slide-content {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+    .slide-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(26, 60, 94, 0.2), transparent);
+      z-index: 1;
+    }
+    .slide-text {
+      z-index: 2;
+      color: var(--blanco-crudo);
+      max-width: 40%;
+      padding: 20px;
+      background: rgba(28, 37, 38, 0.7);
+      border-left: 4px solid var(--dorado-ingenieril);
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+    }
+    .slide-text.justify-start { left: 20px; right: auto; }
+    .slide-text.justify-end { left: auto; right: 20px; }
+    .slide-text.align-start { top: 20px; bottom: auto; }
+    .slide-text.align-end { top: auto; bottom: 20px; }
+    .slide-text.align-center { top: 50%; transform: translateY(-50%); }
+    .slide-text h4 {
+      font-family: var(--font-code);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--rojo-industrial);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .slide-text h2 {
+      font-family: var(--font-arch);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--dorado-ingenieril);
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .slide-bottom-line {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 2;
+    }
+    .slide-bottom-line::before {
+      content: '';
+      height: 1px;
+      flex-grow: 1;
+      background: var(--dorado-ingenieril);
+      opacity: 0.5;
+    }
+    .slide-bottom-line span {
+      font-family: var(--font-code);
+      font-size: 12px;
+      color: var(--blanco-crudo);
+      font-style: italic;
+    }
+    /* --- Mockup Page --- */
+    .mockup-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15mm;
+      width: 100%;
+      align-items: center;
+    }
+    .mockup-container {
+      text-align: center;
+    }
+    .mockup-container h4 {
+      font-family: var(--font-code);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--rojo-industrial);
+      margin-bottom: 10px;
+    }
+    .mockup {
+      border: 2px solid var(--azul-estructural);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--blanco-crudo);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      width: 250px;
+      margin: 0 auto;
+    }
+    .mockup-header {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      font-family: var(--font-code);
+      font-size: 12px;
+      color: var(--blanco-crudo);
+      background: var(--azul-estructural);
+    }
+    .mockup-header::before {
+      content: '←';
+      margin-right: 8px;
+    }
+    .mockup-header::after {
+      content: '···';
+      margin-left: auto;
+    }
+    .mockup-img {
+      width: 100%;
+      padding-top: 125%;
+      background: var(--gris-acero) url('assets/i+f INAÑI 1A.jpg') center/cover no-repeat;
+    }
+    .mockup-caption {
+      padding: 10px;
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: var(--gris-acero);
+    }
+    .mockup-caption strong {
+      font-weight: 600;
+      color: var(--azul-estructural);
+    }
+    .mockup-caption span {
+      color: var(--rojo-industrial);
+      font-family: var(--font-code);
+    }
+    .dark-mode {
+      background: var(--negro-carbon);
+      color: var(--blanco-crudo);
+      border-color: var(--gris-acero);
+    }
+    .dark-mode .mockup-header {
+      background: var(--negro-carbon);
+    }
+    .dark-mode .mockup-caption {
+      color: var(--blanco-crudo);
+    }
+    .dark-mode .mockup-caption span {
+      color: var(--rojo-industrial);
+    }
+  </style>
+</head>
+<body>
+  <!-- Page 1: Cover -->
+  <div class="page cover">
+    <div class="page-content">
+      <header class="cover-header">SPREADIT / BLUEPRINT DE DISSENY</header>
+      <main class="cover-main">
+        <h1>Proposta de Carrusels</h1>
+        <h2>Ingeniería aplicada a la vida</h2>
+      </main>
+      <footer class="cover-footer">Espais modulars, precisos i humans</footer>
+    </div>
+  </div>
+  <!-- Page 2: Technical Guide -->
+  <div class="page">
+    <div class="page-content">
+      <h2 class="guide-title">Guia Tècnica</h2>
+      <section class="guide-section">
+        <h3>Paleta de Colors</h3>
+        <div class="palette">
+          <div class="color-swatch" style="background: var(--azul-estructural); color: var(--blanco-crudo);">Azul Estructural<br><span>#1A3C5E</span></div>
+          <div class="color-swatch" style="background: var(--dorado-ingenieril); color: var(--negro-carbon);">Dorado Ingenieril<br><span>#D4AF37</span></div>
+          <div class="color-swatch" style="background: var(--rojo-industrial); color: var(--blanco-crudo);">Rojo Industrial<br><span>#A62324</span></div>
+          <div class="color-swatch" style="background: var(--gris-acero); color: var(--blanco-crudo);">Gris Acero<br><span>#4A4A4A</span></div>
+          <div class="color-swatch" style="background: var(--arena-suau); color: var(--negro-carbon);">Arena Suau<br><span>#A8A39D</span></div>
+          <div class="color-swatch" style="background: var(--beige-pedra); color: var(--negro-carbon);">Beige Pedra<br><span>#D9D6CF</span></div>
+        </div>
+      </section>
+      <section class="guide-section">
+        <h3>Tipografia</h3>
+        <div class="typography-showcase">
+          <p class="font-arch">Títols (Space Grotesk) - Estructura i impacte</p>
+          <p class="font-code">Subtítols (IBM Plex Mono) - Precisió tècnica</p>
+          <p class="font-body">Textos (Inter) - Clar i funcional</p>
+        </div>
+      </section>
+      <section class="guide-section">
+        <h3>Principis de Disseny</h3>
+        <div class="typography-showcase">
+          <p class="font-code">// Modularidad: Espacios adaptables como sistemas.</p>
+          <p class="font-code">// Precisión: Detalles que construyen confianza.</p>
+          <p class="font-code">// Humanidad: Ingeniería aplicada a la vida quotidiana.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <!-- Carrusel 1: Slide 1A - Center/Center -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 1A.jpg');">
+      <div class="slide-text justify-center align-center" style="left: 50%; transform: translateX(-50%); max-width: 60%; background: none;">
+        <h4>ARQUINTERIOR</h4>
+        <h2>Espais que respiren calma</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Slide 1B - Start/Center -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 1B.jpg');">
+      <div class="slide-text justify-start align-center">
+        <h4>DISSENY FUNCIONAL</h4>
+        <h2>Elegància atemporal per viure</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Slide 1C - End/End -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 1C.jpg');">
+      <div class="slide-text justify-end align-end" style="top: auto; bottom: 20px; right: 20px;">
+        <h4>MATERIALS NOBLES</h4>
+        <h2>Cada detall importa</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Slide 2A - Center/Start -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 2A.jpg');">
+      <div class="slide-text justify-center align-start" style="bottom: auto; top: 20px; left: 50%; transform: translateX(-50%);">
+        <h4>LLUM I TEXTURES</h4>
+        <h2>Històries que habiten espais</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Slide 2B - Start/End -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 2B.jpg');">
+      <div class="slide-text justify-start align-end">
+        <h4>PROJECTES PERSONALITZATS</h4>
+        <h2>Interiors pensats per a tu</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Slide 2C - End/Center -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 2C.jpg');">
+      <div class="slide-text justify-end align-center" style="left: auto; right: 20px; top: 50%; transform: translateY(-50%);">
+        <h4>CONTACTA'NS</h4>
+        <h2>Descobreix el nostre univers</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Carrusel 2: Slide 3A - Center/Center -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 3A.jpg');">
+      <div class="slide-text justify-center align-center" style="left: 50%; transform: translateX(-50%); max-width: 60%; background: none;">
+        <h4>COL·LECCIÓ 02</h4>
+        <h2>Serenor i equilibri</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Slide 3B - End/Start -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 3B.jpg');">
+      <div class="slide-text justify-end align-start" style="bottom: auto; top: 20px; left: auto; right: 20px;">
+        <h4>MINIMALISME CÀLID</h4>
+        <h2>La bellesa de la simplicitat</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Slide 3C - Start/Center -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 3C.jpg');">
+      <div class="slide-text justify-start align-center">
+        <h4>ARTESANIA I DISSENY</h4>
+        <h2>Textures naturals que acompanyen</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Slide 4A - Center/End -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 4A.jpg');">
+      <div class="slide-text justify-center align-end" style="left: 50%; transform: translateX(-50%);">
+        <h4>TONS NEUTRES</h4>
+        <h2>Colors que mai passen de moda</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Slide 4B - End/Center -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 4B.jpg');">
+      <div class="slide-text justify-end align-center" style="left: auto; right: 20px; top: 50%; transform: translateY(-50%);">
+        <h4>ESTIL PERDURABLE</h4>
+        <h2>Una inversió en qualitat de vida</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Slide 4C - Start/Start -->
+  <div class="page slide">
+    <div class="slide-content" style="background-image: url('assets/i+f INAÑI 4C.jpg');">
+      <div class="slide-text justify-start align-start" style="bottom: auto; top: 20px;">
+        <h4>ARQUINTERIOR</h4>
+        <h2>Elegància sense ostentació</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <!-- Mockups Page -->
+  <div class="page">
+    <div class="page-content">
+      <h2 class="guide-title">Exemple de Publicació</h2>
+      <div class="mockup-grid">
+        <div class="mockup-container">
+          <h4>Vista Clara</h4>
+          <div class="mockup">
+            <div class="mockup-header">@arquinterior_lago</div>
+            <div class="mockup-img" style="background-image: url('assets/i+f INAÑI 2B.jpg');"></div>
+            <div class="mockup-caption">
+              <strong>@arquinterior_lago</strong>
+              <p>Transforma el teu bany en un oasi minimalista! Imagina un espai net, il·luminat i funcional, on cada element té el seu propòsit. ✨</p>
+              <span>#dissenyinterior #banys #minimalisme</span>
+            </div>
+          </div>
+        </div>
+        <div class="mockup-container">
+          <h4>Vista Fosca</h4>
+          <div class="mockup dark-mode">
+            <div class="mockup-header">@arquinterior_lago</div>
+            <div class="mockup-img" style="background-image: url('assets/i+f INAÑI 3B.jpg');"></div>
+            <div class="mockup-caption">
+              <strong>@arquinterior_lago</strong>
+              <p>Un espai amb ànima és com una bona conversa: et fa sentir viu. A Arquinterior sabem que els espais no són només parets i mobles.</p>
+              <span>#espaisambànima #decoració #arquitectura</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

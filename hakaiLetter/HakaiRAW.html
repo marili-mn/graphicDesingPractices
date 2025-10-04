@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nahuel Marcilli – Carta de Presentación</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 2.8cm 2.2cm;
+      font-family: 'Shippori Mincho', serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.55;
+      font-size: 11.5px;
+    }
+
+    /* Marco exterior */
+    .frame {
+      position: absolute;
+      top: 1.2cm;
+      left: 1.2cm;
+      right: 1.2cm;
+      bottom: 1.2cm;
+      border: 1px solid #000;
+      pointer-events: none;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.2cm;
+    }
+
+    .logo-personal {
+      width: 60px;
+      margin: 0 auto 0.4em;
+      display: block;
+    }
+
+    header h1 {
+      font-size: 2.1em;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin: 0 0 0.2em;
+    }
+
+    header h2 {
+      font-size: 0.9em;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    section {
+      margin-bottom: 1.6cm;
+    }
+
+    .kanji-block {
+      text-align: center;
+      margin-bottom: 0.3cm;
+    }
+
+    .kanji {
+      font-size: 2.3em;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .furigana {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.75em;
+      margin-top: 0.1em;
+      color: #000;
+    }
+
+    .descripcion {
+      max-width: 420px;
+      margin: 0 auto;
+      text-align: center;
+      padding-bottom: 0.5cm;
+      border-bottom: 1px dashed #000;
+    }
+
+    .presentacion p {
+      max-width: 480px;
+      margin: 0 auto 0.6cm;
+      text-align: center;
+      font-size: 11px;
+      padding: 0 0.5cm;
+    }
+
+    .idiomas p {
+      text-align: center;
+      font-size: 11px;
+      margin: 0;
+    }
+
+    .tech-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5em;
+      margin-top: 0.4em;
+    }
+
+    .tech-icons img {
+      height: 22px;
+      filter: grayscale(100%) contrast(130%);
+    }
+
+    
+    .footer {
+      text-align: center;
+      margin-top: 2cm;
+      font-size: 10px;
+    }
+
+    .footer .kanji {
+      font-size: 1.8em;
+      margin-top: 0.3cm;
+    }
+
+    /* Separadores verticales para servicios */
+    .servicios-grid {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8cm 1.2cm;
+    }
+
+    .servicio {
+      flex: 1 1 45%;
+      min-width: 220px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="frame"></div>
+
+  <header>
+    <img class="logo-personal" src="Risōsu/Rogo/svg/logoInitialsVector.svg" alt="Logo Personal" />
+    <div class="kanji-block">
+      <span class="kanji">招</span>
+      <span class="furigana">( shō )</span>
+    </div>
+    <h1>&lt;/Nahuel Marcilli&gt;</h1>
+    <h2>&lt;/Desarrollador Web | Esp. Ciberseguridad | Diseñador Gráfico&gt;</h2>
+  </header>
+
+  <section class="presentacion">
+    <h2>&lt;/Presentación&gt;</h2>
+    <span class="kanji">型</span>
+      <span class="furigana">( kata )</span>
+    <p>
+      Me esfuerzo por aplicar cada día una práctica profesional basada en el estudio constante, la responsabilidad técnica y la atención precisa al detalle. Desarrollo, diseño y seguridad son áreas que integro de forma ordenada para ofrecer soluciones prácticas y bien ejecutadas. La disciplina no es un mérito añadido, sino la base que guía mi trabajo diario.
+    </p>
+    <div class="kanji-block">
+      
+    </div>
+  </section>
+
+  <section class="servicios">
+    <h2>&lt;/Servicios&gt;</h2>
+    <div class="kanji-sello">業 ( gyō )</div>
+    <div class="servicios-grid">
+      <div class="servicio">
+        <div class="kanji-block">
+          <span class="kanji">開発</span>
+          <span class="furigana">( kaihatsu )</span>
+        </div>
+        <p class="descripcion"> <strong> &lt;/Desarrollo Web&gt;</strong> — { Sitios eficientes con estructura, interfaces amigables e integracion de bases de datos }</p>
+      </div>
+
+      <div class="servicio">
+        <div class="kanji-block">
+          <span class="kanji">防御</span>
+          <span class="furigana">( bōgyo )</span>
+        </div>
+        <p class="descripcion"><strong>&lt;/Ciberseguridad&gt;</strong> — { Auditoría técnica, buenas prácticas de protección, capacitación y documentación. }</p>
+      </div>
+
+      <div class="servicio">
+        <div class="kanji-block">
+          <span class="kanji">美術</span>
+          <span class="furigana">( bijutsu )</span>
+        </div>
+        <p class="descripcion"><strong>&lt;/Diseño Gráfico&gt;</strong> — { Identidad visual profesional, diseño de experiencia de usuario (UX/UI) presisas y funcionales. }</p>
+      </div>
+
+      <div class="servicio">
+        <div class="kanji-block">
+          <span class="kanji">建築</span>
+          <span class="furigana">( kenchiku )</span>
+        </div>
+        <p class="descripcion"><strong>&lt;/Ingenieria de Software&gt;</strong> —  { Automatización de tareas, diseño de arquitecturas de Software, herramientas industriales, comerciales y educativas. }</p>
+      </div>
+
+      <div class="servicio">
+        <div class="kanji-block">
+          <span class="kanji">修理</span>
+          <span class="furigana">( shūri )</span>
+        </div>
+        <p class="descripcion"><strong>&lt;/Soporte Técnico | Hardware&gt;</strong> — { Reparación de PC, infraestructura de redes, mantenimiento y asistencia presencial & remota. }</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="idiomas">
+    <h2>&lt;/Idiomas&gt;</h2>
+    <div class="kanji-block">
+          <span class="kanji">語</span>
+          <span class="furigana">( go )</span>
+        </div>
+    <p> {  <strong>ESP Español </strong> — Nativo | <strong> ENG Inglés</strong> — Avanzado | <strong>BR Portugués</strong> — Intermedio | <strong>DE Alemán</strong> — Básico }</p>
+  </section>
+
+  <section id="tecnologias">
+        <h2>&lt;/Tecnologías | Habilidades&gt;</h2>
+        <div class="kanji-sello">技 ( gi )</div>
+        <div class="tech-icons">
+          <img src="Risōsu/Rogo/svg/html-tag-svgrepo-com.svg" alt="HTML5" />
+          <img src="Risōsu/Rogo/svg/css-file-format-document-extension-file-format-svgrepo-com.svg" alt="CSS3" />
+          <img src="Risōsu/Rogo/svg/javascript-svgrepo-com.svg" alt="JavaScript" />
+          <img src="Risōsu/Rogo/svg/bootstrap-fill-svgrepo-com.svg" alt="Bootstrap" />
+          <img src="Risōsu/Rogo/svg/react-svgrepo-com.svg" alt="React" />
+          <h2><strong>|</strong></h2>
+          <img src="Risōsu/Rogo/svg/figma-svgrepo-com.svg" alt="React" />
+          <img src="Risōsu/Rogo/svg/photoshop-svgrepo-com.svg" alt="React" />
+          <img src="Risōsu/Rogo/svg/adobe-illustrator-svgrepo-com.svg" alt="React" />
+          <h2><strong>|</strong></h2>
+          <img src="Risōsu/Rogo/svg/python-svgrepo-com.svg" alt="Python" />
+          <img src="Risōsu/Rogo/svg/django-svgrepo-com.svg" alt="Python" />
+          <img src="Risōsu/Rogo/svg/java-svgrepo-com.svg" alt="Java" />
+          <img src="Risōsu/Rogo/svg/spring-svgrepo-com.svg" alt="Java" />
+          <img src="Risōsu/Rogo/svg/postgresql-svgrepo-com.svg" alt="PostgreSQL" />
+          <img src="Risōsu/Rogo/svg/mysql-svgrepo-com.svg" alt="MySQL" />
+          <h2><strong>|</strong></h2>
+          <img src="Risōsu/Rogo/svg/linux-deploy-svgrepo-com.svg" alt="Bash" />
+          <img src="Risōsu/Rogo/svg/windows-svgrepo-com.svg" alt="PowerShell" />
+          <img src="Risōsu/Rogo/svg/letter-uppercase-square-c-svgrepo-com.svg" alt="C" />
+          <img src="Risōsu/Rogo/svg/assembly-svgrepo-com.svg" alt="Assembler" />
+        </div>
+      </section>
+
+  <section class="footer">
+    <p><strong># Sitio web:</strong> marili-mn.github.io/frontend-portfolio</p>
+    <p><strong># E-mail:</strong> marili.dev.5@gmail.com  |  <strong>Tel:</strong> +54 3775 402361</p>
+    <img src="Risōsu/Rogo/svg/evoke_RAW_QR.svg" alt="QR al sitio web" />
+    <div class="kanji">誠</div>
+    <span class="furigana">( makoto )</span>
+  </section>
+</body>
+</html>

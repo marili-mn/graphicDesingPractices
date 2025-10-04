@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>Proposta Carrusels - Arquinterior</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- Variables & Reset --- */
+    :root {
+      --brand-gold: #C8A46D;
+      --text-dark: #333;
+      --text-light: #FFFFFF;
+      --bg-light: #F5F5F0;
+      --bg-stone: #D9D6CF;
+      --bg-sand: #A8A39D;
+      --font-serif: 'Lora', serif;
+      --font-sans: 'Outfit', sans-serif;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      background-color: var(--bg-light);
+      line-height: 1.6;
+    }
+
+    /* --- Print & Page Layout --- */
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+    .page {
+      width: 297mm;
+      height: 210mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20mm;
+      background-color: #fff;
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+    }
+     .page:not(.slide)::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml,<svg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"><g fill="%23000000" fill-opacity="0.02" fill-rule="evenodd"><path d="M5 0h1L0 6V5zM6 5v1H5z"/></g></svg>');
+      z-index: 0;
+    }
+    .page-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* --- Cover Page --- */
+    .cover .page-content { justify-content: space-between; }
+    .cover-header, .cover-footer { width: 100%; padding: 0 5mm; }
+    .cover-header { text-align: left; font-weight: 600; color: var(--brand-gold); }
+    .cover-main h1 { font-family: var(--font-serif); font-size: 48px; font-weight: 600; margin-bottom: 10px; }
+    .cover-main h2 { font-family: var(--font-sans); font-size: 22px; font-weight: 300; color: var(--bg-sand); }
+    .cover-footer { text-align: right; font-weight: 400; font-size: 14px; }
+
+    /* --- Technical Guide Page --- */
+    .guide-title { font-family: var(--font-serif); font-size: 32px; font-weight: 600; margin-bottom: 30px; border-bottom: 2px solid var(--brand-gold); padding-bottom: 10px; }
+    .guide-section { width: 100%; margin-bottom: 30px; }
+    .guide-section:last-child { margin-bottom: 0; }
+    .guide-section h3 { font-size: 20px; font-weight: 600; margin-bottom: 15px; text-align: left; }
+    .palette { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 20px; }
+    .color-swatch { height: 100px; border-radius: 8px; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px; font-weight: 600; font-size: 13px; border: 1px solid rgba(0,0,0,0.05); }
+    .color-swatch span { font-weight: 400; font-size: 11px; }
+    .typography-showcase { text-align: left; border: 1px solid var(--bg-stone); padding: 20px; border-radius: 8px; }
+    .typography-showcase p { font-size: 15px; margin-bottom: 15px; }
+    .typography-showcase .font-lora { font-family: var(--font-serif); font-size: 26px; font-weight: 600; color: var(--brand-gold); }
+    .typography-showcase .font-montserrat { font-family: var(--font-sans); font-weight: 600; }
+    .typography-showcase .font-light { font-weight: 300; }
+
+    /* --- Slide Pages --- */
+    .slide { padding: 0; }
+    .slide-content {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      padding: 50px;
+      position: relative;
+    }
+    /* Layout Variations */
+    .slide-content.justify-start { justify-content: flex-start; }
+    .slide-content.justify-center { justify-content: center; }
+    .slide-content.justify-end { justify-content: flex-end; }
+    .slide-content.align-start { align-items: flex-start; }
+    .slide-content.align-center { align-items: center; }
+    .slide-content.align-end { align-items: flex-end; }
+
+    .slide-text {
+      color: var(--text-light);
+      text-shadow: 0 0 15px rgba(0,0,0,0.7), 0 0 5px rgba(0,0,0,0.9); /* Enhanced shadow */
+      max-width: 50%;
+    }
+    /* Text Alignment Variations */
+    .slide-text.text-left { text-align: left; }
+    .slide-text.text-center { text-align: center; }
+    .slide-text.text-right { text-align: right; }
+
+    .slide-text h4 {
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: 15px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+    .slide-text h4::before {
+        content: '';
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 1px;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+    .slide-text.text-left h4::before { left: 0; transform: translateX(0); }
+    .slide-text.text-right h4::before { left: auto; right: 0; transform: translateX(0); }
+
+    .slide-text h2 {
+      font-family: var(--font-sans);
+      font-size: 42px;
+      font-weight: 600;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .slide-bottom-line {
+      position: absolute;
+      bottom: 40px;
+      left: 50px;
+      right: 50px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .slide-bottom-line::before {
+      content: '';
+      height: 1px;
+      flex-grow: 1;
+      background: var(--text-light);
+      opacity: 0.5;
+    }
+    .slide-bottom-line span {
+      font-style: italic;
+      color: var(--text-light);
+      opacity: 0.8;
+      font-size: 14px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    /* --- Mockup Page --- */
+    .mockup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20mm; width: 100%; align-items: center; justify-content: center; }
+    .mockup-container { text-align: center; }
+    .mockup-container h4 { font-size: 16px; margin-bottom: 15px; font-weight: 600; color: var(--text-dark); }
+    .mockup { border: 1px solid #dbdbdb; border-radius: 24px; overflow: hidden; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); font-size: 13px; width: 280px; margin: 0 auto; }
+    .mockup-header { display: flex; align-items: center; padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #eee; }
+    .mockup-header::before { content: '←'; margin-right: 10px; font-weight: bold; }
+    .mockup-header::after { content: '···'; font-weight: 600; margin-left: auto; }
+    .mockup-img { width: 100%; padding-top: 125%; background: var(--bg-stone) url('assets/i+f INAÑI 1A.jpg') center/cover no-repeat; }
+    .mockup-caption { padding: 12px 16px; text-align: left; line-height: 1.5; }
+    .mockup-caption strong { font-weight: 600; }
+    .mockup-caption p { margin-top: 4px; }
+    .mockup-caption span { color: #00376b; font-weight: 500; }
+    .dark-mode { background: #181818; color: #EAEAEA; border-color: #38383A; }
+    .dark-mode .mockup-header { background: #181818; border-color: #38383A; }
+    .dark-mode .mockup-caption { color: #EAEAEA; }
+    .dark-mode .mockup-caption span { color: #4B9EFF; }
+
+  </style>
+</head>
+<body>
+
+  <!-- Page 1: Cover -->
+  <div class="page cover"> <div class="page-content"> <header class="cover-header"><span>SPREADIT / TEST DE DISSENY</span></header> <main class="cover-main"> <h1>Proposta de Carrusels</h1> <h2>ARQUINTERIOR</h2> </main> <footer class="cover-footer"><span>Espais càlids, sobris i atemporals.</span></footer> </div> </div>
+
+  <!-- Page 2: Technical Guide -->
+  <div class="page"> <div class="page-content"> <h2 class="guide-title">Guia Tècnica</h2> <section class="guide-section"> <h3>Paleta de Colors</h3> <div class="palette"> <div class="color-swatch" style="background:#F5F5F0; color: var(--text-dark); border-color: #eee;">Blanc Trencat<br><span>#F5F5F0</span></div> <div class="color-swatch" style="background:#333; color: #fff;">Gris Fosc<br><span>#333333</span></div> <div class="color-swatch" style="background:#A8A39D; color: #fff;">Arena Suau<br><span>#A8A39D</span></div> <div class="color-swatch" style="background:#D9D6CF; color: var(--text-dark);">Beige Pedra<br><span>#D9D6CF</span></div> <div class="color-swatch" style="background:#C8A46D; color: #fff;">Daurat Accent<br><span>#C8A46D</span></div> </div> </section> <section class="guide-section"> <h3>Tipografia</h3> <div class="typography-showcase"> <p class="font-lora">Títols (Lora) - Pàgines de presentació</p> <p class="font-montserrat">Textos (Outfit) - Carrusels i Mockups</p> <p class="font-light" style="font-family: 'Outfit';">Pes lleuger per a detalls.</p> </div> </section> </div> </div>
+
+  <!-- Carrusel 1 -->
+  <div class="page slide">
+    <div class="slide-content justify-center align-center" style="background-image:url('assets/i+f INAÑI 1A.jpg');">
+      <div class="slide-text text-center">
+        <h4>ARQUINTERIOR</h4>
+        <h2>Espais que respiren calma</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-start align-center" style="background-image:url('assets/i+f INAÑI 1B.jpg');">
+      <div class="slide-text text-left">
+        <h4>DISSENY FUNCIONAL</h4>
+        <h2>Elegància atemporal per viure</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-end align-end" style="background-image:url('assets/i+f INAÑI 1C.jpg');">
+      <div class="slide-text text-right">
+        <h4>MATERIALS NOBLES</h4>
+        <h2>Cada detall importa</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-center align-start" style="background-image:url('assets/i+f INAÑI 2A.jpg');">
+      <div class="slide-text text-center">
+        <h4>LLUM I TEXTURES</h4>
+        <h2>Històries que habiten espais</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+    <div class="page slide">
+    <div class="slide-content justify-start align-end" style="background-image:url('assets/i+f INAÑI 2B.jpg');">
+      <div class="slide-text text-left">
+        <h4>PROJECTES PERSONALITZATS</h4>
+        <h2>Interiors pensats per a tu</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-end align-center" style="background-image:url('assets/i+f INAÑI 2C.jpg');">
+      <div class="slide-text text-right">
+        <h4>CONTACTA'NS</h4>
+        <h2>Descobreix el nostre univers</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+
+  <!-- Carrusel 2 -->
+  <div class="page slide">
+    <div class="slide-content justify-center align-center" style="background-image:url('assets/i+f INAÑI 3A.jpg');">
+      <div class="slide-text text-center">
+        <h4>COL·LECCIÓ 02</h4>
+        <h2>Serenor i equilibri</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+    <div class="page slide">
+    <div class="slide-content justify-end align-start" style="background-image:url('assets/i+f INAÑI 3B.jpg');">
+      <div class="slide-text text-right">
+        <h4>MINIMALISME CÀLID</h4>
+        <h2>La bellesa de la simplicitat</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-start align-center" style="background-image:url('assets/i+f INAÑI 3C.jpg');">
+      <div class="slide-text text-left">
+        <h4>ARTESANIA I DISSENY</h4>
+        <h2>Textures naturals que acompanyen</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-center align-end" style="background-image:url('assets/i+f INAÑI 4A.jpg');">
+      <div class="slide-text text-center">
+        <h4>TONS NEUTRES</h4>
+        <h2>Colors que mai passen de moda</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-end align-center" style="background-image:url('assets/i+f INAÑI 4B.jpg');">
+      <div class="slide-text text-right">
+        <h4>ESTIL PERDURABLE</h4>
+        <h2>Una inversió en qualitat de vida</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+  <div class="page slide">
+    <div class="slide-content justify-start align-start" style="background-image:url('assets/i+f INAÑI 4C.jpg');">
+      <div class="slide-text text-left">
+        <h4>ARQUINTERIOR</h4>
+        <h2>Elegància sense ostentació</h2>
+      </div>
+      <div class="slide-bottom-line"><span>*arquinterior</span></div>
+    </div>
+  </div>
+
+  <!-- Mockups Page: Mobile -->
+  <div class="page"> <div class="page-content"> <h2 class="guide-title">Exemple de Publicació</h2> <div class="mockup-grid"> <div class="mockup-container"> <h4>Vista Clara</h4> <div class="mockup"> <div class="mockup-header">@arquinterior_lago</div> <div class="mockup-img" style="background-image:url('assets/i+f INAÑI 2B.jpg');"></div> <div class="mockup-caption"> <strong>@arquinterior_lago</strong> <p>Transforma el teu bany en un oasi minimalista! Imagina un espai net, il·luminat i funcional, on cada element té el seu propòsit. ✨</p> <span>#dissenyinterior #banys #minimalisme</span> </div> </div> </div> <div class="mockup-container"> <h4>Vista Fosca</h4> <div class="mockup dark-mode"> <div class="mockup-header">@arquinterior_lago</div> <div class="mockup-img" style="background-image:url('assets/i+f INAÑI 3B.jpg');"></div> <div class="mockup-caption"> <strong>@arquinterior_lago</strong> <p>Un espai amb ànima és com una bona conversa: et fa sentir viu. A Arquinterior sabem que els espais no són només parets i mobles.</p> <span>#espaisambànima #decoració #arquitectura</span> </div> </div> </div> </div> </div> </div>
+
+</body>
+</html>

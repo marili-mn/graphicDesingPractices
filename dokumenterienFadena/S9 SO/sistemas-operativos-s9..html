@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad S9-A1 - Servidor Ubuntu Server</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .document {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 25px;
+        }
+        h3 {
+            color: #16a085;
+        }
+        .step {
+            background: #f9f9f9;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .screenshot {
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: #f5f5f5;
+        }
+        .screenshot img {
+            max-width: 100%;
+            height: auto;
+            max-height: 600px;
+        }
+        .caption {
+            font-style: italic;
+            margin-top: 5px;
+            color: #666;
+        }
+        .note {
+            background: #fffde7;
+            padding: 10px;
+            border-left: 4px solid #ffd600;
+            margin: 15px 0;
+        }
+        .success {
+            background: #e8f5e9;
+            padding: 15px;
+            border-left: 4px solid #4caf50;
+            margin: 20px 0;
+        }
+        pre {
+            background: #eee;
+            padding: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="document">
+    <h1>Actividad S9-A1 - Instalación y uso básico de Ubuntu Server</h1>
+
+    <h2>1.1 Objetivos</h2>
+    <ul>
+        <li>Instalar un sistema operativo GNU/Linux en su versión servidor (Ubuntu Server).</li>
+        <li>Familiarizarse con la gestión básica de archivos y directorios utilizando la terminal.</li>
+    </ul>
+
+    <h2>1.2 Software necesario</h2>
+    <ul>
+        <li>Oracle VirtualBox</li>
+        <li>Imagen ISO de Ubuntu Server 24.04.2</li>
+    </ul>
+
+    <h2>1.3 Desarrollo de la Actividad</h2>
+
+    <h3>Paso 1: Información del sistema anfitrión</h3>
+    <div class="screenshot">
+        <img src="step 0.png" alt="Información del sistema">
+        <p class="caption">Hardware y sistema operativo del equipo anfitrión antes de instalar Ubuntu Server</p>
+    </div>
+
+    <h3>Paso 2: Crear máquina virtual</h3>
+    <div class="step">
+        <p>Se accedió a Oracle VirtualBox y se creó una nueva máquina virtual llamada <strong>Ubuntu Server</strong>. Se seleccionó "Linux" como tipo de sistema operativo y "Ubuntu (64-bit)" como versión.</p>
+    </div>
+    <div class="screenshot">
+        <img src="step 1.png" alt="Crear máquina virtual">
+        <p class="caption">Pantalla de configuración básica de la nueva máquina virtual</p>
+    </div>
+
+    <h3>Paso 3: Asignar memoria y CPUs</h3>
+    <div class="step">
+        <p>Se asignaron 4 GB de RAM y 3 procesadores a la máquina virtual para garantizar un buen rendimiento.</p>
+    </div>
+    <div class="screenshot">
+        <img src="step 2.png" alt="Asignación de recursos">
+        <p class="caption">Configuración de recursos de hardware asignados a la máquina virtual</p>
+    </div>
+
+    <h3>Paso 4: Montar la imagen ISO de Ubuntu Server</h3>
+    <div class="step">
+        <p>Se seleccionó la imagen ISO previamente descargada desde el sitio oficial de Ubuntu Server como medio de instalación.</p>
+    </div>
+    <div class="screenshot">
+        <img src="step 4.png" alt="Montar ISO">
+        <p class="caption">Selección del archivo ISO desde la configuración de almacenamiento</p>
+    </div>
+
+    <h3>Paso 5: Asignación de disco virtual</h3>
+    <div class="step">
+        <p>Se creó un disco virtual de 25 GB con particiones utilizando LVM (volumen lógico).</p>
+    </div>
+    <div class="screenshot">
+        <img src="step 5.png" alt="Particionado del disco">
+        <p class="caption">Configuración de particiones durante la instalación de Ubuntu Server</p>
+    </div>
+
+    <h3>Paso 6: Instalación y comandos básicos</h3>
+    <div class="step">
+        <p>Una vez completada la instalación, se ingresó al sistema y se realizaron pruebas con comandos básicos para gestionar archivos y directorios desde la terminal.</p>
+    </div>
+    <div class="screenshot">
+        <img src="step 6.png" alt="Comandos básicos">
+        <p class="caption">Sesión en la terminal de Ubuntu Server con comandos básicos</p>
+    </div>
+
+    <h2>Comandos utilizados en Ubuntu Server</h2>
+    <ol>
+        <li><strong>Explorar el contenido:</strong>
+            <pre>ls</pre>
+        </li>
+        <li><strong>Crear y navegar directorio:</strong>
+            <pre>
+mkdir workspace
+cd workspace
+touch voidText.txt
+            </pre>
+        </li>
+        <li><strong>Inspeccionar contenido del archivo:</strong>
+            <pre>cat voidText.txt</pre>
+        </li>
+        <li><strong>Eliminar archivo:</strong>
+            <pre>rm voidText.txt</pre>
+        </li>
+        <li><strong>Eliminar directorio:</strong>
+            <pre>
+cd ..
+rmdir workspace
+            </pre>
+        </li>
+    </ol>
+
+    <div class="success">
+        <p><strong>Resultado:</strong> La instalación de Ubuntu Server fue completada con éxito y se verificó el funcionamiento del sistema mediante comandos básicos desde la terminal.</p>
+    </div>
+
+    <h2>Conclusión</h2>
+    <p>La actividad permitió explorar el uso de VirtualBox para instalar una distribución de servidor basada en GNU/Linux. Se configuró correctamente Ubuntu Server y se practicaron operaciones fundamentales en la terminal, esenciales para el manejo de un servidor sin entorno gráfico.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nahuel Marcilli - CV</title>
+    <style>
+        :root {
+            --clr-bg: #1c1c22;
+            --clr-fg: #ffffff;
+            --clr-accent: #00ff99;
+            --clr-fg-alt: #b0b0c0;
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.35;
+            color: var(--clr-fg);
+            background: var(--clr-bg);
+            padding: 0;
+            font-size: 14px;
+        }
+
+        .cv-container {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            background: var(--clr-bg);
+            display: flex;
+            box-shadow: 0 0 10px rgba(0, 255, 153, 0.3);
+            border-radius: 8px;
+        }
+
+        /* Columna izquierda */
+        .left-column {
+            background: linear-gradient(135deg, #0f1419 0%, #1a1a2e 50%, #16213e 100%);
+            color: var(--clr-fg);
+            width: 36%;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 2px solid var(--clr-accent);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .name {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--clr-accent);
+        }
+
+        .title {
+            font-size: 0.95em;
+            color: var(--clr-fg-alt);
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .section {
+            margin-bottom: 22px;
+        }
+
+        .section-title {
+            font-size: 1.05em;
+            font-weight: bold;
+            color: var(--clr-accent);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--clr-accent);
+        }
+
+        .contact-info {
+            list-style: none;
+        }
+
+        .contact-info li {
+            margin-bottom: 10px;
+            font-size: 0.85em;
+            word-break: break-word;
+            color: var(--clr-fg-alt);
+        }
+
+        .skills-list {
+            list-style: none;
+        }
+
+        .skills-list li {
+            margin-bottom: 6px;
+            font-size: 0.85em;
+            color: var(--clr-fg-alt);
+        }
+
+        .skill-category {
+            font-weight: bold;
+            color: var(--clr-accent);
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .languages p {
+            margin-bottom: 6px;
+            font-size: 0.85em;
+            color: var(--clr-fg-alt);
+        }
+
+        .language-name {
+            font-weight: bold;
+            color: var(--clr-accent);
+            display: inline-block;
+            min-width: 75px;
+        }
+
+        /* Columna derecha */
+        .right-column {
+            width: 64%;
+            padding: 25px 25px;
+            background: var(--clr-bg);
+        }
+
+        .profile {
+            margin-bottom: 22px;
+        }
+
+        .profile h2 {
+            color: var(--clr-accent);
+            font-size: 1.15em;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--clr-accent);
+            padding-bottom: 5px;
+        }
+
+        .profile p {
+            text-align: justify;
+            line-height: 1.5;
+            color: var(--clr-fg-alt);
+            font-size: 0.88em;
+            margin-bottom: 10px;
+        }
+
+        .experience {
+            margin-bottom: 22px;
+        }
+
+        .experience h2 {
+            color: var(--clr-accent);
+            font-size: 1.15em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--clr-accent);
+            padding-bottom: 5px;
+        }
+
+        .job {
+            margin-bottom: 18px;
+            background: rgba(0, 255, 153, 0.05);
+            padding: 15px;
+            border-radius: var(--radius);
+            border-left: 3px solid var(--clr-accent);
+        }
+
+        .job-header {
+            margin-bottom: 8px;
+        }
+
+        .job-title {
+            font-size: 0.95em;
+            font-weight: bold;
+            color: var(--clr-fg);
+            margin-bottom: 3px;
+        }
+
+        .company-date {
+            color: var(--clr-fg-alt);
+            font-size: 0.82em;
+            font-style: italic;
+        }
+
+        .job-description {
+            color: var(--clr-fg-alt);
+            margin-bottom: 8px;
+            line-height: 1.4;
+            font-size: 0.88em;
+        }
+
+        .stack-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .tech-badge {
+            background: var(--clr-accent);
+            color: var(--clr-bg);
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .education h2 {
+            color: var(--clr-accent);
+            font-size: 1.15em;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--clr-accent);
+            padding-bottom: 5px;
+        }
+
+        .education-item {
+            margin-bottom: 12px;
+            background: rgba(0, 255, 153, 0.05);
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            border-left: 3px solid var(--clr-accent);
+        }
+
+        .degree {
+            font-weight: bold;
+            color: var(--clr-fg);
+            font-size: 0.9em;
+        }
+
+        .institution {
+            color: var(--clr-fg-alt);
+            font-size: 0.82em;
+            font-style: italic;
+        }
+
+        .profile-pic {
+  width: 185px;
+  height: 185px;
+  margin: 0 auto 10px;
+  overflow: hidden;
+  border-radius: 0%;
+  border: 1px solid var(--clr-accent); /* opcional: le da marco con tu color */
+  box-shadow: 0 0 8px rgba(0, 255, 153, 0.3); /* opcional */
+}
+
+.profile-pic img {
+  width: 180px; /* más grande que el contenedor para dar zoom */
+  height: auto;
+  object-fit: cover;
+  object-position: center top; /* podés ajustar esto según cómo querés que se vea tu cara */
+  display: block;
+}
+
+        /* Estilos para impresión */
+        @media print {
+            body {
+                background: var(--clr-bg);
+                padding: 0;
+                font-size: 13px;
+            }
+            
+            .cv-container {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .left-column {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                padding: 20px 15px;
+            }
+            
+            .right-column {
+                padding: 20px;
+            }
+            
+            .job, .education-item {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+            
+            .job-description {
+                font-size: 0.85em;
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-container">
+        <!-- Columna Izquierda -->
+        <div class="left-column">
+            <div class="header">
+                <h1 class="name">NAHUEL MARCILLI</h1>
+                <p class="title">DESARROLLADOR WEB</p>
+                <div class="profile-pic">
+                    <img src="5.jpg" alt="Foto de perfil">
+                  </div>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Contacto</h3>
+                <ul class="contact-info">
+                    <li>🌐 Portfolio: marili-mn.github.io/frontend-portfolio/</li>
+                    <li>📧 E-mail: nahuemarcilli@gmail.com</li>
+                    <li>📧 Email: maridev5@hotmail.com</li>
+                    <li>💼 linkedin.com/in/nahuel-marcilli</li>
+                    <li>📱 Telefono: +543775402361</li>
+                    <li>📱 Whatsapp: +543775402361</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Skills</h3>
+                <ul class="skills-list">
+                    <li><span class="skill-category">Frontend:</span> HTML5, CSS3, JavaScript, React, Next.js, Bootstrap</li>
+                    <li><span class="skill-category">Backend:</span> Python, Flask, FastAPI, Django, Node.js, Java, Spring Boot</li>
+                    <li><span class="skill-category">Bases de Datos:</span> MySQL, PostgreSQL, Hibernate</li>
+                    <li><span class="skill-category">Herramientas:</span> Git, Docker, Postman, VS Code</li>
+                    <li><span class="skill-category">Diseño:</span> Figma, Photoshop, Illustrator</li>
+                    <li><span class="skill-category">Sistemas:</span> Windows, Linux, Bash, PowerShell</li>
+                    <li><span class="skill-category">Otros:</span> C, Haskell, Assembler</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Idiomas</h3>
+                <div class="languages">
+                    <p><span class="language-name">Español:</span> Nativo</p>
+                    <p><span class="language-name">Inglés:</span> Intermedio/Avanzado</p>
+                    <p><span class="language-name">Portugués:</span> Básico</p>
+                    <p><span class="language-name">Alemán:</span> Básico</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna Derecha -->
+        <div class="right-column">
+            <div class="profile">
+                <h2>Perfil</h2>
+                <p>Técnico Universitario en Desarrollo Web. Actualmente estudio Licenciatura en Ciberdefensa en la Facultad de Defensa Nacional (FADENA).</p>
+                <p>Trabajo como freelance especializado en Backend, aunque disfruto abordar proyectos Full-Stack que integran diseño gráfico, arquitectura de software y ciberseguridad.</p>
+            </div>
+
+            <div class="education">
+                <h2>Educación</h2>
+                <div class="education-item">
+                    <div class="degree">Licenciatura en Ciberdefensa</div>
+                    <div class="institution">Facultad de Defensa Nacional (FADENA) - En curso</div>
+                </div>
+                <div class="education-item">
+                    <div class="degree">Técnico Universitario en Desarrollo Web</div>
+                    <div class="institution">Universidad Nacional de Entre Ríos (UNER) - Completado</div>
+                </div>
+            </div>
+
+            <div class="experience">
+                <h2>Experiencia</h2>
+
+                <div class="job">
+                    <div class="job-header">
+                        <div class="job-title">UNER E-Commerce</div>
+                        <div class="company-date">Fundamentos de frontend | Abr 4, 2025 - Actualidad</div>
+                    </div>
+                    <p class="job-description">Primeras prácticas de Frontend aprendidas en la universidad</p>
+                    <div class="stack-tech">
+                        <span class="tech-badge">HTML5</span>
+                        <span class="tech-badge">CSS3</span>
+                        <span class="tech-badge">JavaScript</span>
+                        <span class="tech-badge">Bootstrap</span>
+                        <span class="tech-badge">https://github.com/marili-mn/introDevWebUNER" </span> 
+                        <span class="tech-badge">https://marili-mn.github.io/introDevWebUNER/" </span>   
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="job">
+                    <div class="job-header">
+                        <div class="job-title">Wizard Solutions IA Web-App</div>
+                        <div class="company-date">Proyecto Full-Stack Colaborativo | May 23, 2025 - Actualidad</div>
+                    </div>
+                    <p class="job-description">Tercer proyecto colaborativo en equipo y puesta en práctica en el rol de Full-Stack.</p>
+                    <div class="stack-tech">
+                        <span class="tech-badge">React</span>
+                        <span class="tech-badge">Python</span>
+                        <span class="tech-badge">FastAPI</span>
+                        <span class="tech-badge">Node.js</span>
+                        <span class="tech-badge">Bootstrap</span>
+                        <span class="tech-badge">https://github.com/joseorteha/ClickMail" </span> 
+                        <span class="tech-badge">https://click-mail.netlify.app/" </span>   
+                      
+                    </div>
+                </div>
+
+                <div class="job">
+                    <div class="job-header">
+                        <div class="job-title">Guau & Miau ONG Web</div>
+                        <div class="company-date">Proyecto Backend Colaborativo | Feb 18, 2025 - Mar 14, 2025</div>
+                    </div>
+                    <p class="job-description">Segundo proyecto colaborativo en equipo y puesta en práctica en el rol de Backend.</p>
+                    <div class="stack-tech">
+                        <span class="tech-badge">React</span>
+                        <span class="tech-badge">Python</span>
+                        <span class="tech-badge">Django</span>
+                        <span class="tech-badge">PostgreSQL</span>
+                        <span class="tech-badge">Bootstrap</span>
+
+                        https://github.com/No-Country-simulation/c24-22-m-webapp
+                        https://astonishing-hamster-6268c8.netlify.app/"
+                    </div>
+                </div>
+
+                <div class="job">
+                    <div class="job-header">
+                        <div class="job-title">Skill-up E-Learning</div>
+                        <div class="company-date">Primer Proyecto Backend Colaborativo | Ago 24, 2024 - Sep 24, 2024</div>
+                    </div>
+                    <p class="job-description">Primer proyecto colaborativo en equipo y puesta en práctica en el rol de Backend.</p>
+                    <div class="stack-tech">
+                        <span class="tech-badge">React</span>
+                        <span class="tech-badge">Python</span>
+                        <span class="tech-badge">Django</span>
+                        <span class="tech-badge">PostgreSQL</span>
+                        <span class="tech-badge">Bootstrap</span>
+                        https://github.com/No-Country-simulation/c20-14-m-python-react
+                        https://skillup-client.vercel.app/
+                    </div>
+                </div>
+
+                <div class="job">
+                    <div class="job-header">
+                        <div class="job-title">n1Human E-Commerce</div>
+                        <div class="company-date">Proyecto Frontend - Negocio Real | Abr 26, 2024 - Jul 16, 2024</div>
+                    </div>
+                    <p class="job-description">Primeras prácticas de Frontend aplicadas en un negocio real.</p>
+                    <div class="stack-tech">
+                        <span class="tech-badge">HTML5</span>
+                        <span class="tech-badge">CSS3</span>
+                        <span class="tech-badge">JavaScript</span>
+                        <span class="tech-badge">Bootstrap</span>
+                        https://github.com/marili-mn/n1human-eCommerce"
+                        https://n1human.netlify.app/"
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

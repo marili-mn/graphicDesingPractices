@@ -1,0 +1,188 @@
+/* General styles */
+@page {
+  size: A4;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 1cm;
+  font-family: 'Shippori Mincho', serif;
+  background: #fff;
+  color: #000;
+  line-height: 1.4;
+  font-size: 11.5px;
+}
+
+/* Frame */
+.frame {
+  position: absolute;
+  top: 0.5cm;
+  left: 0.5cm;
+  right: 0.5cm;
+  bottom: 0.5cm;
+  border: 2px solid #000 !important;
+  pointer-events: none;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 0.4cm;
+}
+
+.logo-personal {
+  width: 85px;
+  margin: 0 auto 0.3em;
+  display: block;
+  image-rendering: high-quality;
+}
+
+header h1 {
+  font-size: 2em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.2em;
+}
+
+header h2 {
+  font-size: 0.85em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* Sections */
+section {
+  margin-bottom: 0.4cm;
+}
+
+section h2 {
+  text-align: center;
+  font-size: 0.85em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.4em;
+  text-transform: uppercase;
+}
+
+/* Common Kanji styles */
+.kanji-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.2cm;
+}
+
+.kanji {
+  font-size: 2em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.furigana {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.6em;
+  margin-top: 0.2em;
+  color: #000;
+}
+
+.descripcion {
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: center;
+  padding-bottom: 0.2cm;
+  border-bottom: 1px solid #000;
+}
+
+/* Presentation section */
+.presentacion .kanji-block {
+  margin-top: 0.4em;
+}
+
+.presentacion p {
+  max-width: 480px;
+  margin: 0 auto 0.4cm;
+  text-align: center;
+  font-size: 1em;
+  padding: 0 0.5cm;
+}
+
+/* Services section */
+.servicios-grid {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.2cm 1.2cm;
+}
+
+.servicio {
+  flex: 1 1 45%;
+  min-width: 220px;
+}
+
+/* Languages section */
+.idiomas p {
+  text-align: center;
+  font-size: 1em;
+  margin: 0;
+}
+
+/* Technologies section */
+.tech-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.4em;
+}
+
+.tech-icons img {
+  height: 32px;
+  filter: grayscale(100%) contrast(130%);
+  image-rendering: high-quality;
+}
+
+.tech-icons .separator {
+  font-size: 1.4em;
+  font-weight: 700;
+  margin: 0 0.5em;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 0.4cm;
+  font-size: 10px;
+}
+
+.footer .qr-code {
+  width: 100px;
+  height: 100px;
+  image-rendering: high-quality;
+}
+
+.footer .contact-info {
+  text-align: left;
+}
+
+.footer .contact-info p {
+  margin: 0;
+}
+
+.footer .signature {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.footer .signature .kanji {
+  font-size: 2.2em;
+}

@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra y Geometría Analítica - Guía Visual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c1445 0%, #1e3c72 50%, #2a5298 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px; /* Ajuste de padding para móviles */
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem); /* Tamaño de fuente responsivo */
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00ffff, #4169e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: clamp(1rem, 1.5vw, 1.2rem); /* Tamaño de fuente responsivo */
+            color: #b0e0e6;
+        }
+
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); /* Mejor adaptación */
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .exercise-card {
+            background: rgba(30, 60, 114, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffff;
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.2);
+        }
+
+        .exercise-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00ffff, #4169e1, #00bfff);
+        }
+
+        .exercise-number {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: linear-gradient(45deg, #00ffff, #4169e1);
+            color: #0c1445;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 1.1vw, 1.1rem); /* Tamaño de fuente responsivo */
+        }
+
+        .exercise-title {
+            font-size: clamp(1.2rem, 1.5vw, 1.5rem); /* Tamaño de fuente responsivo */
+            margin-bottom: 15px;
+            color: #00ffff;
+            padding-right: 60px; /* Ajuste para móviles */
+        }
+
+        .math-expression {
+            background: rgba(0, 0, 50, 0.5);
+            padding: 12px;
+            border-radius: 10px;
+            margin: 12px 0;
+            border-left: 4px solid #00ffff;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(0.9rem, 1.1vw, 1.1rem); /* Tamaño de fuente responsivo */
+            overflow-x: auto; /* Scroll horizontal para expresiones largas */
+            white-space: nowrap; /* Evita que el texto se rompa */
+        }
+
+        .step {
+            margin: 15px 0;
+            padding: 12px;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #4169e1;
+        }
+
+        .step-title {
+            font-weight: bold;
+            color: #00bfff;
+            margin-bottom: 8px;
+            font-size: clamp(1rem, 1.1vw, 1.1rem); /* Tamaño de fuente responsivo */
+        }
+
+        .method-box {
+            background: rgba(65, 105, 225, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 12px 0;
+            border: 1px solid rgba(65, 105, 225, 0.4);
+        }
+
+        .method-title {
+            color: #4169e1;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: clamp(1rem, 1.1vw, 1.1rem); /* Tamaño de fuente responsivo */
+        }
+
+        .example-section {
+            background: rgba(0, 191, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 2px dashed rgba(0, 191, 255, 0.4);
+        }
+
+        .example-title {
+            color: #00bfff;
+            font-size: clamp(1.1rem, 1.3vw, 1.3rem); /* Tamaño de fuente responsivo */
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .matrix, .vector {
+            display: inline-block;
+            padding: 8px 4px;
+            margin: 0 3px;
+        }
+
+        .matrix {
+            border-left: 2px solid #00ffff;
+            border-right: 2px solid #00ffff;
+        }
+
+        .vector {
+            border-left: 1px solid #4169e1;
+            border-right: 1px solid #4169e1;
+        }
+
+        .solution-highlight {
+            background: linear-gradient(90deg, rgba(0, 255, 255, 0.2), rgba(65, 105, 225, 0.2));
+            padding: 12px;
+            border-radius: 10px;
+            margin: 12px 0;
+            border: 1px solid rgba(0, 255, 255, 0.5);
+        }
+
+        .interactive-button {
+            background: linear-gradient(45deg, #00ffff, #4169e1);
+            color: #0c1445;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 8px 4px;
+            font-size: clamp(0.9rem, 1vw, 1rem); /* Tamaño de fuente responsivo */
+        }
+
+        .interactive-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .formula-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 12px 0;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            text-align: center;
+            font-size: clamp(0.9rem, 1.1vw, 1.1rem); /* Tamaño de fuente responsivo */
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(12, 20, 69, 0.9);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            flex-wrap: wrap;
+            max-width: calc(100% - 40px);
+            gap: 5px;
+        }
+
+        .nav-menu a {
+            display: block;
+            color: #00ffff;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-size: clamp(0.8rem, 1vw, 0.9rem); /* Tamaño de fuente responsivo */
+            white-space: nowrap;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(0, 255, 255, 0.2);
+        }
+
+        .theory-section {
+            margin-bottom: 40px;
+        }
+
+        .theory-title {
+            text-align: center;
+            font-size: clamp(1.8rem, 2.5vw, 2.5rem); /* Tamaño de fuente responsivo */
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #00ffff, #4169e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            padding: 0 10px;
+        }
+
+        .theory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); /* Mejor adaptación */
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .theory-card {
+            background: rgba(12, 20, 69, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .theory-card:hover {
+            transform: translateY(-3px);
+            border-color: #00bfff;
+            box-shadow: 0 10px 30px rgba(0, 191, 255, 0.2);
+        }
+
+        .theory-card-title {
+            color: #00ffff;
+            font-size: clamp(1.2rem, 1.4vw, 1.4rem); /* Tamaño de fuente responsivo */
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .theory-content {
+            line-height: 1.7;
+        }
+
+        .definition-box, .concept-highlight, .practical-tip, 
+        .warning-box, .theorem-box, .application-box, 
+        .classification-box, .theory-reminder, 
+        .detailed-explanation, .verification-box, 
+        .alternative-method {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-size: clamp(0.9rem, 1.1vw, 1.1rem); /* Tamaño de fuente responsivo */
+        }
+
+        .definition-box {
+            background: rgba(0, 50, 100, 0.3);
+            border-left: 4px solid #4169e1;
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(65, 105, 225, 0.1));
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .practical-tip {
+            background: rgba(0, 191, 255, 0.15);
+            border-left: 4px solid #00bfff;
+        }
+
+        .warning-box {
+            background: rgba(255, 140, 0, 0.1);
+            border-left: 4px solid #ff8c00;
+            color: #ffb366;
+        }
+
+        .theorem-box {
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+        }
+
+        .application-box {
+            background: rgba(34, 139, 34, 0.2);
+            border-left: 4px solid #32cd32;
+        }
+
+        .classification-box {
+            background: rgba(255, 20, 147, 0.1);
+            border: 1px solid rgba(255, 20, 147, 0.3);
+        }
+
+        .theory-reminder {
+            background: rgba(0, 100, 200, 0.2);
+            border-left: 4px solid #0064c8;
+        }
+
+        .detailed-explanation {
+            background: rgba(50, 50, 50, 0.3);
+            border-left: 3px solid #888;
+            font-style: italic;
+        }
+
+        .verification-box {
+            background: rgba(34, 139, 34, 0.2);
+            border: 1px solid rgba(34, 139, 34, 0.4);
+        }
+
+        .alternative-method {
+            background: rgba(255, 165, 0, 0.1);
+            border-left: 4px solid #ffa500;
+        }
+
+        .conic-types {
+            display: grid;
+            gap: 8px;
+        }
+
+        .conic-type {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #ff69b4;
+            font-size: clamp(0.9rem, 1.1vw, 1.1rem); /* Tamaño de fuente responsivo */
+        }
+
+        @media (max-width: 768px) {
+            .exercise-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-menu {
+                position: static;
+                max-width: 100%;
+                margin: 0 0 20px 0;
+                justify-content: center;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 25px 15px;
+            }
+            
+            .exercise-card, .theory-card {
+                padding: 15px;
+            }
+            
+            .theory-grid {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-menu {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                justify-content: flex-start;
+                scrollbar-width: thin;
+                scrollbar-color: #00ffff rgba(12, 20, 69, 0.9);
+            }
+            
+            .nav-menu::-webkit-scrollbar {
+                height: 4px;
+            }
+            
+            .nav-menu::-webkit-scrollbar-thumb {
+                background-color: #00ffff;
+                border-radius: 2px;
+            }
+            
+            .nav-menu a {
+                padding: 5px 8px;
+                font-size: 0.8rem;
+            }
+            
+            .exercise-title {
+                padding-right: 50px;
+            }
+            
+            .exercise-number {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-menu">
+        <a href="#teoria">Conceptos Teóricos</a>
+        <a href="#espacios">Espacios Vectoriales</a>
+        <a href="#bases">Bases y Coordenadas</a>
+        <a href="#transformaciones">Transformaciones</a>
+        <a href="#autovalores">Autovalores</a>
+        <a href="#formas-cuadraticas">Formas Cuadráticas</a>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Álgebra y Geometría Analítica</h1>
+            <p>Universidad Tecnológica Nacional - FRCU | Guía Visual Interactiva 2025</p>
+        </div>
+
+        <!-- Sección de Conceptos Teóricos -->
+        <div class="theory-section" id="teoria">
+            <h2 class="theory-title">📚 Conceptos Teóricos Fundamentales</h2>
+            
+            <div class="theory-grid">
+                <div class="theory-card">
+                    <h3 class="theory-card-title">Espacios y Subespacios Vectoriales</h3>
+                    <div class="theory-content">
+                        <div class="definition-box">
+                            <strong>Definición:</strong> Un subconjunto W de un espacio vectorial V es un subespacio si:
+                            <ul>
+                                <li>0 ∈ W (contiene el vector cero)</li>
+                                <li>Si u, v ∈ W, entonces u + v ∈ W (cerrado bajo suma)</li>
+                                <li>Si u ∈ W y α ∈ ℝ, entonces αu ∈ W (cerrado bajo multiplicación escalar)</li>
+                            </ul>
+                        </div>
+                        <div class="concept-highlight">
+                            <strong>Subespacio Generado:</strong> Gen(S) = {combinaciones lineales de vectores en S}
+                        </div>
+                        <div class="practical-tip">
+                            <strong>💡 Tip Práctico:</strong> Para verificar si un vector pertenece al subespacio generado, plantea un sistema de ecuaciones lineales.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theory-card">
+                    <h3 class="theory-card-title">Dependencia e Independencia Lineal</h3>
+                    <div class="theory-content">
+                        <div class="definition-box">
+                            <strong>Vectores Linealmente Independientes:</strong><br>
+                            α₁v₁ + α₂v₂ + ... + αₙvₙ = 0 ⟺ α₁ = α₂ = ... = αₙ = 0
+                        </div>
+                        <div class="method-box">
+                            <div class="method-title">Métodos de Verificación:</div>
+                            <p><strong>1. Determinante:</strong> Si det(A) ≠ 0, los vectores columna son LI</p>
+                            <p><strong>2. Escalonamiento:</strong> Número de pivotes = número de vectores</p>
+                            <p><strong>3. Rango:</strong> rango(A) = número de columnas</p>
+                        </div>
+                        <div class="warning-box">
+                            ⚠️ <strong>Cuidado:</strong> En ℝⁿ, más de n vectores siempre son linealmente dependientes.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theory-card">
+                    <h3 class="theory-card-title">Bases y Dimensión</h3>
+                    <div class="theory-content">
+                        <div class="definition-box">
+                            <strong>Base:</strong> Conjunto de vectores linealmente independientes que generan todo el espacio.
+                        </div>
+                        <div class="concept-highlight">
+                            <strong>Propiedades de las Bases:</strong>
+                            <ul>
+                                <li>Toda base de ℝⁿ tiene exactamente n vectores</li>
+                                <li>Las coordenadas respecto a una base son únicas</li>
+                                <li>dim(V) = número de vectores en cualquier base de V</li>
+                            </ul>
+                        </div>
+                        <div class="formula-box">
+                            <strong>Cambio de Base:</strong> [v]ᵦ = P⁻¹[v]ᶜ donde P es la matriz de cambio de C a B
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theory-card">
+                    <h3 class="theory-card-title">Transformaciones Lineales</h3>
+                    <div class="theory-content">
+                        <div class="definition-box">
+                            <strong>T: V → W es lineal si:</strong>
+                            <ul>
+                                <li>T(u + v) = T(u) + T(v) (aditividad)</li>
+                                <li>T(αu) = αT(u) (homogeneidad)</li>
+                            </ul>
+                        </div>
+                        <div class="concept-highlight">
+                            <strong>Conceptos Clave:</strong>
+                            <ul>
+                                <li><strong>Núcleo:</strong> Ker(T) = {v ∈ V : T(v) = 0}</li>
+                                <li><strong>Imagen:</strong> Im(T) = {T(v) : v ∈ V}</li>
+                                <li><strong>Matriz Estándar:</strong> [T(e₁) | T(e₂) | ... | T(eₙ)]</li>
+                            </ul>
+                        </div>
+                        <div class="theorem-box">
+                            <strong>Teorema Rango-Nulidad:</strong> dim(V) = dim(Ker(T)) + dim(Im(T))
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theory-card">
+                    <h3 class="theory-card-title">Autovalores y Autovectores</h3>
+                    <div class="theory-content">
+                        <div class="definition-box">
+                            <strong>Definición:</strong> Av = λv, donde v ≠ 0<br>
+                            λ es autovalor, v es autovector
+                        </div>
+                        <div class="method-box">
+                            <div class="method-title">Algoritmo de Cálculo:</div>
+                            <ol>
+                                <li>Calcular p(λ) = det(A - λI)</li>
+                                <li>Resolver p(λ) = 0 para hallar autovalores</li>
+                                <li>Para cada λᵢ, resolver (A - λᵢI)v = 0</li>
+                                <li>Los vectores solución son los autovectores</li>
+                            </ol>
+                        </div>
+                        <div class="concept-highlight">
+                            <strong>Diagonalización:</strong> A = PDP⁻¹ donde D es diagonal con autovalores y P tiene autovectores como columnas.
+                        </div>
+                        <div class="application-box">
+                            <strong>Aplicaciones:</strong> Sistemas dinámicos, análisis de estabilidad, reducción de dimensionalidad (PCA)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theory-card">
+                    <h3 class="theory-card-title">Formas Cuadráticas y Cónicas</h3>
+                    <div class="theory-content">
+                        <div class="definition-box">
+                            <strong>Forma Cuadrática:</strong> Q(x) = xᵀAx = Σᵢⱼ aᵢⱼxᵢxⱼ
+                        </div>
+                        <div class="method-box">
+                            <div class="method-title">Construcción de la Matriz:</div>
+                            <ul>
+                                <li>Términos cuadrados: aᵢᵢ = coeficiente de xᵢ²</li>
+                                <li>Términos mixtos: aᵢⱼ = aⱼᵢ = (coeficiente de xᵢxⱼ)/2</li>
+                            </ul>
+                        </div>
+                        <div class="classification-box">
+                            <strong>Clasificación de Cónicas por Autovalores:</strong>
+                            <div class="conic-types">
+                                <div class="conic-type">
+                                    <strong>Elipse:</strong> λ₁, λ₂ mismo signo, ambos ≠ 0
+                                </div>
+                                <div class="conic-type">
+                                    <strong>Hipérbola:</strong> λ₁, λ₂ signos opuestos
+                                </div>
+                                <div class="conic-type">
+                                    <strong>Parábola:</strong> uno de los λᵢ = 0
+                                </div>
+                            </div>
+                        </div>
+                        <div class="theorem-box">
+                            <strong>Ejes Principales:</strong> Los autovectores dan las direcciones de los ejes principales de la cónica.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="exercise-grid">
+            <!-- Ejercicio 1: Subespacios Generados -->
+            <div class="exercise-card" id="espacios">
+                <div class="exercise-number">1</div>
+                <h2 class="exercise-title">Subespacios Vectoriales Generados</h2>
+                
+                <div class="math-expression">
+                    A = {(1,2,3), (0,2,2)}
+                </div>
+
+                <div class="step">
+                    <div class="step-title">a) Hallar el subespacio generado por A</div>
+                    <div class="theory-reminder">
+                        <strong>📖 Recordatorio Teórico:</strong> El subespacio generado Gen(A) es el conjunto de todas las combinaciones lineales de los vectores de A. Es el "menor" subespacio que contiene a todos los vectores de A.
+                    </div>
+                    <p><strong>Paso 1:</strong> Escribir la combinación lineal general</p>
+                    <div class="math-expression">
+                        Gen(A) = {α(1,2,3) + β(0,2,2) : α, β ∈ ℝ}
+                    </div>
+                    <p><strong>Paso 2:</strong> Expresar en forma paramétrica</p>
+                    <div class="math-expression">
+                        Gen(A) = {(α, 2α+2β, 3α+2β) : α, β ∈ ℝ}
+                    </div>
+                    <div class="detailed-explanation">
+                        <strong>🔍 Explicación Detallada:</strong><br>
+                        • Cada vector en Gen(A) se obtiene multiplicando los vectores base por escalares y sumándolos<br>
+                        • La primera componente solo depende de α (coeficiente del primer vector)<br>
+                        • Las otras componentes son combinaciones de ambos parámetros<br>
+                        • Este subespacio tiene dimensión 2 (dos parámetros libres)
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">b) ¿Pertenece v = (2,1,3) a Gen(A)?</div>
+                    <div class="theory-reminder">
+                        <strong>📖 Método:</strong> Un vector pertenece al subespacio generado si y solo si puede expresarse como combinación lineal de los vectores generadores.
+                    </div>
+                    <p><strong>Paso 1:</strong> Plantear el sistema de ecuaciones</p>
+                    <div class="math-expression">
+                        α(1,2,3) + β(0,2,2) = (2,1,3)<br><br>
+                        Sistema resultante:<br>
+                        α · 1 + β · 0 = 2 → α = 2<br>
+                        α · 2 + β · 2 = 1 → 2α + 2β = 1<br>
+                        α · 3 + β · 2 = 3 → 3α + 2β = 3
+                    </div>
+                    <p><strong>Paso 2:</strong> Resolver el sistema paso a paso</p>
+                    <div class="math-expression">
+                        De la primera ecuación: α = 2<br>
+                        Sustituyendo en la segunda: 2(2) + 2β = 1 → 4 + 2β = 1 → β = -3/2<br>
+                        Verificando en la tercera: 3(2) + 2(-3/2) = 6 - 3 = 3 ✓
+                    </div>
+                    <div class="solution-highlight">
+                        <strong>Respuesta:</strong> SÍ, v = (2,1,3) ∈ Gen(A)<br>
+                        <strong>Combinación lineal:</strong> v = 2(1,2,3) + (-3/2)(0,2,2)
+                    </div>
+                    <div class="verification-box">
+                        <strong>✅ Verificación:</strong><br>
+                        2(1,2,3) + (-3/2)(0,2,2) = (2,4,6) + (0,-3,-3) = (2,1,3) ✓
+                    </div>
+                </div>
+
+                <div class="example-section">
+                    <div class="example-title">🔍 Ejemplo Alternativo</div>
+                    <p>Para B = {(1,0,1), (2,1,0)}, encontrar si (3,1,1) ∈ Gen(B)</p>
+                    <div class="method-box">
+                        <div class="method-title">Método Matricial:</div>
+                        <div class="math-expression">
+                            <span class="matrix">1  2<br>0  1<br>1  0</span> <span class="vector">α<br>β</span> = <span class="vector">3<br>1<br>1</span>
+                        </div>
+                        <p>Sistema compatible: α = 1, β = 1</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ejercicio 2: Bases -->
+            <div class="exercise-card" id="bases">
+                <div class="exercise-number">2</div>
+                <h2 class="exercise-title">Bases y Cambio de Coordenadas</h2>
+                
+                <div class="math-expression">
+                    B = {(1,0,-1), (0,1,1), (0,0,-1)}
+                </div>
+
+                <div class="step">
+                    <div class="step-title">a) Demostrar que B es base de ℝ³</div>
+                    <div class="theory-reminder">
+                        <strong>📖 Condiciones para ser Base:</strong><br>
+                        1. Los vectores deben ser linealmente independientes<br>
+                        2. Deben generar todo el espacio ℝ³<br>
+                        Para ℝ³: 3 vectores LI automáticamente generan ℝ³
+                    </div>
+                    <p><strong>Método 1: Determinante</strong></p>
+                    <p>Formamos la matriz con los vectores como columnas:</p>
+                    <div class="math-expression">
+                        A = <span class="matrix">1  0  0<br>0  1  0<br>-1 1 -1</span>
+                    </div>
+                    <p><strong>Cálculo del determinante:</strong></p>
+                    <div class="math-expression">
+                        det(A) = 1·<span class="matrix">1  0<br>1 -1</span> - 0 + 0<br>
+                        = 1·(1·(-1) - 0·1) = 1·(-1) = -1 ≠ 0
+                    </div>
+                    <div class="solution-highlight">
+                        <strong>Conclusión:</strong> Como det(A) ≠ 0, los vectores son linealmente independientes.<br>
+                        Al tener 3 vectores LI en ℝ³, forman una base.
+                    </div>
+                    
+                    <div class="alternative-method">
+                        <strong>🔄 Método Alternativo: Escalonamiento</strong>
+                        <div class="math-expression">
+                            <span class="matrix">1  0  0<br>0  1  0<br>-1 1 -1</span> → <span class="matrix">1  0  0<br>0  1  0<br>0  1 -1</span> → <span class="matrix">1  0  0<br>0  1  0<br>0  0 -1</span>
+                        </div>
+                        <p>3 pivotes = 3 vectores → Linealmente independientes</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">b) Encontrar w⃗ tal que [w⃗]ᵦ = [1, -1, 2]ᵀ</div>
+                    <div class="theory-reminder">
+                        <strong>📖 Coordenadas respecto a una base:</strong><br>
+                        Si [v]ᵦ = [c₁, c₂, c₃]ᵀ, entonces v = c₁b₁ + c₂b₂ + c₃b₃
+                    </div>
+                    <p><strong>Paso 1:</strong> Aplicar la definición de coordenadas</p>
+                    <div class="math-expression">
+                        w⃗ = 1·b₁ + (-1)·b₂ + 2·b₃<br>
+                        w⃗ = 1·(1,0,-1) + (-1)·(0,1,1) + 2·(0,0,-1)
+                    </div>
+                    <p><strong>Paso 2:</strong> Realizar las operaciones componente a componente</p>
+                    <div class="math-expression">
+                        w⃗ = (1,0,-1) + (0,-1,-1) + (0,0,-2)<br>
+                        w⃗ = (1+0+0, 0+(-1)+0, (-1)+(-1)+(-2))<br>
+                        w⃗ = (1, -1, -4)
+                    </div>
+                    <div class="verification-box">
+                        <strong>✅ Verificación:</strong> Comprobar que efectivamente [w⃗]ᵦ = [1, -1, 2]ᵀ<br>
+                        Necesitamos resolver: α(1,0,-1) + β(0,1,1) + γ(0,0,-1) = (1,-1,-4)<br>
+                        Sistema: α = 1, β = -1, γ = 2 ✓
+                    </div>
+                </div>
+
+                <div class="example-section">
+                    <div class="example-title">🔍 Método Alternativo: Matriz de Cambio</div>
+                    <div class="method-box">
+                        <div class="method-title">Usando Matrices de Transición:</div>
+                        <div class="math-expression">
+                            P = <span class="matrix">1  0  0<br>0  1  0<br>-1 1 -1</span>, entonces w⃗ = P · [w⃗]ᵦ
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ejercicio 5: Transformaciones Lineales -->
+            <div class="exercise-card" id="transformaciones">
+                <div class="exercise-number">5</div>
+                <h2 class="exercise-title">Transformaciones Lineales</h2>
+                
+                <div class="math-expression">
+                    T: ℝ³ → ℝ² / T(x,y,z) = (2x+3z, x-y+z)
+                </div>
+
+                <div class="step">
+                    <div class="step-title">a) Verificar si T es transformación lineal</div>
+                    <p>Verificamos las propiedades:</p>
+                    <div class="method-box">
+                        <div class="method-title">1. Aditividad:</div>
+                        <div class="math-expression">
+                            T(u+v) = T(u) + T(v) ✓
+                        </div>
+                    </div>
+                    <div class="method-box">
+                        <div class="method-title">2. Homogeneidad:</div>
+                        <div class="math-expression">
+                            T(αu) = αT(u) ✓
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">b) Matriz estándar</div>
+                    <div class="math-expression">
+                        [T] = <span class="matrix">2  0  3<br>1 -1  1</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">c) Núcleo de T</div>
+                    <p>Resolver T(x,y,z) = (0,0):</p>
+                    <div class="math-expression">
+                        2x + 3z = 0<br>
+                        x - y + z = 0
+                    </div>
+                    <div class="solution-highlight">
+                        Núcleo: {(-3t, -2t, 2t) : t ∈ ℝ}<br>
+                        Base del núcleo: {(-3, -2, 2)}
+                    </div>
+                </div>
+
+                <div class="example-section">
+                    <div class="example-title">🔍 Ejemplo: Transformación Geométrica</div>
+                    <p>Rotación en el plano: R(x,y) = (x cos θ - y sen θ, x sen θ + y cos θ)</p>
+                    <div class="method-box">
+                        <div class="method-title">Matriz de Rotación:</div>
+                        <div class="math-expression">
+                            R = <span class="matrix">cos θ  -sen θ<br>sen θ   cos θ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ejercicio 7: Autovalores y Autovectores -->
+            <div class="exercise-card" id="autovalores">
+                <div class="exercise-number">7</div>
+                <h2 class="exercise-title">Autovalores y Diagonalización</h2>
+                
+                <div class="math-expression">
+                    A = <span class="matrix">3   2  -3<br>-3  -4   9<br>-1  -2   5</span>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">a) Encontrar autovalores</div>
+                    <p>Resolver det(A - λI) = 0:</p>
+                    <div class="math-expression">
+                        det<span class="matrix">3-λ   2   -3<br>-3  -4-λ   9<br>-1   -2  5-λ</span> = 0
+                    </div>
+                    <div class="solution-highlight">
+                        Polinomio característico: -(λ-1)(λ-2)²<br>
+                        Autovalores: λ₁ = 1, λ₂ = λ₃ = 2
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">b) Encontrar autovectores</div>
+                    <div class="method-box">
+                        <div class="method-title">Para λ = 1:</div>
+                        <div class="math-expression">
+                            (A - I)v = 0 → v₁ = (1, -3, -1)
+                        </div>
+                    </div>
+                    <div class="method-box">
+                        <div class="method-title">Para λ = 2:</div>
+                        <div class="math-expression">
+                            (A - 2I)v = 0 → v₂ = (0, 3, 1), v₃ = (1, 0, 1)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-section">
+                    <div class="example-title">🔍 Aplicación: Sistemas Dinámicos</div>
+                    <p>Los autovalores determinan la estabilidad de sistemas xₙ₊₁ = Axₙ</p>
+                    <div class="method-box">
+                        <div class="method-title">Criterio de Estabilidad:</div>
+                        <p>• |λᵢ| < 1: Sistema estable</p>
+                        <p>• |λᵢ| > 1: Sistema inestable</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ejercicio 11: Formas Cuadráticas -->
+            <div class="exercise-card" id="formas-cuadraticas">
+                <div class="exercise-number">11</div>
+                <h2 class="exercise-title">Formas Cuadráticas y Cónicas</h2>
+                
+                <div class="math-expression">
+                    2x² + 3xy - 2y² + 10 = 0
+                </div>
+
+                <div class="step">
+                    <div class="step-title">a) Matriz de la forma cuadrática</div>
+                    <div class="math-expression">
+                        A = <span class="matrix">2    3/2<br>3/2  -2</span>
+                    </div>
+                    <p>Los elementos fuera de la diagonal se dividen por 2 para el término mixto.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">b) Autovalores de A</div>
+                    <div class="math-expression">
+                        det(A - λI) = (2-λ)(-2-λ) - (3/2)² = λ² - 25/4 = 0
+                    </div>
+                    <div class="solution-highlight">
+                        λ₁ = 5/2, λ₂ = -5/2
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">c) Matriz ortogonal P</div>
+                    <p>Autovectores normalizados:</p>
+                    <div class="math-expression">
+                        P = <span class="matrix">2/√13   3/√13<br>3/√13  -2/√13</span>
+                    </div>
+                </div>
+
+                <div class="example-section">
+                    <div class="example-title">🔍 Clasificación de Cónicas</div>
+                    <div class="method-box">
+                        <div class="method-title">Por Autovalores:</div>
+                        <p>• λ₁, λ₂ > 0: Elipse</p>
+                        <p>• λ₁, λ₂ < 0: Elipse</p>
+                        <p>• λ₁ > 0, λ₂ < 0: Hipérbola</p>
+                        <p>• λ₁ = 0 o λ₂ = 0: Parábola</p>
+                    </div>
+                    <div class="solution-highlight">
+                        En nuestro caso: λ₁ > 0, λ₂ < 0 → Hipérbola
+                    </div>
+                </div>
+
+                <button class="interactive-button" onclick="showRotation()">Ver Rotación de Ejes</button>
+                <div id="rotation-info" style="display: none; margin-top: 15px;">
+                    <div class="formula-box">
+                        <strong>Ángulo de rotación:</strong> θ = ½ arctan(2B/(A-C))<br>
+                        <strong>Nuevas coordenadas:</strong> x' = x cos θ + y sen θ, y' = -x sen θ + y cos θ
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="exercise-card">
+            <h2 class="exercise-title">Resumen de Fórmulas Importantes</h2>
+            
+            <div class="formula-box">
+                <strong>Determinante 3×3:</strong><br>
+                det(A) = a₁₁(a₂₂a₃₃ - a₂₃a₃₂) - a₁₂(a₂₁a₃₃ - a₂₃a₃₁) + a₁₃(a₂₁a₃₂ - a₂₂a₃₁)
+            </div>
+
+            <div class="formula-box">
+                <strong>Polinomio Característico:</strong><br>
+                p(λ) = det(A - λI)
+            </div>
+
+            <div class="formula-box">
+                <strong>Teorema Rango-Nulidad:</strong><br>
+                dim(Dom T) = dim(Im T) + dim(Ker T)
+            </div>
+
+            <div class="formula-box">
+                <strong>Proceso de Gram-Schmidt:</strong><br>
+                u₁ = v₁, u₂ = v₂ - proj_{u₁}(v₂), u₃ = v₃ - proj_{u₁}(v₃) - proj_{u₂}(v₃)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showRotation() {
+            const info = document.getElementById('rotation-info');
+            info.style.display = info.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Animaciones suaves al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.exercise-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Navegación suave
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

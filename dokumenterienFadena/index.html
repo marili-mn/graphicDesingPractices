@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Planificación de Procesos</title>
+    <style>
+        :root {
+            --color-background: #f4f7f6; /* Light Gray */
+            --color-surface: #ffffff;    /* White */
+            --color-text: #333333;       /* Dark Gray for text */
+            --color-primary: #004d40;    /* Dark Green */
+            --color-secondary: #e0f2f1;  /* Light Green */
+            --color-border: #d0d0d0;     /* Medium Gray for borders */
+            --color-highlight: #ff8f00;  /* Amber for highlight */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.7;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px; 
+            margin: 0 auto;
+            padding: 25px;
+        }
+        
+        header {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 50px 25px;
+            text-align: center;
+            margin-bottom: 35px;
+            border-bottom: 5px solid var(--color-highlight);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+        
+        h2 {
+            font-size: 2.2rem;
+            margin: 35px 0 25px;
+            color: var(--color-primary);
+            border-bottom: 3px solid var(--color-secondary);
+            padding-bottom: 15px;
+        }
+        
+        h3 {
+            font-size: 1.6rem;
+            margin: 30px 0 20px;
+            color: var(--color-primary);
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            color: var(--color-secondary);
+            font-weight: 300;
+        }
+        
+        .card {
+            background-color: var(--color-surface);
+            border-radius: 10px;
+            padding: 35px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+            border: 1px solid var(--color-border);
+        }
+        
+        .algorithm-section {
+            margin-bottom: 45px;
+            padding: 35px;
+            background-color: var(--color-surface);
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+        }
+        
+        .screenshot-container {
+            display: grid;
+            grid-template-columns: 1fr; /* Each image takes a full row */
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .screenshot {
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .caption {
+            text-align: center;
+            padding: 15px;
+            background-color: var(--color-secondary);
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 35px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .comparison-table th {
+            background-color: var(--color-primary);
+            color: white;
+            text-transform: uppercase;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .comparison-table tbody tr:nth-child(even) {
+            background-color: var(--color-background);
+        }
+        
+        .comparison-table tbody tr:hover {
+            background-color: var(--color-secondary);
+        }
+        
+        .highlight {
+            background-color: var(--color-highlight);
+            color: var(--color-surface);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        
+        .conclusion {
+            background-color: var(--color-secondary);
+            padding: 35px;
+            border-radius: 10px;
+            margin: 35px 0;
+            border-left: 6px solid var(--color-primary);
+        }
+
+        ul {
+            padding-left: 25px;
+            margin-top: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 35px;
+            margin-top: 45px;
+            background-color: var(--color-surface);
+            color: #888;
+            font-size: 1rem;
+            border-top: 1px solid var(--color-border);
+        }
+        
+        /* Print-specific styles */
+        @media print {
+            @page {
+                size: A4;
+                margin: 1.5cm;
+            }
+
+            :root {
+                --color-background: #ffffff !important;
+                --color-surface: #ffffff !important;
+                --color-text: #000000 !important;
+                --color-primary: #004d40 !important;
+                --color-secondary: #e0f2f1 !important;
+                --color-border: #b0b0b0 !important;
+                --color-highlight: #ff8f00 !important;
+            }
+
+            body {
+                background-color: var(--color-background);
+                color: var(--color-text);
+                font-size: 10pt;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            header, footer {
+                display: none;
+            }
+            
+            .container {
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .card, .algorithm-section, .conclusion {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                background-color: var(--color-surface);
+                page-break-inside: avoid;
+            }
+
+            .conclusion {
+                 background-color: var(--color-secondary);
+                 border-left: 6px solid var(--color-primary);
+                 padding: 20px;
+            }
+            
+            .screenshot-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .screenshot {
+                box-shadow: none;
+                border: 1px solid var(--color-border);
+                page-break-inside: avoid;
+            }
+
+            .screenshot img {
+                max-width: 100% !important;
+                height: auto;
+            }
+
+            .caption {
+                background-color: var(--color-secondary);
+                color: var(--color-primary);
+            }
+
+            .comparison-table {
+                box-shadow: none;
+                border: 1px solid var(--color-border);
+                page-break-inside: avoid;
+            }
+
+            .comparison-table th {
+                background-color: var(--color-primary);
+                color: white;
+            }
+
+            .comparison-table tbody tr:nth-child(even) {
+                background-color: var(--color-background);
+            }
+
+            .highlight {
+                background-color: var(--color-highlight);
+                color: var(--color-surface);
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-weight: 600;
+            }
+
+            h2 {
+                border-bottom: 2px solid var(--color-secondary);
+                padding-bottom: 8px;
+                font-size: 16pt;
+                color: var(--color-primary);
+                page-break-after: avoid;
+            }
+
+            h3 {
+                font-size: 13pt;
+                color: var(--color-primary);
+                page-break-after: avoid;
+            }
+
+            p, ul {
+                page-break-inside: avoid;
+            }
+
+            .card, .algorithm-section {
+                margin-bottom: 20px;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .screenshot-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Informe de Simulación de Algoritmos de Planificación</h1>
+            <p class="subtitle">Análisis comparativo de FIFO, SRTF, Round Robin y PSJF</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="card">
+            <div class="author-section" style="float: right; width: 200px; text-align: center; margin-left: 20px; margin-bottom: 20px;">
+                <img src="logoInitialsVector.svg" alt="Autor Logo" style="width: 100px; height: 100px;">
+                <p style="font-weight: 500; margin: 10px 0 0 0;">Autor: &lt;/Nahuel Marcilli&gt;</p>
+                <p style="font-style: italic; font-size: 0.9rem; margin: 5px 0 0 0;">&lt;/Web Developer | Cibersecurity | Graphic Designer&gt;</p>
+                <p style="font-size: 0.8rem; margin: 10px 0 0 0;">created with HTML and CSS</p>
+            </div>
+            <h2>Introducción</h2>
+            <p>Este informe presenta los resultados de la simulación de cuatro algoritmos de planificación de procesos en un sistema operativo. Los algoritmos evaluados son: FIFO (First-In, First-Out), SRTF (Shortest Remaining Time First), Round Robin y PSJF (Preemptive Shortest Job First).</p>
+            <p>La simulación se realizó utilizando el archivo de datos <code>tpSimulacion.dat</code> en un entorno controlado, permitiendo comparar el rendimiento de cada algoritmo en términos de tiempo de respuesta, tiempo de turnaround y tiempo de espera.</p>
+        </section>
+
+        <section class="card">
+            <h2>Entorno de Simulación</h2>
+            <div class="screenshot-container">
+                <div class="screenshot">
+                    <img src="Screen 0.png" alt="Sistema anfitrión donde se ejecutó la simulación">
+                    <div class="caption">Sistema anfitrión: Linux con kernel 6.16.20</div>
+                </div>
+                <div class="screenshot">
+                    <img src="Screen 1.png" alt="Carga del archivo tpSimulacion.dat">
+                    <div class="caption">Carga del archivo de datos tpSimulacion.dat</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="algorithm-section">
+            <h2>FIFO (First-In, First-Out)</h2>
+            <p>Algoritmo no apropiativo que ejecuta los procesos en el orden de llegada.</p>
+            
+            <div class="screenshot-container">
+                <div class="screenshot">
+                    <img src="FIFO 0.png" alt="Selección del algoritmo FIFO">
+                    <div class="caption">Configuración del algoritmo FIFO</div>
+                </div>
+                <div class="screenshot">
+                    <img src="FIFO 1.png" alt="Resultados de la simulación con FIFO">
+                    <div class="caption">Resultados de la simulación con FIFO</div>
+                </div>
+            </div>
+            
+            <h3>Análisis de Resultados</h3>
+            <p>El algoritmo FIFO muestra los <span class="highlight">peores resultados en todos los aspectos</span>. Los tiempos de respuesta, turnaround y espera son significativamente más altos que los otros algoritmos, confirmando la teoría del "Convoy Effect".</p>
+        </section>
+
+        <section class="algorithm-section">
+            <h2>SRTF (Shortest Remaining Time First)</h2>
+            <p>Algoritmo no apropiativo que prioriza los procesos con menor tiempo restante de ejecución.</p>
+            
+            <div class="screenshot-container">
+                <div class="screenshot">
+                    <img src="SRT 0.png" alt="Selección del algoritmo SRTF">
+                    <div class="caption">Configuración del algoritmo SRTF</div>
+                </div>
+                <div class="screenshot">
+                    <img src="SRT 1.png" alt="Resultados de la simulación con SRTF">
+                    <div class="caption">Resultados de la simulación con SRTF</div>
+                </div>
+            </div>
+            
+            <h3>Análisis de Resultados</h3>
+            <p>SRTF demuestra el <span class="highlight">mejor desempeño general</span>, con los tiempos promedio de respuesta y espera más bajos de todos los algoritmos. Además, completó la simulación en el menor tiempo total.</p>
+        </section>
+
+        <section class="algorithm-section">
+            <h2>Round Robin</h2>
+            <p>Algoritmo apropiativo que asigna un quantum de tiempo a cada proceso en forma circular.</p>
+            
+            <div class="screenshot-container">
+                <div class="screenshot">
+                    <img src="ROBIN 0.png" alt="Selección del algoritmo Round Robin">
+                    <div class="caption">Configuración del algoritmo Round Robin</div>
+                </div>
+                <div class="screenshot">
+                    <img src="ROBIN 1.png" alt="Resultados de la simulación con Round Robin">
+                    <div class="caption">Resultados de la simulación con Round Robin</div>
+                </div>
+            </div>
+            
+            <h3>Análisis de Resultados</h3>
+            <p>Round Robin muestra un <span class="highlight">tiempo de respuesta excelente</span>, pero los <span class="highlight">peores tiempos de turnaround y espera</span>. Esto refleja el equilibrio entre capacidad de respuesta y eficiencia en la finalización de procesos.</p>
+        </section>
+
+        <section class="algorithm-section">
+            <h2>PSJF (Preemptive Shortest Job First)</h2>
+            <p>Algoritmo apropiativo que prioriza los trabajos más cortos, interrumpiendo procesos más largos si es necesario.</p>
+            
+            <div class="screenshot-container">
+                <div class="screenshot">
+                    <img src="PSJF 0.png" alt="Selección del algoritmo PSJF">
+                    <div class="caption">Configuración del algoritmo PSJF</div>
+                </div>
+                <div class="screenshot">
+                    <img src="PSJF 1.png" alt="Resultados de la simulación con PSJF">
+                    <div class="caption">Resultados de la simulación con PSJF</div>
+                </div>
+            </div>
+            
+            <h3>Análisis de Resultados</h3>
+            <p>PSJF ofrece <span class="highlight">resultados muy similares al SRTF</span>, con buenos tiempos de respuesta y espera, aunque ligeramente inferiores. Es una excelente alternativa al SRTF.</p>
+        </section>
+
+        <section class="card">
+            <h2>Tabla Comparativa de Resultados</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Algoritmo</th>
+                        <th>Tiempo Total</th>
+                        <th>Tiempo de Respuesta Promedio</th>
+                        <th>Tiempo de Turnaround Promedio</th>
+                        <th>Tiempo de Espera Promedio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>FIFO</td>
+                        <td>480</td>
+                        <td>111.36</td>
+                        <td>103.65</td>
+                        <td>112.24</td>
+                    </tr>
+                    <tr>
+                        <td>SRTF</td>
+                        <td>418</td>
+                        <td>26.90</td>
+                        <td>67.11</td>
+                        <td>28.22</td>
+                    </tr>
+                    <tr>
+                        <td>Round Robin</td>
+                        <td>530</td>
+                        <td>34.38</td>
+                        <td>162.50</td>
+                        <td>140.50</td>
+                    </tr>
+                    <tr>
+                        <td>PSJF</td>
+                        <td>595</td>
+                        <td>32.62</td>
+                        <td>72.71</td>
+                        <td>33.57</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="conclusion">
+            <h2>Conclusiones y Aplicación Práctica</h2>
+            <p>Los resultados obtenidos en la simulación se reflejan claramente en el comportamiento de los sistemas operativos modernos:</p>
+            
+            <h3>Windows</h3>
+            <p>Windows utiliza algoritmos basados en <span class="highlight">prioridades y Round Robin</span> con enfoque en la capacidad de respuesta. Esto explica por qué:</p>
+            <ul>
+                <li>La interfaz de usuario se mantiene responsive incluso con procesos pesados en segundo plano</li>
+                <li>Las aplicaciones en primer plano reciben mayor prioridad</li>
+                <li>El sistema parece "justo" para el usuario final</li>
+            </ul>
+            
+            <h3>Linux</h3>
+            <p>Linux (con CFS - Completely Fair Scheduler) se acerca más a un <span class="highlight">modelo justo similar a SRTF/PSJF</span>, lo que explica:</p>
+            <ul>
+                <li>Su alto rendimiento en cargas de trabajo de servidor</li>
+                <li>La distribución equitativa de recursos entre procesos</li>
+                <li>Su eficiencia en entornos con múltiples tareas simultáneas</li>
+            </ul>
+            
+            <p>La elección del algoritmo de planificación tiene un impacto directo en la experiencia del usuario y el rendimiento del sistema, siendo Round Robin más adecuado para entornos interactivos como Windows, mientras que algoritmos como SRTF y PSJF son ideales para entornos donde el throughput es prioritario, como en servidores Linux.</p>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Informe de Simulación de Algoritmos de Planificación | Sistemas Operativos II</p>
+            <p>Universidad de la Defensa Nacional - FADENA</p>
+        </div>
+    </footer>
+</body>
+</html>
