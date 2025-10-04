@@ -20,6 +20,11 @@ Proyectos de diseño web construidos desde cero. Son un campo de pruebas para in
 - **Práctica**: Diseño de UI/UX, gráficos dinámicos, arquitectura de la información.
 - **Ejecución en Código**: HTML semántico, CSS3, JavaScript y Canvas API.
 
+### 📂 `WizardSolutionsMobileFirstViews` - Diseño Adaptativo y Mobile-First
+Esta carpeta contiene prototipos de vistas para "WizardSolutions", un proyecto enfocado en la filosofía **Mobile-First**. Las vistas están construidas para garantizar una experiencia de usuario óptima en dispositivos móviles, que luego se escala a pantallas más grandes.
+- **Práctica**: Diseño responsivo, UI/UX para móviles, maquetación con HTML/CSS.
+- **Ejecución en Código**: HTML, CSS (con un enfoque en media queries y layouts flexibles).
+
 ### 📂 `dokumenterienFadena` & `cheatNotes` - Diseño de Información
 Incluso el material académico es una oportunidad para el diseño. En estas carpetas aplico principios de jerarquía visual para hacer la información compleja más clara y accesible mediante la estructuración de contenido con código.
 - **Práctica**: Organización de contenido, claridad visual, síntesis de información.
