@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXAM_LOG // KNOWLEDGE_CORE</title>
+    <style>
+        /* --- VARIABLES DE COLOR (SISTEMA DINÁMICO) --- */
+        :root {
+            /* Modo Oscuro (Default) */
+            --bg: #0a0a0a;
+            --fg: #d4d4d4;
+            --accent: #ff3c00; /* Naranja Internacional */
+            --dim: #444;
+            --panel-bg: #1a1a1a;
+        }
+
+        /* Clase para Modo Claro (Sobrescribe variables) */
+        body.light-mode {
+            --bg: #e0e0e0; /* Gris Hormigón */
+            --fg: #111111; /* Negro tinta */
+            --accent: #ff3c00; /* El naranja se mantiene */
+            --dim: #999;
+            --panel-bg: #cccccc;
+        }
+
+        /* --- RESET & BASE --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            line-height: 1.4;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+        }
+
+        /* --- TIPOGRAFÍA --- */
+        h1, h2, h3 {
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .mega-title {
+            font-size: clamp(3rem, 8vw, 10rem);
+            line-height: 0.8;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        /* --- BOTÓN TOGGLE --- */
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: var(--fg);
+            color: var(--bg);
+            border: none;
+            padding: 1rem 1.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.1s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--accent);
+            color: var(--bg);
+            transform: translate(-2px, -2px); /* Pequeño desplazamiento mecánico */
+            box-shadow: 4px 4px 0px var(--fg);
+        }
+
+        .theme-toggle:active {
+            transform: translate(0, 0);
+            box-shadow: none;
+        }
+
+        /* --- LAYOUT --- */
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            padding-top: 6rem; /* Espacio para el botón en móviles */
+        }
+
+        section {
+            margin-bottom: 8rem;
+        }
+
+        /* --- EL MAPA (Visualización de árbol) --- */
+        .map-container {
+            padding-left: 1rem;
+            border-left: 2px solid var(--dim);
+        }
+
+        .node {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .node::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.7em;
+            width: 1.5rem;
+            height: 2px;
+            background-color: var(--dim);
+        }
+
+        .node-title {
+            font-size: 1.5rem;
+            background: var(--fg);
+            color: var(--bg);
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            font-weight: bold;
+        }
+
+        .sub-node {
+            margin-top: 0.5rem;
+            margin-left: 2rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* --- LOG DE PREGUNTAS (ACORDEÓN BRUTALISTA) --- */
+        .qa-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        details {
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        summary {
+            list-style: none;
+            padding: 2rem 0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-top: 2px solid var(--fg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary:hover {
+            background-color: var(--accent);
+            color: #000; /* Texto negro siempre en hover naranja */
+            padding-left: 1rem;
+        }
+
+        summary::after { content: '[ + ]'; }
+        details[open] summary::after { content: '[ - ]'; }
+
+        details[open] summary {
+            background-color: var(--fg);
+            color: var(--bg);
+            padding-left: 1rem;
+        }
+
+        .answer-block {
+            padding: 2rem;
+            background-color: var(--panel-bg);
+            border-left: 4px solid var(--accent);
+        }
+
+        .correct {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .justification {
+            color: var(--fg);
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+
+        /* --- DECORACIÓN --- */
+        .glitch-text {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .glitch-text::before {
+            content: "LOG_UPDATED_20/11 // SYSTEM_READY";
+            font-size: 0.8rem;
+            color: var(--dim);
+        }
+
+    </style>
+</head>
+<body>
+
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
+        [ MODE: LIGHT ]
+    </button>
+
+<div class="wrapper">
+    
+    <header>
+        <div class="glitch-text"></div>
+        <h1 class="mega-title">EXAM<br>KNOWLEDGE<br>CORE</h1>
+    </header>
+
+    <section>
+        <h2 style="margin-bottom: 2rem;">// SYSTEM_MAP (Temas Desarrollados)</h2>
+        <div class="map-container">
+            <div class="node">
+                <span class="node-title">SISTEMAS OPERATIVOS</span>
+                <div class="sub-node">├── DEADLOCKS (Prevención)</div>
+                <div class="sub-node">└── RECURSOS (Apropiativos vs No Apropiativos)</div>
+            </div>
+            <div class="node">
+                <span class="node-title">SEGURIDAD INFORMÁTICA</span>
+                <div class="sub-node">├── CRIPTOGRAFÍA (Asimétrica / Confidencialidad)</div>
+                <div class="sub-node">├── CERTIFICADOS (X.509 / Identidad)</div>
+                <div class="sub-node">└── DEFENSA (Firewalls / ACLs)</div>
+            </div>
+            <div class="node">
+                <span class="node-title">REDES DE DATOS</span>
+                <div class="sub-node">├── TRANSPORTE (TCP vs UDP / Puertos)</div>
+                <div class="sub-node">├── CAPA DE RED (IP / Máscaras / Routing)</div>
+                <div class="sub-node">└── MODELO OSI (Capas Superiores)</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 style="margin-bottom: 2rem;">// Q&A_ARCHIVE (Respuestas)</h2>
+        <div class="qa-list">
+
+            <details>
+                <summary>01. LIMITACIÓN "RETENCIÓN Y ESPERA"</summary>
+                <div class="answer-block">
+                    <span class="correct">RESPUESTA: No siempre se conocen todos los recursos necesarios de antemano.</span>
+                    <p class="justification">JUSTIFICACIÓN: Exigir todos los recursos al inicio es ineficiente e impracticable en programación moderna debido a la ejecución condicional y dinámica.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>03. CIFRADO ASIMÉTRICO (CONFIDENCIALIDAD)</summary>
+                <div class="answer-block">
+                    <span class="correct">RESPUESTA: La clave pública del receptor.</span>
+                    <p class="justification">JUSTIFICACIÓN: Para que sea secreto, se cierra con el candado público del destino, para que solo él (con su llave privada) pueda abrirlo.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>04. FUNCIÓN NÚMEROS DE PUERTO</summary>
+                <div class="answer-block">
+                    <span class="correct">RESPUESTA: Identificar diferentes procesos corriendo dentro de un mismo host.</span>
+                    <p class="justification">JUSTIFICACIÓN: La IP llega a la máquina, el Puerto llega a la aplicación específica (Multiplexación).</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>05. CERTIFICADO DIGITAL</summary>
+                <div class="answer-block">
+                    <span class="correct">RESPUESTA: Identificar al titular + Contener su clave pública.</span>
+                    <p class="justification">JUSTIFICACIÓN: Nunca contiene la clave privada. Es un documento público firmado por una CA.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>06. RIESGO ALTO DE DEADLOCK</summary>
+                <div class="answer-block">
+                    <span class="correct">RESPUESTA: Reutilizable y No Apropiativo.</span>
+                    <p class="justification">JUSTIFICACIÓN: Si el recurso no se consume y no se puede quitar a la fuerza, se crea el escenario perfecto para el bloqueo mutuo.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>07. FILTRADO DE TRÁFICO</summary>
+                <div class="answer-block">
+                    <span class="correct">RESPUESTA: Cortafuego (Firewall).</span>
+                    <p class="justification">JUSTIFICACIÓN: Es el dispositivo encargado de aplicar reglas de seguridad para bloquear o permitir paquetes.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>08. MÁSCARA DE SUBRED</summary>
+                <div class="answer-block">
+                    <span class="correct">RESPUESTA: Indicar si otra IP pertenece a nuestra red o no.</span>
+                    <p class="justification">JUSTIFICACIÓN: Separa la parte de Red de la parte de Host para decidir si enrutar o entregar localmente.</p>
+                </div>
+            </details>
+             
+            <details>
+                <summary>09. RELACIÓN DE CAPAS (IMAGEN)</summary>
+                <div class="answer-block">
+                    <span class="correct">RESPUESTA: Todas las asociaciones de la imagen son correctas.</span>
+                    <p class="justification">Interred -> IP | Aplicación -> Navegadores | TCP -> Ordenado/Conexión | UDP -> Sin conexión/Rápido.</p>
+                </div>
+            </details>
+
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding-bottom: 4rem; opacity: 0.5;">
+        END_OF_LOG // SESSION_CLOSED
+    </footer>
+
+</div>
+
+<script>
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.getElementById('themeBtn');
+        
+        // Alternar clase
+        body.classList.toggle('light-mode');
+        
+        // Cambiar texto del botón
+        if (body.classList.contains('light-mode')) {
+            btn.innerText = "[ MODE: DARK ]"; // Sugiere que el próximo clic va a Dark
+        } else {
+            btn.innerText = "[ MODE: LIGHT ]"; // Sugiere que el próximo clic va a Light
+        }
+    }
+</script>
+
+</body>
+</html>

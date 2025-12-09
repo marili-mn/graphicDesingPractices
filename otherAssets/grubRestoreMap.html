@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperación Dual Boot - Windows & EndeavourOS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #1a252f;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-dark: #333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --verification-bg: #e3f2fd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a3a, #2c3e50);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 15px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 25px 15px;
+            background: rgba(44, 62, 80, 0.95);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent), var(--success));
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--light);
+            margin-bottom: 20px;
+        }
+
+        .os-logos {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo i {
+            font-size: 35px;
+            color: var(--primary);
+        }
+
+        .logo.windows i {
+            color: #0078d7;
+        }
+
+        .logo.arch i {
+            color: #1793d1;
+        }
+
+        /* Language Selector */
+        .lang-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Content */
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2 i {
+            color: var(--secondary);
+            font-size: 1.4rem;
+        }
+
+        .step {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .step h3 {
+            display: inline;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .step-content {
+            margin-top: 12px;
+            padding-left: 36px;
+        }
+
+        .warning, .success, .verification {
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin: 12px 0;
+            font-size: 0.95rem;
+        }
+
+        .warning {
+            background: #fff8e1;
+            border-left: 4px solid var(--warning);
+        }
+
+        .success {
+            background: #e8f5e9;
+            border-left: 4px solid var(--success);
+        }
+
+        .verification {
+            background: var(--verification-bg);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .command {
+            background: var(--primary);
+            color: #f1f1f1;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            margin: 12px 0;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .partition-diagram {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+        }
+
+        .partition {
+            padding: 8px;
+            margin: 6px 0;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .efi { background: #3498db; color: white; }
+        .msr { background: #9b59b6; color: white; }
+        .windows { background: #2ecc71; color: white; }
+        .recovery { background: #e74c3c; color: white; }
+        .swap { background: #f39c12; color: white; }
+        .root { background: #1abc9c; color: white; }
+        .home { background: #16a085; color: white; }
+
+        .key-points {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .key-point {
+            background: rgba(236, 240, 241, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .key-point i {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 30px;
+            color: white;
+            background: rgba(26, 37, 47, 0.8);
+            border-radius: 15px;
+            font-size: 0.95rem;
+        }
+
+        .conclusion {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .conclusion h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        /* Desktop adaptation */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 750px;
+            }
+
+            h1 {
+                font-size: 2.8rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .key-points {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .lang-selector {
+                gap: 15px;
+            }
+
+            .lang-btn {
+                padding: 10px 20px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                max-width: 970px;
+            }
+
+            .content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            h1 {
+                font-size: 3.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-cogs"></i> <span id="header-title">Recuperación Dual Boot</span></h1>
+            <p class="subtitle" id="header-subtitle">Guía completa con pasos de verificación para restaurar el arranque dual</p>
+
+            <div class="os-logos">
+                <div class="logo windows">
+                    <i class="fab fa-windows"></i>
+                </div>
+                <div class="logo arch">
+                    <i class="fab fa-linux"></i>
+                </div>
+            </div>
+
+            <div class="lang-selector">
+                <button class="lang-btn active" data-lang="es">
+                    <span>🇪🇸</span> Español
+                </button>
+                <button class="lang-btn" data-lang="en">
+                    <span>🇺🇸</span> English
+                </button>
+                <button class="lang-btn" data-lang="pt">
+                    <span>🇧🇷</span> Português
+                </button>
+                <button class="lang-btn" data-lang="de">
+                    <span>🇩🇪</span> Deutsch
+                </button>
+            </div>
+        </header>
+
+        <div class="key-points">
+            <div class="key-point">
+                <i class="fas fa-clipboard-check"></i>
+                <h3 id="verification-title">Verificación Constante</h3>
+                <p id="verification-desc">Pasos de comprobación en cada etapa crítica</p>
+            </div>
+            <div class="key-point">
+                <i class="fas fa-bug"></i>
+                <h3 id="problem-title">Detección Temprana</h3>
+                <p id="problem-desc">Identificación de errores antes de avanzar</p>
+            </div>
+            <div class="key-point">
+                <i class="fas fa-shield-alt"></i>
+                <h3 id="solution-title">Seguridad</h3>
+                <p id="solution-desc">Confirmación de que todo funciona correctamente</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="card">
+                <h2><i class="fas fa-sd-card"></i> <span id="prep-title">Preparación del Entorno</span></h2>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <h3 id="step1-title">Reparar Bootloader de Windows</h3>
+                    <div class="step-content">
+                        <p id="step1-desc">Usando USB de instalación de Windows 11:</p>
+                        <div class="command">
+                            <i class="fas fa-terminal"></i>bootrec /fixboot<br>
+                            <i class="fas fa-terminal"></i>bootrec /rebuildbcd<br>
+                            <i class="fas fa-terminal"></i>bcdboot C:\Windows /s S: /f UEFI
+                        </div>
+                        <div class="warning">
+                            <i class="fas fa-exclamation-circle"></i> <span id="warning1">Desactivar "Inicio rápido" en Windows para evitar conflictos</span>
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify1">Verificación: Reiniciar y confirmar que Windows arranca correctamente antes de continuar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <h3 id="step2-title">Arrancar con Live CD</h3>
+                    <div class="step-content">
+                        <p id="step2-desc">Preparar USB booteable con imagen ISO de EndeavourOS</p>
+                        <div class="command">
+                            <i class="fas fa-terminal"></i>sudo wifi-menu  # <span id="wifi-desc">Conectar a internet</span>
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify2">Verificación: Ejecutar `ping google.com` para confirmar conectividad</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <h3 id="step3-title">Identificar Particiones</h3>
+                    <div class="step-content">
+                        <div class="command">
+                            <i class="fas fa-terminal"></i>sudo fdisk -l<br>
+                            <i class="fas fa-terminal"></i>sudo lsblk -f<br>
+                            <i class="fas fa-terminal"></i>sudo blkid
+                        </div>
+
+                        <div class="partition-diagram">
+                            <h4 id="partition-title">Estructura de Particiones:</h4>
+                            <div class="partition efi">/dev/sda1 - EFI System (100MB)</div>
+                            <div class="partition msr">/dev/sda2 - Microsoft Reserved (16MB)</div>
+                            <div class="partition windows">/dev/sda3 - Windows NTFS (228.6GB)</div>
+                            <div class="partition recovery">/dev/sda4 - Windows Recovery (655MB)</div>
+                            <div class="partition swap">/dev/sda5 - Linux Swap (10.7GB)</div>
+                            <div class="partition root">/dev/sda6 - EndeavourOS Root Btrfs (100.6GB)</div>
+                            <div class="partition home">/dev/sda7 - Home Btrfs (106.4GB)</div>
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify3">Verificación: Confirmar UUIDs y tipos de partición coinciden con esta estructura</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-terminal"></i> <span id="process-title">Proceso de Recuperación</span></h2>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <h3 id="step4-title">Montaje de Particiones</h3>
+                    <div class="step-content">
+                        <div class="command">
+                            <i class="fas fa-terminal"></i>sudo mount -o subvol=@ /dev/sda6 /mnt<br>
+                            <i class="fas fa-terminal"></i>sudo mount /dev/sda7 /mnt/home<br>
+                            <i class="fas fa-terminal"></i>sudo mount /dev/sda1 /mnt/boot/efi
+                        </div>
+                        <div class="warning">
+                            <i class="fas fa-exclamation-circle"></i> <span id="warning2">¡Importante! sda7 se monta SIN subvolumen</span>
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify4">Verificación: Ejecutar `ls /mnt` y confirmar que se ven directorios como /etc, /bin</span>
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify5">Verificación: Ejecutar `ls /mnt/home` y confirmar que se ven directorios de usuario</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <h3 id="step5-title">Preparar Entorno Chroot</h3>
+                    <div class="step-content">
+                        <div class="command">
+                            <i class="fas fa-terminal"></i>sudo mount --bind /dev /mnt/dev<br>
+                            <i class="fas fa-terminal"></i>sudo mount --bind /proc /mnt/proc<br>
+                            <i class="fas fa-terminal"></i>sudo mount --bind /sys /mnt/sys<br>
+                            <i class="fas fa-terminal"></i>sudo mount --bind /run /mnt/run<br>
+                            <i class="fas fa-terminal"></i>sudo cp /etc/resolv.conf /mnt/etc/resolv.conf<br>
+                            <i class="fas fa-terminal"></i>sudo chroot /mnt
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify6">Verificación: Dentro de chroot, ejecutar `ls /boot` y confirmar que existen vmlinuz e initramfs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <h3 id="step6-title">Reinstalación de GRUB</h3>
+                    <div class="step-content">
+                        <div class="command">
+                            <i class="fas fa-terminal"></i>pacman -Rns grub efibootmgr --noconfirm<br>
+                            <i class="fas fa-terminal"></i>rm -rf /boot/efi/EFI/EndeavourOS /boot/grub<br>
+                            <i class="fas fa-terminal"></i>pacman -S --noconfirm grub efibootmgr os-prober ntfs-3g btrfs-progs
+                        </div>
+                        <div class="success">
+                            <i class="fas fa-check-circle"></i> <span id="success1">Esto elimina cualquier configuración previa corrupta</span>
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify7">Verificación: Ejecutar `grub-install --version` para confirmar instalación</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-cog"></i> <span id="config-title">Configuración de GRUB</span></h2>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <h3 id="step7-title">Configuración para Windows</h3>
+                    <div class="step-content">
+                        <p id="step7-desc">Archivo /etc/default/grub:</p>
+                        <div class="command">
+                            <i class="fas fa-file-code"></i>GRUB_DEFAULT=saved<br>
+                            <i class="fas fa-file-code"></i>GRUB_TIMEOUT=10<br>
+                            <i class="fas fa-file-code"></i>GRUB_DISABLE_OS_PROBER=false<br>
+                            <i class="fas fa-file-code"></i>GRUB_OS_PROBER_SKIP_LIST="ECAE9560AE9523DC"<br>
+                            <i class="fas fa-file-code"></i>GRUB_CMDLINE_LINUX_DEFAULT="rootflags=subvol=@"
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify8">Verificación: Ejecutar `cat /etc/default/grub` y confirmar los cambios</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">8</span>
+                    <h3 id="step8-title">Entrada Manual para Windows</h3>
+                    <div class="step-content">
+                        <p id="step8-desc">Crear /etc/grub.d/40_custom:</p>
+                        <div class="command">
+                            <i class="fas fa-file-code"></i>menuentry "Windows 11 24H2" --class windows {<br>
+                            <i class="fas fa-file-code"></i>    insmod part_gpt<br>
+                            <i class="fas fa-file-code"></i>    insmod fat<br>
+                            <i class="fas fa-file-code"></i>    insmod chain<br>
+                            <i class="fas fa-file-code"></i>    search --fs-uuid --set=root A8A2-4AB6<br>
+                            <i class="fas fa-file-code"></i>    chainloader /EFI/Microsoft/Boot/bootmgfw.efi<br>
+                            <i class="fas fa-file-code"></i>}
+                        </div>
+                        <div class="command">
+                            <i class="fas fa-terminal"></i>chmod +x /etc/grub.d/40_custom
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify9">Verificación: Ejecutar `ls -l /etc/grub.d/40_custom` y confirmar permisos -rwxr-xr-x</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-check-circle"></i> <span id="final-title">Finalización y Verificación</span></h2>
+
+                <div class="step">
+                    <span class="step-number">9</span>
+                    <h3 id="step9-title">Instalar y Configurar GRUB</h3>
+                    <div class="step-content">
+                        <div class="command">
+                            <i class="fas fa-terminal"></i>grub-install --target=x86_64-efi --efi-directory=/boot/efi \<br>
+                            &nbsp;&nbsp;--bootloader-id=EndeavourOS --removable --recheck<br>
+                            <i class="fas fa-terminal"></i>grub-mkconfig -o /boot/grub/grub.cfg
+                        </div>
+                        <div class="success">
+                            <i class="fas fa-check-circle"></i> <span id="success2">Debe mostrar: "Found Windows Boot Manager"</span>
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify10">Verificación: Buscar "Windows Boot Manager" en la salida de grub-mkconfig</span>
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify11">Verificación: Ejecutar `ls /boot/efi/EFI/EndeavourOS` y confirmar que existe grubx64.efi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">10</span>
+                    <h3 id="step10-title">Crear Entrada UEFI y Verificar</h3>
+                    <div class="step-content">
+                        <div class="command">
+                            <i class="fas fa-terminal"></i>efibootmgr -c -d /dev/sda -p 1 -L "EndeavourOS" -l '\EFI\EndeavourOS\grubx64.efi'
+                        </div>
+                        <div class="warning">
+                            <i class="fas fa-exclamation-circle"></i> <span id="warning3">Ejecutar desde Live CD si falla en chroot</span>
+                        </div>
+
+                        <div class="command">
+                            <i class="fas fa-terminal"></i>exit  # <span id="exit-desc">Salir de chroot</span><br>
+                            <i class="fas fa-terminal"></i>sudo umount -R /mnt<br>
+                            <i class="fas fa-terminal"></i>reboot
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify12">Verificación: En BIOS/UEFI, confirmar que existe la entrada "EndeavourOS"</span>
+                        </div>
+                        <div class="verification">
+                            <i class="fas fa-check-circle"></i> <span id="verify13">Verificación: En menú GRUB, confirmar que existen entradas para ambos sistemas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="conclusion">
+            <h2><i class="fas fa-clipboard-check"></i> <span id="result-title">Resultado Final y Verificación Completa</span></h2>
+            <div class="conclusion-content">
+                <p id="result-desc">Después de completar el proceso, realiza estas verificaciones finales:</p>
+
+                <div class="key-points">
+                    <div class="key-point">
+                        <i class="fas fa-desktop"></i>
+                        <h3 id="result1-title">Arranque Dual</h3>
+                        <p id="result1-desc">Confirmar que ambos sistemas operativos arrancan correctamente</p>
+                    </div>
+                    <div class="key-point">
+                        <i class="fas fa-sync-alt"></i>
+                        <h3 id="result2-title">Reinicios</h3>
+                        <p id="result2-desc">Probar varios ciclos de reinicio para confirmar estabilidad</p>
+                    </div>
+                    <div class="key-point">
+                        <i class="fas fa-tasks"></i>
+                        <h3 id="result3-title">Actualizaciones</h3>
+                        <p id="result3-desc">Ejecutar actualizaciones en ambos sistemas y verificar que persiste el arranque dual</p>
+                    </div>
+                </div>
+
+                <div class="verification">
+                    <i class="fas fa-check-circle"></i> <span id="verify14">Verificación Final: Ejecutar `sudo update-grub` en EndeavourOS y confirmar que detecta Windows</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p id="footer-text">Documentación con sistema de verificación - Recuperación de sistemas dual boot</p>
+            <p>Windows 11 24H2 | EndeavourOS | GRUB 2.12 | Julio 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Datos de traducción con verificaciones
+        const translations = {
+            es: {
+                headerTitle: "Recuperación Dual Boot",
+                headerSubtitle: "Guía completa con pasos de verificación para restaurar el arranque dual",
+                verificationTitle: "Verificación Constante",
+                verificationDesc: "Pasos de comprobación en cada etapa crítica",
+                problemTitle: "Detección Temprana",
+                problemDesc: "Identificación de errores antes de avanzar",
+                solutionTitle: "Seguridad",
+                solutionDesc: "Confirmación de que todo funciona correctamente",
+                prepTitle: "Preparación del Entorno",
+                step1Title: "Reparar Bootloader de Windows",
+                step1Desc: "Usando USB de instalación de Windows 11:",
+                warning1: "Desactivar 'Inicio rápido' en Windows para evitar conflictos",
+                verify1: "Verificación: Reiniciar y confirmar que Windows arranca correctamente antes de continuar",
+                step2Title: "Arrancar con Live CD",
+                step2Desc: "Preparar USB booteable con imagen ISO de EndeavourOS",
+                wifiDesc: "Conectar a internet",
+                verify2: "Verificación: Ejecutar `ping google.com` para confirmar conectividad",
+                step3Title: "Identificar Particiones",
+                partitionTitle: "Estructura de Particiones:",
+                processTitle: "Proceso de Recuperación",
+                step4Title: "Montaje de Particiones",
+                warning2: "¡Importante! sda7 se monta SIN subvolumen",
+                verify4: "Verificación: Ejecutar `ls /mnt` y confirmar que se ven directorios como /etc, /bin",
+                verify5: "Verificación: Ejecutar `ls /mnt/home` y confirmar que se ven directorios de usuario",
+                step5Title: "Preparar Entorno Chroot",
+                verify6: "Verificación: Dentro de chroot, ejecutar `ls /boot` y confirmar que existen vmlinuz e initramfs",
+                step6Title: "Reinstalación de GRUB",
+                success1: "Esto elimina cualquier configuración previa corrupta",
+                verify7: "Verificación: Ejecutar `grub-install --version` para confirmar instalación",
+                configTitle: "Configuración de GRUB",
+                step7Title: "Configuración para Windows",
+                step7Desc: "Archivo /etc/default/grub:",
+                verify8: "Verificación: Ejecutar `cat /etc/default/grub` y confirmar los cambios",
+                step8Title: "Entrada Manual para Windows",
+                step8Desc: "Crear /etc/grub.d/40_custom:",
+                verify9: "Verificación: Ejecutar `ls -l /etc/grub.d/40_custom` y confirmar permisos -rwxr-xr-x",
+                finalTitle: "Finalización y Verificación",
+                step9Title: "Instalar y Configurar GRUB",
+                success2: "Debe mostrar: 'Found Windows Boot Manager'",
+                verify10: "Verificación: Buscar 'Windows Boot Manager' en la salida de grub-mkconfig",
+                verify11: "Verificación: Ejecutar `ls /boot/efi/EFI/EndeavourOS` y confirmar que existe grubx64.efi",
+                step10Title: "Crear Entrada UEFI y Verificar",
+                warning3: "Ejecutar desde Live CD si falla en chroot",
+                exitDesc: "Salir de chroot",
+                verify12: "Verificación: En BIOS/UEFI, confirmar que existe la entrada 'EndeavourOS'",
+                verify13: "Verificación: En menú GRUB, confirmar que existen entradas para ambos sistemas",
+                resultTitle: "Resultado Final y Verificación Completa",
+                resultDesc: "Después de completar el proceso, realiza estas verificaciones finales:",
+                result1Title: "Arranque Dual",
+                result1Desc: "Confirmar que ambos sistemas operativos arrancan correctamente",
+                result2Title: "Reinicios",
+                result2Desc: "Probar varios ciclos de reinicio para confirmar estabilidad",
+                result3Title: "Actualizaciones",
+                result3Desc: "Ejecutar actualizaciones en ambos sistemas y verificar que persiste el arranque dual",
+                verify14: "Verificación Final: Ejecutar `sudo update-grub` en EndeavourOS y confirmar que detecta Windows",
+                footerText: "Documentación con sistema de verificación - Recuperación de sistemas dual boot"
+            },
+            en: {
+                headerTitle: "Dual Boot Recovery",
+                headerSubtitle: "Complete guide with verification steps to restore dual boot",
+                verificationTitle: "Constant Verification",
+                verificationDesc: "Checkpoints at each critical stage",
+                problemTitle: "Early Detection",
+                problemDesc: "Error identification before proceeding",
+                solutionTitle: "Safety",
+                solutionDesc: "Confirmation that everything works correctly",
+                prepTitle: "Environment Preparation",
+                step1Title: "Repair Windows Bootloader",
+                step1Desc: "Using Windows 11 installation USB:",
+                warning1: "Disable 'Fast Startup' in Windows to prevent conflicts",
+                verify1: "Verification: Reboot and confirm Windows starts correctly before continuing",
+                step2Title: "Boot with Live CD",
+                step2Desc: "Prepare bootable USB with EndeavourOS ISO image",
+                wifiDesc: "Connect to internet",
+                verify2: "Verification: Run `ping google.com` to confirm connectivity",
+                step3Title: "Identify Partitions",
+                partitionTitle: "Partition Structure:",
+                processTitle: "Recovery Process",
+                step4Title: "Mount Partitions",
+                warning2: "Important! sda7 should be mounted WITHOUT subvolume",
+                verify4: "Verification: Run `ls /mnt` and confirm directories like /etc, /bin are visible",
+                verify5: "Verification: Run `ls /mnt/home` and confirm user directories are visible",
+                step5Title: "Prepare Chroot Environment",
+                verify6: "Verification: Inside chroot, run `ls /boot` and confirm vmlinuz and initramfs exist",
+                step6Title: "GRUB Reinstallation",
+                success1: "This removes any previous corrupted configuration",
+                verify7: "Verification: Run `grub-install --version` to confirm installation",
+                configTitle: "GRUB Configuration",
+                step7Title: "Configuration for Windows",
+                step7Desc: "File /etc/default/grub:",
+                verify8: "Verification: Run `cat /etc/default/grub` and confirm changes",
+                step8Title: "Manual Entry for Windows",
+                step8Desc: "Create /etc/grub.d/40_custom:",
+                verify9: "Verification: Run `ls -l /etc/grub.d/40_custom` and confirm permissions -rwxr-xr-x",
+                finalTitle: "Finalization and Verification",
+                step9Title: "Install and Configure GRUB",
+                success2: "Should display: 'Found Windows Boot Manager'",
+                verify10: "Verification: Look for 'Windows Boot Manager' in grub-mkconfig output",
+                verify11: "Verification: Run `ls /boot/efi/EFI/EndeavourOS` and confirm grubx64.efi exists",
+                step10Title: "Create UEFI Entry and Verify",
+                warning3: "Run from Live CD if it fails in chroot",
+                exitDesc: "Exit chroot",
+                verify12: "Verification: In BIOS/UEFI, confirm 'EndeavourOS' entry exists",
+                verify13: "Verification: In GRUB menu, confirm entries for both systems",
+                resultTitle: "Final Result and Complete Verification",
+                resultDesc: "After completing the process, perform these final checks:",
+                result1Title: "Dual Boot",
+                result1Desc: "Confirm both operating systems boot correctly",
+                result2Title: "Reboots",
+                result2Desc: "Test several reboot cycles to confirm stability",
+                result3Title: "Updates",
+                result3Desc: "Run updates on both systems and verify dual boot persists",
+                verify14: "Final Verification: Run `sudo update-grub` in EndeavourOS and confirm it detects Windows",
+                footerText: "Documentation with verification system - Dual boot system recovery"
+            },
+            pt: {
+                headerTitle: "Recuperação Dual Boot",
+                headerSubtitle: "Guia completo com etapas de verificação para restaurar a inicialização dupla",
+                verificationTitle: "Verificação Constante",
+                verificationDesc: "Pontos de verificação em cada estágio crítico",
+                problemTitle: "Detecção Precoce",
+                problemDesc: "Identificação de erros antes de prosseguir",
+                solutionTitle: "Segurança",
+                solutionDesc: "Confirmação de que tudo funciona corretamente",
+                prepTitle: "Preparação do Ambiente",
+                step1Title: "Reparar o Bootloader do Windows",
+                step1Desc: "Usando USB de instalação do Windows 11:",
+                warning1: "Desative 'Inicialização Rápida' no Windows para evitar conflitos",
+                verify1: "Verificação: Reinicie e confirme que o Windows inicia corretamente antes de continuar",
+                step2Title: "Inicializar com Live CD",
+                step2Desc: "Preparar USB inicializável com imagem ISO do EndeavourOS",
+                wifiDesc: "Conectar à internet",
+                verify2: "Verificação: Execute `ping google.com` para confirmar conectividade",
+                step3Title: "Identificar Partições",
+                partitionTitle: "Estrutura de Partições:",
+                processTitle: "Processo de Recuperação",
+                step4Title: "Montar Partições",
+                warning2: "Importante! sda7 deve ser montado SEM subvolume",
+                verify4: "Verificação: Execute `ls /mnt` e confirme que diretórios como /etc, /bin estão visíveis",
+                verify5: "Verificação: Execute `ls /mnt/home` e confirme que diretórios de usuário estão visíveis",
+                step5Title: "Preparar Ambiente Chroot",
+                verify6: "Verificação: Dentro do chroot, execute `ls /boot` e confirme que vmlinuz e initramfs existem",
+                step6Title: "Reinstalação do GRUB",
+                success1: "Isso remove qualquer configuração anterior corrompida",
+                verify7: "Verificação: Execute `grub-install --version` para confirmar a instalação",
+                configTitle: "Configuração do GRUB",
+                step7Title: "Configuração para Windows",
+                step7Desc: "Arquivo /etc/default/grub:",
+                verify8: "Verificação: Execute `cat /etc/default/grub` e confirme as alterações",
+                step8Title: "Entrada Manual para Windows",
+                step8Desc: "Criar /etc/grub.d/40_custom:",
+                verify9: "Verificação: Execute `ls -l /etc/grub.d/40_custom` e confirme permissões -rwxr-xr-x",
+                finalTitle: "Finalização e Verificação",
+                step9Title: "Instalar e Configurar o GRUB",
+                success2: "Deve mostrar: 'Found Windows Boot Manager'",
+                verify10: "Verificação: Procure 'Windows Boot Manager' na saída do grub-mkconfig",
+                verify11: "Verificação: Execute `ls /boot/efi/EFI/EndeavourOS` e confirme que grubx64.efi existe",
+                step10Title: "Criar Entrada UEFI e Verificar",
+                warning3: "Execute do Live CD se falhar no chroot",
+                exitDesc: "Sair do chroot",
+                verify12: "Verificação: Na BIOS/UEFI, confirme que a entrada 'EndeavourOS' existe",
+                verify13: "Verificação: No menu GRUB, confirme entradas para ambos os sistemas",
+                resultTitle: "Resultado Final e Verificação Completa",
+                resultDesc: "Após completar o processo, realize estas verificações finais:",
+                result1Title: "Inicialização Dupla",
+                result1Desc: "Confirme que ambos os sistemas operacionais inicializam corretamente",
+                result2Title: "Reinicializações",
+                result2Desc: "Teste vários ciclos de reinicialização para confirmar estabilidade",
+                result3Title: "Atualizações",
+                result3Desc: "Execute atualizações em ambos os sistemas e verifique se a inicialização dupla persiste",
+                verify14: "Verificação Final: Execute `sudo update-grub` no EndeavourOS e confirme que detecta o Windows",
+                footerText: "Documentação com sistema de verificação - Recuperação de sistema dual boot"
+            },
+            de: {
+                headerTitle: "Dual Boot Wiederherstellung",
+                headerSubtitle: "Kompletter Leitfaden mit Verifizierungsschritten zur Wiederherstellung des Dual Boots",
+                verificationTitle: "Konstante Verifizierung",
+                verificationDesc: "Überprüfungspunkte in jeder kritischen Phase",
+                problemTitle: "Früherkennung",
+                problemDesc: "Fehleridentifikation vor dem Fortfahren",
+                solutionTitle: "Sicherheit",
+                solutionDesc: "Bestätigung, dass alles korrekt funktioniert",
+                prepTitle: "Umgebungsvorbereitung",
+                step1Title: "Windows Bootloader reparieren",
+                step1Desc: "Mit Windows 11 Installations-USB:",
+                warning1: "Deaktivieren Sie 'Schnellstart' in Windows, um Konflikte zu vermeiden",
+                verify1: "Verifizierung: Neustarten und bestätigen, dass Windows korrekt startet, bevor Sie fortfahren",
+                step2Title: "Mit Live CD booten",
+                step2Desc: "Bootfähigen USB mit EndeavourOS ISO-Image vorbereiten",
+                wifiDesc: "Mit Internet verbinden",
+                verify2: "Verifizierung: Führen Sie `ping google.com` aus, um die Konnektivität zu bestätigen",
+                step3Title: "Partitionen identifizieren",
+                partitionTitle: "Partitionsstruktur:",
+                processTitle: "Wiederherstellungsprozess",
+                step4Title: "Partitionen einhängen",
+                warning2: "Wichtig! sda7 sollte OHNE Subvolume eingehängt werden",
+                verify4: "Verifizierung: Führen Sie `ls /mnt` aus und bestätigen Sie, dass Verzeichnisse wie /etc, /bin sichtbar sind",
+                verify5: "Verifizierung: Führen Sie `ls /mnt/home` aus und bestätigen Sie, dass Benutzerverzeichnisse sichtbar sind",
+                step5Title: "Chroot-Umgebung vorbereiten",
+                verify6: "Verifizierung: Innerhalb von chroot, führen Sie `ls /boot` aus und bestätigen Sie, dass vmlinuz und initramfs existieren",
+                step6Title: "GRUB Neuinstallation",
+                success1: "Dies entfernt alle vorherigen beschädigten Konfigurationen",
+                verify7: "Verifizierung: Führen Sie `grub-install --version` aus, um die Installation zu bestätigen",
+                configTitle: "GRUB Konfiguration",
+                step7Title: "Konfiguration für Windows",
+                step7Desc: "Datei /etc/default/grub:",
+                verify8: "Verifizierung: Führen Sie `cat /etc/default/grub` aus und bestätigen Sie die Änderungen",
+                step8Title: "Manueller Eintrag für Windows",
+                step8Desc: "Erstellen Sie /etc/grub.d/40_custom:",
+                verify9: "Verifizierung: Führen Sie `ls -l /etc/grub.d/40_custom` aus und bestätigen Sie Berechtigungen -rwxr-xr-x",
+                finalTitle: "Abschluss und Verifizierung",
+                step9Title: "GRUB installieren und konfigurieren",
+                success2: "Sollte anzeigen: 'Found Windows Boot Manager'",
+                verify10: "Verifizierung: Suchen Sie nach 'Windows Boot Manager' in der grub-mkconfig-Ausgabe",
+                verify11: "Verifizierung: Führen Sie `ls /boot/efi/EFI/EndeavourOS` aus und bestätigen Sie, dass grubx64.efi existiert",
+                step10Title: "UEFI-Eintrag erstellen und verifizieren",
+                warning3: "Führen Sie dies vom Live CD aus, wenn es im chroot fehlschlägt",
+                exitDesc: "Chroot verlassen",
+                verify12: "Verifizierung: Im BIOS/UEFI bestätigen, dass der Eintrag 'EndeavourOS' existiert",
+                verify13: "Verifizierung: Im GRUB-Menü bestätigen, dass Einträge für beide Systeme vorhanden sind",
+                resultTitle: "Endergebnis und vollständige Verifizierung",
+                resultDesc: "Nach Abschluss des Prozesses führen Sie diese abschließenden Überprüfungen durch:",
+                result1Title: "Dual Boot",
+                result1Desc: "Bestätigen Sie, dass beide Betriebssysteme korrekt booten",
+                result2Title: "Neustarts",
+                result2Desc: "Testen Sie mehrere Neustartzyklen, um die Stabilität zu bestätigen",
+                result3Title: "Aktualisierungen",
+                result3Desc: "Führen Sie Aktualisierungen auf beiden Systemen durch und überprüfen Sie, ob der Dual Boot bestehen bleibt",
+                verify14: "Endgültige Verifizierung: Führen Sie `sudo update-grub` in EndeavourOS aus und bestätigen Sie, dass Windows erkannt wird",
+                footerText: "Dokumentation mit Verifizierungssystem - Wiederherstellung von Dual-Boot-Systemen"
+            }
+        };
+
+        // Función para cambiar idioma
+        function changeLanguage(lang) {
+            // Actualizar todos los textos
+            document.getElementById('header-title').textContent = translations[lang].headerTitle;
+            document.getElementById('header-subtitle').textContent = translations[lang].headerSubtitle;
+            document.getElementById('verification-title').textContent = translations[lang].verificationTitle;
+            document.getElementById('verification-desc').textContent = translations[lang].verificationDesc;
+            document.getElementById('problem-title').textContent = translations[lang].problemTitle;
+            document.getElementById('problem-desc').textContent = translations[lang].problemDesc;
+            document.getElementById('solution-title').textContent = translations[lang].solutionTitle;
+            document.getElementById('solution-desc').textContent = translations[lang].solutionDesc;
+            document.getElementById('prep-title').textContent = translations[lang].prepTitle;
+            document.getElementById('step1-title').textContent = translations[lang].step1Title;
+            document.getElementById('step1-desc').textContent = translations[lang].step1Desc;
+            document.getElementById('warning1').textContent = translations[lang].warning1;
+            document.getElementById('verify1').textContent = translations[lang].verify1;
+            document.getElementById('step2-title').textContent = translations[lang].step2Title;
+            document.getElementById('step2-desc').textContent = translations[lang].step2Desc;
+            document.getElementById('wifi-desc').textContent = translations[lang].wifiDesc;
+            document.getElementById('verify2').textContent = translations[lang].verify2;
+            document.getElementById('step3-title').textContent = translations[lang].step3Title;
+            document.getElementById('partition-title').textContent = translations[lang].partitionTitle;
+            document.getElementById('process-title').textContent = translations[lang].processTitle;
+            document.getElementById('step4-title').textContent = translations[lang].step4Title;
+            document.getElementById('warning2').textContent = translations[lang].warning2;
+            document.getElementById('verify4').textContent = translations[lang].verify4;
+            document.getElementById('verify5').textContent = translations[lang].verify5;
+            document.getElementById('step5-title').textContent = translations[lang].step5Title;
+            document.getElementById('verify6').textContent = translations[lang].verify6;
+            document.getElementById('step6-title').textContent = translations[lang].step6Title;
+            document.getElementById('success1').textContent = translations[lang].success1;
+            document.getElementById('verify7').textContent = translations[lang].verify7;
+            document.getElementById('config-title').textContent = translations[lang].configTitle;
+            document.getElementById('step7-title').textContent = translations[lang].step7Title;
+            document.getElementById('step7-desc').textContent = translations[lang].step7Desc;
+            document.getElementById('verify8').textContent = translations[lang].verify8;
+            document.getElementById('step8-title').textContent = translations[lang].step8Title;
+            document.getElementById('step8-desc').textContent = translations[lang].step8Desc;
+            document.getElementById('verify9').textContent = translations[lang].verify9;
+            document.getElementById('final-title').textContent = translations[lang].finalTitle;
+            document.getElementById('step9-title').textContent = translations[lang].step9Title;
+            document.getElementById('success2').textContent = translations[lang].success2;
+            document.getElementById('verify10').textContent = translations[lang].verify10;
+            document.getElementById('verify11').textContent = translations[lang].verify11;
+            document.getElementById('step10-title').textContent = translations[lang].step10Title;
+            document.getElementById('warning3').textContent = translations[lang].warning3;
+            document.getElementById('exit-desc').textContent = translations[lang].exitDesc;
+            document.getElementById('verify12').textContent = translations[lang].verify12;
+            document.getElementById('verify13').textContent = translations[lang].verify13;
+            document.getElementById('result-title').textContent = translations[lang].resultTitle;
+            document.getElementById('result-desc').textContent = translations[lang].resultDesc;
+            document.getElementById('result1-title').textContent = translations[lang].result1Title;
+            document.getElementById('result1-desc').textContent = translations[lang].result1Desc;
+            document.getElementById('result2-title').textContent = translations[lang].result2Title;
+            document.getElementById('result2-desc').textContent = translations[lang].result2Desc;
+            document.getElementById('result3-title').textContent = translations[lang].result3Title;
+            document.getElementById('result3-desc').textContent = translations[lang].result3Desc;
+            document.getElementById('verify14').textContent = translations[lang].verify14;
+            document.getElementById('footer-text').textContent = translations[lang].footerText;
+
+            // Actualizar botones de idioma
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+        }
+
+        // Inicializar con español
+        document.addEventListener('DOMContentLoaded', () => {
+            changeLanguage('es');
+
+            // Agregar event listeners a los botones de idioma
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.getAttribute('data-lang');
+                    changeLanguage(lang);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

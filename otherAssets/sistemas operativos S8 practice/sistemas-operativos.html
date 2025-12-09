@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad S8-A1 - VirtualBox y Lubuntu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .document {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            page-break-after: avoid;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 25px;
+            page-break-after: avoid;
+        }
+        h3 {
+            color: #16a085;
+            page-break-after: avoid;
+        }
+        h4 {
+            page-break-after: avoid;
+        }
+        .step {
+            background: #f9f9f9;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+        .screenshot {
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: #f5f5f5;
+            page-break-inside: avoid;
+        }
+        .screenshot img {
+            max-width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+        }
+        .caption {
+            font-style: italic;
+            margin-top: 5px;
+            color: #666;
+        }
+        .requirements {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+        .note {
+            background: #fffde7;
+            padding: 10px;
+            border-left: 4px solid #ffd600;
+            margin: 15px 0;
+            page-break-inside: avoid;
+        }
+        .success {
+            background: #e8f5e9;
+            padding: 15px;
+            border-left: 4px solid #4caf50;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+        ul, ol {
+            page-break-inside: avoid;
+        }
+        
+        /* Print-specific styles */
+        @media print {
+            body {
+                padding: 0;
+                font-size: 12pt;
+                line-height: 1.5;
+            }
+            .document {
+                max-width: 100%;
+                padding: 10px;
+                box-shadow: none;
+                margin: 0;
+            }
+            .step, .screenshot, .requirements, .note, .success {
+                page-break-inside: avoid;
+                break-inside: avoid-page;
+            }
+            h1, h2, h3, h4 {
+                page-break-after: avoid;
+            }
+            .screenshot img {
+                max-height: 500px;
+            }
+            @page {
+                size: A4;
+                margin: 1.5cm;
+            }
+            a {
+                color: #000 !important;
+                text-decoration: underline !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <h1>Actividad S8-A1 - VirtualBox y distribución GNU/Linux de escritorio</h1>
+        
+        <h2>1.1 Objetivos</h2>
+        <ul>
+            <li>Descargar y configurar el software VirtualBox.</li>
+            <li>Instalar un sistema operativo GNU/Linux en su versión de escritorio (desktop).</li>
+            <li>Probar las GUI disponibles para la distribución elegida (Lubuntu).</li>
+        </ul>
+        
+        <h2>1.2 Software necesario</h2>
+        <ul>
+            <li>Oracle VirtualBox</li>
+            <li>Distribución de GNU/Linux en formato ISO (Lubuntu 24.04.2)</li>
+        </ul>
+        
+        <h2>1.3 Consigna de la actividad</h2>
+        
+        <div class="requirements">
+            <h3>Requisitos del sistema</h3>
+            <p>Según la información del sistema obtenida en el diagnóstico de DirectX:</p>
+            <ul>
+                <li>Sistema operativo: Windows 11 Home Single Language 64 bits</li>
+                <li>Procesador: Intel Core i3-12338 (8 CPUs), ~1.2GHz</li>
+                <li>Memoria RAM: 8GB</li>
+                <li>Espacio en disco: 750GB disponibles</li>
+            </ul>
+        </div>
+        
+        <h3>Paso 1: Descargar e instalar VirtualBox</h3>
+        <div class="step">
+            <p>1. Se accedió al sitio oficial de VirtualBox y se descargó la versión compatible con Windows.</p>
+            <p>2. Se instaló VirtualBox con la configuración predeterminada.</p>
+            
+            <div class="screenshot">
+                <h4>Paso 0: Información del sistema antes de la instalación</h4>
+                <img src="step 0.png" alt="Información del sistema">
+                <p class="caption">Información detallada del sistema antes de comenzar la instalación</p>
+            </div>
+            
+            <div class="screenshot">
+                <h4>Interfaz inicial de VirtualBox</h4>
+                <img src="step 3.png" alt="Interfaz de VirtualBox">
+                <p class="caption">Pantalla de bienvenida de VirtualBox mostrando las opciones de modo Básico y Experto</p>
+            </div>
+        </div>
+        
+        <h3>Descargar una imagen ISO de Linux (Lubuntu)</h3>
+        <div class="step">
+            <p>1. Se seleccionó Lubuntu 24.04.2 (Noble Numbat) como distribución de Linux para instalar.</p>
+            <p>2. Se descargó la imagen ISO de 64-bit para PC (AMD64) desde el sitio oficial.</p>
+            
+            <div class="screenshot">
+                <h4>Paso 2: Descarga de Lubuntu 24.04.2</h4>
+                <img src="step 2.png" alt="Descarga de Lubuntu">
+                <p class="caption">Página de descarga de Lubuntu mostrando las opciones disponibles</p>
+            </div>
+            
+            <div class="note">
+                <p><strong>Nota:</strong> Lubuntu fue seleccionado por ser una distribución ligera ideal para máquinas virtuales, con requisitos mínimos de 1024MB de RAM.</p>
+            </div>
+        </div>
+        
+        <h3>Crear la máquina virtual</h3>
+        <div class="step">
+            <p>1. En VirtualBox, se hizo clic en "Nueva" para crear una nueva máquina virtual.</p>
+            <p>2. Se asignó el nombre "lubuntu" a la máquina virtual.</p>
+            <p>3. Se seleccionó el tipo de sistema operativo como Linux y la versión Ubuntu (64-bit).</p>
+            
+            <div class="screenshot">
+                <h4>Paso 4: Configuración inicial de la máquina virtual</h4>
+                <img src="step 4.png" alt="Configuración inicial">
+                <p class="caption">Pantalla de configuración inicial de la máquina virtual</p>
+            </div>
+            
+            <div class="screenshot">
+                <h4>Paso 5: Asignación de recursos</h4>
+                <img src="step 5.png" alt="Asignación de recursos">
+                <p class="caption">Asignación de memoria RAM y procesadores para la máquina virtual</p>
+            </div>
+        </div>
+        
+        <h3>Configurar la máquina virtual</h3>
+        <div class="step">
+            <p>1. Se asignaron 2048 MB de memoria RAM (dentro del rango recomendado).</p>
+            <p>2. Se configuraron 3 CPUs para la máquina virtual.</p>
+            <p>3. Se creó un disco duro virtual de 25 GB con tamaño dinámico.</p>
+            <p>4. En la pestaña Almacenamiento, se seleccionó la imagen ISO descargada como medio de instalación.</p>
+            
+            <div class="screenshot">
+                <h4>Paso 6: Configuración detallada de la máquina virtual</h4>
+                <img src="step 6.png" alt="Configuración detallada">
+                <p class="caption">Configuración final de la máquina virtual antes de la instalación</p>
+            </div>
+        </div>
+        
+        <h3>Instalar Lubuntu en la máquina virtual</h3>
+        <div class="step">
+            <p>1. Se inició la máquina virtual haciendo clic en "Iniciar".</p>
+            <p>2. En el menú de inicio, se seleccionó "Install Lubuntu".</p>
+            
+            <div class="screenshot">
+                <h4>Paso 7: Menú de inicio de Lubuntu</h4>
+                <img src="step 7.png" alt="Menú de inicio">
+                <p class="caption">Pantalla inicial de instalación de Lubuntu</p>
+            </div>
+            
+            <p>3. Se configuró el idioma a English (United States).</p>
+            <p>4. Se configuró el teclado como English (US) Default.</p>
+            <p>5. Se creó una nueva tabla de particiones en el disco virtual.</p>
+            
+            <div class="screenshot">
+                <h4>Configuración de particiones</h4>
+                <img src="step 8.png" alt="Particiones">
+                <p class="caption">Configuración de las particiones para la instalación</p>
+            </div>
+            
+            <p>6. Se completó el proceso de instalación siguiendo las instrucciones en pantalla.</p>
+            
+            <div class="success">
+                <p><strong>Instalación completada con éxito:</strong> Lubuntu ha sido instalado en la máquina virtual.</p>
+            </div>
+            
+            <div class="screenshot">
+                <h4>Instalación completada</h4>
+                <img src="step 9.png" alt="Instalación completada">
+                <p class="caption">Pantalla final confirmando la instalación exitosa de Lubuntu</p>
+            </div>
+        </div>
+        
+        <h3>Explorar el sistema operativo</h3>
+        <div class="step">
+            <p>1. Se reinició la máquina virtual y se inició sesión en Lubuntu.</p>
+            <p>2. Se navegó por la interfaz gráfica LXQt de Lubuntu.</p>
+            <p>3. Se abrió la terminal y se ejecutaron comandos básicos (ls, pwd, cd).</p>
+             <div class="screenshot">
+                <h4>Recorrido Lubuntu</h4>
+                <img src="step 10.png" alt="Sistema ">
+                <p class="caption">Exploracion de Lubuntu</p>
+            </div>
+            <p>4. Se verificó la conexión a Internet desde la máquina virtual.</p>
+            
+            <div class="note">
+                <p><strong>Resultado:</strong> La instalación de Lubuntu en VirtualBox se completó exitosamente. El sistema operativo funciona correctamente con la configuración asignada, permitiendo explorar todas las características de esta distribución ligera de Linux.</p>
+            </div>
+        </div>
+        
+        <h2>Conclusión</h2>
+        <p>La actividad permitió familiarizarse con el proceso de creación de máquinas virtuales usando VirtualBox y la instalación de sistemas operativos GNU/Linux. Lubuntu 24.04.2 demostró ser una excelente opción para máquinas virtuales gracias a sus bajos requisitos de sistema y su interfaz gráfica ligera pero funcional.</p>
+        <p>El proceso completo, desde la descarga de los componentes necesarios hasta la instalación final del sistema operativo, se documentó en este informe con capturas de pantalla que muestran cada paso importante.</p>
+    </div>
+</body>
+</html>

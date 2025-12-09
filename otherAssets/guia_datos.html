@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Industrial | Sistemas y Datos</title>
+    <style>
+        /* --- VARIABLES & THEME CONFIG --- */
+        :root {
+            --bg-color: #f0f2f5;
+            --text-color: #1a1a1a;
+            --card-bg: #ffffff;
+            --accent: #ff3d00; /* Industrial Orange */
+            --accent-secondary: #2979ff; /* Technical Blue */
+            --code-bg: #e0e0e0;
+            --code-block-bg: #dcdcdc;
+            --dim-text: #555;
+            --success: #00c853;
+            --shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --accent: #00e676; /* Cyber Green */
+            --accent-secondary: #00b0ff;
+            --code-bg: #2d2d2d;
+            --code-block-bg: #252525;
+            --dim-text: #aaa;
+            --success: #00e676;
+            --shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        /* --- RESET & TYPOGRAPHY --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background 0.3s, color 0.3s; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* --- UTILS --- */
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        code { font-family: 'Courier New', monospace; background: var(--code-bg); padding: 2px 6px; color: var(--accent); font-weight: bold; font-size: 0.9em; }
+        
+        /* --- HEADER --- */
+        header {
+            padding: 50px 0 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid var(--text-color);
+            margin-bottom: 40px;
+        }
+        h1 { font-size: 2.5rem; letter-spacing: -1px; text-transform: uppercase; font-weight: 900; line-height: 1; }
+        .subtitle { color: var(--accent); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 5px; display: block;}
+
+        /* --- TOGGLE SWITCH --- */
+        .theme-switch {
+            cursor: pointer;
+            background: var(--text-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+        .theme-switch:hover { opacity: 0.8; }
+
+        /* --- GRID LAYOUT --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 4px; /* Minimal gap for "cut" effect */
+            background-color: transparent; 
+            margin-bottom: 60px;
+        }
+
+        /* --- CARD DESIGN --- */
+        .card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            position: relative;
+            height: 100%;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0%;
+            background-color: var(--accent); transition: height 0.3s ease;
+        }
+        .card:hover::before { height: 100%; }
+        .card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+        .card h3 { margin-bottom: 10px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card p, .card ul { font-size: 0.9rem; color: var(--dim-text); }
+        .card ul { list-style: none; margin-top: 15px; }
+        .card ul li { margin-bottom: 8px; padding-left: 12px; border-left: 2px solid var(--code-bg); }
+
+        /* --- FULL WIDTH CARD FOR SQL --- */
+        .card.full-width {
+            grid-column: 1 / -1;
+        }
+        .sql-window {
+            background-color: var(--code-block-bg);
+            padding: 20px;
+            border: 1px solid var(--dim-text);
+            height: 400px;
+            overflow-y: auto;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            white-space: pre;
+            color: var(--text-color);
+        }
+
+        /* --- SECTION TITLE --- */
+        .section-title {
+            font-size: 1.5rem; font-weight: 800; text-transform: uppercase; 
+            margin: 60px 0 20px 0; color: var(--text-color);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .section-title::before { content: ''; width: 20px; height: 20px; background: var(--accent); display: block; }
+
+        /* --- QA LOG STYLE --- */
+        .qa-list { display: flex; flex-direction: column; gap: 20px; margin-bottom: 80px; }
+        
+        .qa-item {
+            background: var(--card-bg);
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            border-left: 4px solid transparent;
+        }
+        .qa-item:hover { border-left-color: var(--accent-secondary); }
+
+        .question-header { font-weight: 700; font-size: 1.1rem; color: var(--text-color); }
+        .answer-block { 
+            background: var(--code-bg); 
+            padding: 15px; 
+            font-family: 'Courier New', monospace; 
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        .correct-label { color: var(--success); font-weight: bold; text-transform: uppercase; margin-right: 10px; }
+        .explanation { margin-top: 10px; font-size: 0.9rem; color: var(--dim-text); font-family: 'Segoe UI', sans-serif; }
+
+        /* --- FOOTER --- */
+        footer { 
+            text-align: center; padding: 40px; color: var(--dim-text); 
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; 
+            border-top: 1px solid var(--code-bg);
+        }
+
+        @media (min-width: 768px) {
+            .qa-item { grid-template-columns: 1fr 1fr; align-items: start; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div>
+                <span class="subtitle">Sistemas y Tratamiento de Datos</span>
+                <h1>Guía 2do Parcial</h1>
+            </div>
+            <button class="theme-switch" onclick="toggleTheme()">Modo Oscuro</button>
+        </header>
+
+        <div class="grid">
+            <article class="card">
+                <h3>SQL vs NoSQL</h3>
+                <p>Paradigmas principales:</p>
+                <ul>
+                    <li><b>SQL:</b> Esquema rígido, Escalado Vertical, ACID (Bancos).</li>
+                    <li><b>NoSQL:</b> Esquema flexible (JSON), Escalado Horizontal (Big Data).</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <h3>Regex Cheat Sheet</h3>
+                <p>Metacaracteres clave:</p>
+                <ul>
+                    <li><code>\w</code>: [A-Za-z0-9_] (Palabra).</li>
+                    <li><code>\b</code>: Límite de palabra.</li>
+                    <li><code>( )</code>: Agrupación y Captura.</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <h3>Big Data</h3>
+                <p>Procesamiento distribuido:</p>
+                <ul>
+                    <li><b>MapReduce:</b> Lento, escribe en disco en cada paso.</li>
+                    <li><b>Spark:</b> Rápido, procesa todo en memoria RAM.</li>
+                </ul>
+            </article>
+
+             <article class="card">
+                <h3>Formatos de Intercambio</h3>
+                <p>Evolución histórica:</p>
+                <ul>
+                    <li><b>XML:</b> Extensible pero verboso. DOM parsing complejo.</li>
+                    <li><b>JSON:</b> Ligero, nativo JS, estándar de facto en APIs.</li>
+                    <li><b>YAML:</b> Superset de JSON, legible y sin llaves.</li>
+                </ul>
+            </article>
+        </div>
+
+        <h2 class="section-title">Banco de Preguntas Resueltas</h2>
+        
+        <div class="qa-list">
+            
+            <div class="qa-item">
+                <div class="question-header">01. Característica principal de XML vs HTML.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Permite crear etiquetas propias (Extensibilidad).
+                    <div class="explanation">
+                        <strong>Razón:</strong> XML describe el significado y estructura (ej: &lt;precio&gt;), no su apariencia.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">02. ¿Cómo se relaciona YAML con JSON?</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    YAML es un superconjunto de JSON.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Todo JSON válido es también YAML válido.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">03. Inconveniente de XML que impulsó JSON en la Web.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Complejidad de análisis (Parsing) y consumo de recursos.
+                    <div class="explanation">
+                        <strong>Razón:</strong> XML requería un DOM Parser pesado; JSON se parsea nativamente en JS.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">04. ¿Por qué JSON reemplazó a XML en APIs (2000s)?</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Más ligero, conciso y fácil integración con JavaScript.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Menor ancho de banda y conversión directa a objetos.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">05. ¿Qué faltaba en el Common Log Format (CLF) original?</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    User-Agent y Referrer (Procedencia).
+                    <div class="explanation">
+                        <strong>Razón:</strong> Estas métricas son vitales para marketing y soporte, añadidas en el formato "Combined".
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">06. Innovación clave del Extended Log Format (ELF).</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    La directiva #Fields al inicio.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Hace al log autodescriptivo y flexible (puedes cambiar el orden de columnas).
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">07. Función de los paréntesis ( ) en REGEX.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Agrupar secuencia y capturar coincidencia.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Permite aplicar cuantificadores al grupo <code>(abc)+</code> y extraer subcadenas.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">08. Atajo para el patrón [A-Za-z0-9_].</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    \w
+                    <div class="explanation">
+                        <strong>Razón:</strong> Significa "Word Character" (Alfanumérico + guion bajo).
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">09. Función del ancla \b en REGEX.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Coincidir con un límite de palabra.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Es una posición invisible entre un carácter de palabra y uno que no lo es.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">10. Práctica SQL que mata el rendimiento (Índices).</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Usar funciones de conversión en el WHERE.
+                    <div class="explanation">
+                        <strong>Ejemplo:</strong> <code>WHERE YEAR(fecha) = 2024</code> invalida el índice de la columna fecha.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">11. Propósito de SSL/TLS en DB.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Cifrado en transporte (Cliente-Servidor).
+                    <div class="explanation">
+                        <strong>Razón:</strong> Protege los datos en tránsito contra intercepciones, no los datos en disco.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">12. Consistencia en Transacciones Distribuidas.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Two-Phase Commit (2PC).
+                    <div class="explanation">
+                        <strong>Razón:</strong> Protocolo de coordinación (Preparar -> Comprometer) para asegurar atomicidad global.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">13. Subconsulta No Correlacionada.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Se ejecuta independientemente (una sola vez).
+                    <div class="explanation">
+                        <strong>Razón:</strong> No depende de valores de la consulta externa, a diferencia de las correlacionadas.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">14. ¿Cómo usar subconsulta en UPDATE?</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    En la cláusula WHERE para identificar registros.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Se filtran las IDs a actualizar usando una subconsulta: <code>WHERE id IN (SELECT...)</code>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">15. Requisito para Operadores de Conjunto (UNION).</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Mismo número de columnas y tipos compatibles.
+                    <div class="explanation">
+                        <strong>Razón:</strong> No puedes unir una tabla de 3 columnas con una de 2.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">16. Razón del surgimiento de NoSQL.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Datos no estructurados y escalar horizontalmente.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Las bases relacionales fallaban al escalar en clústers masivos (Web 2.0).
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">17. Característica de Base de Datos Clave-Valor.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Cada dato es un par único Clave -> Valor.
+                    <div class="explanation">
+                        <strong>Ejemplo:</strong> Redis. Es como un diccionario gigante, muy rápido pero simple.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">18. ¿Qué es el Sharding?</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Dividir horizontalmente los datos entre nodos.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Particionar la tabla en trozos para repartir la carga (Escalado Horizontal).
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">19. Data Warehouse: Modelo en Estrella.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Tabla central de hechos rodeada de dimensiones.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Diseño optimizado para consultas analíticas (OLAP) rápidas.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">20. Ventaja de Apache Spark vs MapReduce.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Procesa datos en memoria.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Evita la latencia de disco (I/O) en algoritmos iterativos, siendo hasta 100x más rápido.
+                    </div>
+                </div>
+            </div>
+
+             <div class="qa-item">
+                <div class="question-header">21. [SQL Práctico] Cazas > Promedio Mundial 2025.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Estados Unidos, China y Rusia.
+                    <div class="explanation">
+                        <strong>Cálculo:</strong> El promedio era ~370. Solo estos 3 superaban esa cifra de fighters.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">22. [SQL Práctico] Variación Helicópteros 24-25 (Mayor caída).</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    India (-204 unidades).
+                    <div class="explanation">
+                        <strong>Cálculo:</strong> India bajó de 802 a 598. Alemania solo bajó 44. Al ordenar ascendente (-204 < -44), India es primero.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <h2 class="section-title">Anexo: RAW SQL Utilizado</h2>
+        <div class="grid">
+            <article class="card full-width">
+                <h3>Archivo: gfp_sql.sql</h3>
+                <div class="sql-window">
+-- FIXED PACK (no subselects in VALUES) - MySQL/MariaDB
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS metric_values;
+DROP TABLE IF EXISTS metrics;
+DROP TABLE IF EXISTS gfp_country_year;
+DROP TABLE IF EXISTS gfp_years;
+DROP TABLE IF EXISTS countries;
+SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE countries (
+  country_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name       VARCHAR(191) NOT NULL,
+  iso2       CHAR(2),
+  iso3       CHAR(3),
+  region     VARCHAR(191),
+  PRIMARY KEY (country_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE gfp_years (
+  year SMALLINT UNSIGNED NOT NULL,
+  review_date DATE NULL,
+  notes TEXT NULL,
+  PRIMARY KEY (year)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE gfp_country_year (
+  country_id   INT UNSIGNED NOT NULL,
+  year         SMALLINT UNSIGNED NOT NULL,
+  rank         INT NULL,
+  pwrindx      DECIMAL(8,4) NULL,
+  landlocked   TINYINT(1) NOT NULL DEFAULT 0,
+  nato_member  TINYINT(1) NOT NULL DEFAULT 0,
+  nuclear_power TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (country_id, year),
+  INDEX idx_gcy_country (country_id),
+  INDEX idx_gcy_year (year),
+  CONSTRAINT fk_gcy_country FOREIGN KEY (country_id) REFERENCES countries(country_id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_gcy_year FOREIGN KEY (year) REFERENCES gfp_years(year)
+    ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE metrics (
+  metric_id   INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  code        VARCHAR(191) NOT NULL,
+  name        VARCHAR(191) NOT NULL,
+  category    VARCHAR(64)  NOT NULL,
+  unit        VARCHAR(64)  NULL,
+  description TEXT NULL,
+  PRIMARY KEY (metric_id),
+  UNIQUE KEY uk_metrics_code (code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE metric_values (
+  country_id INT UNSIGNED NOT NULL,
+  year       SMALLINT UNSIGNED NOT NULL,
+  metric_id  INT UNSIGNED NOT NULL,
+  value      DECIMAL(20,4) NULL,
+  source_url VARCHAR(512) NULL,
+  PRIMARY KEY (country_id, year, metric_id),
+  INDEX idx_mv_metric (metric_id),
+  INDEX idx_mv_country (country_id),
+  INDEX idx_mv_year (year),
+  CONSTRAINT fk_mv_country FOREIGN KEY (country_id) REFERENCES countries(country_id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_mv_year FOREIGN KEY (year) REFERENCES gfp_years(year)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_mv_metric FOREIGN KEY (metric_id) REFERENCES metrics(metric_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO countries (name, iso2, iso3, region) VALUES
+('Argentina','AR','ARG','Americas'),
+('Brazil','BR','BRA','Americas'),
+('Chile','CL','CHL','Americas'),
+('United States','US','USA','Americas'),
+('China','CN','CHN','Asia'),
+('Russia','RU','RUS','Europe/Asia'),
+('India','IN','IND','Asia'),
+('United Kingdom','GB','GBR','Europe'),
+('France','FR','FRA','Europe'),
+('Germany','DE','DEU','Europe');
+INSERT INTO gfp_years (year, review_date, notes) VALUES
+(2024,'2024-01-15','Edición 2024 (datos sintéticos para prácticas)'),
+(2025,'2025-01-09','Edición 2025 (datos sintéticos para prácticas)');
+INSERT INTO metrics (code, name, category, unit, description) VALUES
+('pop_total','Total Population','manpower','persons','Población total'),
+('man_active','Active Personnel','manpower','persons','Personal activo'),
+('man_reserve','Reserve Personnel','manpower','persons','Reservas'),
+('air_total_aircraft','Total Aircraft','airpower','units','Aeronaves totales'),
+('air_fighters','Fighters/Interceptors','airpower','units','Cazas/Interceptores'),
+('air_helicopters','Helicopters','airpower','units','Helicópteros totales'),
+('air_tankers','Aerial Tankers','airpower','units','Reabastecedores'),
+('land_tanks','Tanks','land','units','Carros de combate'),
+('land_afvs','AFVs/APCs','land','units','Blindados/Transportes'),
+('land_artillery_sp','Self-Propelled Artillery','land','units','Artillería autopropulsada'),
+('land_artillery_towed','Towed Artillery','land','units','Artillería remolcada'),
+('land_mlrs','Rocket Projectors (MLRS)','land','units','Lanzacohetes múltiples'),
+('nav_total_assets','Total Naval Assets','naval','units','Buques totales'),
+('nav_submarines','Submarines','naval','units','Submarinos'),
+('nav_frigates','Frigates','naval','units','Fragatas'),
+('nav_corvettes','Corvettes','naval','units','Corbetas'),
+('log_airports','Airports','logistics','units','Aeropuertos'),
+('log_ports','Ports & Terminals','logistics','units','Puertos y terminales'),
+('geo_area','Area','geography','km2','Superficie'),
+('geo_coastline','Coastline','geography','km','Línea costera'),
+('fin_defense_budget_usd','Defense Budget','financials','USD bn','Presupuesto de defensa (miles de millones USD)'),
+('fin_external_debt_usd','External Debt','financials','USD bn','Deuda externa'),
+('fin_forex_gold_usd','Foreign Exchange/Gold','financials','USD bn','Reservas (divisas/oro)'),
+('res_oil_prod','Oil Production','resources','bbl/day','Producción de petróleo'),
+('res_oil_cons','Oil Consumption','resources','bbl/day','Consumo de petróleo');
+INSERT INTO gfp_country_year (country_id, year, rank, pwrindx, landlocked, nato_member, nuclear_power) VALUES
+(1,2024,10,0.11,0,0,0),
+(1,2025,10,0.11,0,0,0),
+(2,2024,8,0.09,0,0,0),
+(2,2025,8,0.09,0,0,0),
+(3,2024,9,0.1,0,0,0),
+(3,2025,9,0.1,0,0,0),
+(4,2024,1,0.02,0,1,1),
+(4,2025,1,0.02,0,1,1),
+(5,2024,2,0.03,0,0,1),
+(5,2025,2,0.03,0,0,1),
+(6,2024,4,0.05,0,0,1),
+(6,2025,3,0.04,0,0,1),
+(7,2024,3,0.04,0,0,1),
+(7,2025,4,0.05,0,0,1),
+(8,2024,6,0.07,0,1,1),
+(8,2025,6,0.07,0,1,1),
+(9,2024,7,0.08,0,1,1),
+(9,2025,7,0.08,0,1,1),
+(10,2024,5,0.06,0,1,0),
+(10,2025,5,0.06,0,1,0);
+INSERT INTO metric_values (country_id, year, metric_id, value, source_url) VALUES
+(1,2024,1,45703233,NULL),
+(1,2024,2,72445,NULL),
+(1,2024,3,64993,NULL),
+(1,2024,4,245,NULL),
+(1,2024,5,44,NULL),
+(1,2024,6,110,NULL),
+(1,2024,7,1,NULL),
+(1,2024,8,260,NULL),
+(1,2024,9,1301,NULL),
+(1,2024,10,142,NULL),
+(1,2024,11,119,NULL),
+(1,2024,12,47,NULL),
+(1,2024,13,56,NULL),
+(1,2024,14,8,NULL),
+(1,2024,15,10,NULL),
+(1,2024,16,5,NULL),
+(1,2024,17,27,NULL),
+(1,2024,18,1,NULL),
+(1,2024,19,1361564,NULL),
+(1,2024,20,19330,NULL),
+(1,2024,21,4.5,NULL),
+(1,2024,22,101.8,NULL),
+(1,2024,23,875.3,NULL),
+(1,2024,24,6493126,NULL),
+(1,2024,25,9936236,NULL),
+(1,2025,1,46619026,NULL),
+(1,2025,2,74043,NULL),
+(1,2025,3,54750,NULL),
+(1,2025,4,269,NULL),
+(1,2025,5,40,NULL),
+(1,2025,6,118,NULL),
+(1,2025,7,2,NULL),
+(1,2025,8,282,NULL),
+(1,2025,9,1990,NULL),
+(1,2025,10,164,NULL),
+(1,2025,11,192,NULL),
+(1,2025,12,60,NULL),
+(1,2025,13,57,NULL),
+(1,2025,14,3,NULL),
+(1,2025,15,4,NULL),
+(1,2025,16,9,NULL),
+(1,2025,17,110,NULL),
+(1,2025,18,1,NULL),
+(1,2025,19,2940518,NULL),
+(1,2025,20,10591,NULL),
+(1,2025,21,4.5,NULL),
+(1,2025,22,613.5,NULL),
+(1,2025,23,493.3,NULL),
+(1,2025,24,8065181,NULL),
+(1,2025,25,19886057,NULL),
+(2,2024,1,214000245,NULL),
+(2,2024,2,369849,NULL),
+(2,2024,3,455740,NULL),
+(2,2024,4,763,NULL),
+(2,2024,5,99,NULL),
+(2,2024,6,193,NULL),
+(2,2024,7,16,NULL),
+(2,2024,8,429,NULL),
+(2,2024,9,2575,NULL),
+(2,2024,10,186,NULL),
+(2,2024,11,277,NULL),
+(2,2024,12,38,NULL),
+(2,2024,13,121,NULL),
+(2,2024,14,22,NULL),
+(2,2024,15,35,NULL),
+(2,2024,16,29,NULL),
+(2,2024,17,489,NULL),
+(2,2024,18,1,NULL),
+(2,2024,19,1512750,NULL),
+(2,2024,20,23895,NULL),
+(2,2024,21,20.3,NULL),
+(2,2024,22,2591.6,NULL),
+(2,2024,23,519.9,NULL),
+(2,2024,24,1092599,NULL),
+(2,2024,25,2041954,NULL),
+(2,2025,1,218273451,NULL),
+(2,2025,2,374282,NULL),
+(2,2025,3,237135,NULL),
+(2,2025,4,700,NULL),
+(2,2025,5,120,NULL),
+(2,2025,6,298,NULL),
+(2,2025,7,4,NULL),
+(2,2025,8,359,NULL),
+(2,2025,9,1149,NULL),
+(2,2025,10,91,NULL),
+(2,2025,11,110,NULL),
+(2,2025,12,67,NULL),
+(2,2025,13,98,NULL),
+(2,2025,14,10,NULL),
+(2,2025,15,20,NULL),
+(2,2025,16,7,NULL),
+(2,2025,17,330,NULL),
+(2,2025,18,1,NULL),
+(2,2025,19,2874805,NULL),
+(2,2025,20,7946,NULL),
+(2,2025,21,23.6,NULL),
+(2,2025,22,1788.7,NULL),
+(2,2025,23,3288.8,NULL),
+(2,2025,24,9080441,NULL),
+(2,2025,25,7744610,NULL),
+(3,2024,1,19500752,NULL),
+(3,2024,2,76875,NULL),
+(3,2024,3,31961,NULL),
+(3,2024,4,211,NULL),
+(3,2024,5,17,NULL),
+(3,2024,6,47,NULL),
+(3,2024,7,1,NULL),
+(3,2024,8,248,NULL),
+(3,2024,9,1980,NULL),
+(3,2024,10,53,NULL),
+(3,2024,11,102,NULL),
+(3,2024,12,33,NULL),
+(3,2024,13,36,NULL),
+(3,2024,14,3,NULL),
+(3,2024,15,8,NULL),
+(3,2024,16,2,NULL),
+(3,2024,17,55,NULL),
+(3,2024,18,1,NULL),
+(3,2024,19,623174,NULL),
+(3,2024,20,15963,NULL),
+(3,2024,21,4.7,NULL),
+(3,2024,22,194.3,NULL),
+(3,2024,23,28.9,NULL),
+(3,2024,24,4251992,NULL),
+(3,2024,25,10172138,NULL),
+(3,2025,1,19876893,NULL),
+(3,2025,2,85600,NULL),
+(3,2025,3,43166,NULL),
+(3,2025,4,205,NULL),
+(3,2025,5,21,NULL),
+(3,2025,6,95,NULL),
+(3,2025,7,4,NULL),
+(3,2025,8,253,NULL),
+(3,2025,9,801,NULL),
+(3,2025,10,59,NULL),
+(3,2025,11,121,NULL),
+(3,2025,12,53,NULL),
+(3,2025,13,43,NULL),
+(3,2025,14,5,NULL),
+(3,2025,15,9,NULL),
+(3,2025,16,2,NULL),
+(3,2025,17,28,NULL),
+(3,2025,18,1,NULL),
+(3,2025,19,2972513,NULL),
+(3,2025,20,19242,NULL),
+(3,2025,21,4.7,NULL),
+(3,2025,22,218.5,NULL),
+(3,2025,23,324.2,NULL),
+(3,2025,24,7160279,NULL),
+(3,2025,25,6023198,NULL),
+(4,2024,1,334015819,NULL),
+(4,2024,2,1391377,NULL),
+(4,2024,3,1232105,NULL),
+(4,2024,4,13050,NULL),
+(4,2024,5,1057,NULL),
+(4,2024,6,2410,NULL),
+(4,2024,7,256,NULL),
+(4,2024,8,6223,NULL),
+(4,2024,9,19743,NULL),
+(4,2024,10,2261,NULL),
+(4,2024,11,4399,NULL),
+(4,2024,12,1433,NULL),
+(4,2024,13,498,NULL),
+(4,2024,14,60,NULL),
+(4,2024,15,101,NULL),
+(4,2024,16,41,NULL),
+(4,2024,17,557,NULL),
+(4,2024,18,2,NULL),
+(4,2024,19,1546954,NULL),
+(4,2024,20,15562,NULL),
+(4,2024,21,867,NULL),
+(4,2024,22,92927.2,NULL),
+(4,2024,23,114624.1,NULL),
+(4,2024,24,7928038,NULL),
+(4,2024,25,15408478,NULL),
+(4,2025,1,340674483,NULL),
+(4,2025,2,1415019,NULL),
+(4,2025,3,1764033,NULL),
+(4,2025,4,13308,NULL),
+(4,2025,5,1691,NULL),
+(4,2025,6,6558,NULL),
+(4,2025,7,287,NULL),
+(4,2025,8,6300,NULL),
+(4,2025,9,21726,NULL),
+(4,2025,10,1108,NULL),
+(4,2025,11,1908,NULL),
+(4,2025,12,2222,NULL),
+(4,2025,13,500,NULL),
+(4,2025,14,30,NULL),
+(4,2025,15,148,NULL),
+(4,2025,16,36,NULL),
+(4,2025,17,299,NULL),
+(4,2025,18,5,NULL),
+(4,2025,19,1683872,NULL),
+(4,2025,20,27004,NULL),
+(4,2025,21,793.5,NULL),
+(4,2025,22,48351.2,NULL),
+(4,2025,23,141402.2,NULL),
+(4,2025,24,8179229,NULL),
+(4,2025,25,24078052,NULL),
+(5,2024,1,1411993772,NULL),
+(5,2024,2,1998460,NULL),
+(5,2024,3,1966153,NULL),
+(5,2024,4,3342,NULL),
+(5,2024,5,582,NULL),
+(5,2024,6,1178,NULL),
+(5,2024,7,63,NULL),
+(5,2024,8,5340,NULL),
+(5,2024,9,18240,NULL),
+(5,2024,10,2412,NULL),
+(5,2024,11,4572,NULL),
+(5,2024,12,688,NULL),
+(5,2024,13,776,NULL),
+(5,2024,14,92,NULL),
+(5,2024,15,201,NULL),
+(5,2024,16,148,NULL),
+(5,2024,17,865,NULL),
+(5,2024,18,4,NULL),
+(5,2024,19,1938879,NULL),
+(5,2024,20,23643,NULL),
+(5,2024,21,286.2,NULL),
+(5,2024,22,14702.9,NULL),
+(5,2024,23,52572.3,NULL),
+(5,2024,24,75798,NULL),
+(5,2024,25,221444,NULL),
+(5,2025,1,1440223060,NULL),
+(5,2025,2,2044312,NULL),
+(5,2025,3,2650511,NULL),
+(5,2025,4,3392,NULL),
+(5,2025,5,491,NULL),
+(5,2025,6,1321,NULL),
+(5,2025,7,100,NULL),
+(5,2025,8,5476,NULL),
+(5,2025,9,12826,NULL),
+(5,2025,10,1994,NULL),
+(5,2025,11,3931,NULL),
+(5,2025,12,2105,NULL),
+(5,2025,13,806,NULL),
+(5,2025,14,98,NULL),
+(5,2025,15,96,NULL),
+(5,2025,16,57,NULL),
+(5,2025,17,3905,NULL),
+(5,2025,18,6,NULL),
+(5,2025,19,692258,NULL),
+(5,2025,20,6108,NULL),
+(5,2025,21,302.5,NULL),
+(5,2025,22,42573.3,NULL),
+(5,2025,23,35415.6,NULL),
+(5,2025,24,2526226,NULL),
+(5,2025,25,7027742,NULL);
+INSERT INTO metric_values (country_id, year, metric_id, value, source_url) VALUES
+(6,2024,1,146001626,NULL),
+(6,2024,2,1002605,NULL),
+(6,2024,3,1329969,NULL),
+(6,2024,4,4181,NULL),
+(6,2024,5,599,NULL),
+(6,2024,6,1381,NULL),
+(6,2024,7,111,NULL),
+(6,2024,8,12545,NULL),
+(6,2024,9,66839,NULL),
+(6,2024,10,4006,NULL),
+(6,2024,11,3604,NULL),
+(6,2024,12,3319,NULL),
+(6,2024,13,594,NULL),
+(6,2024,14,95,NULL),
+(6,2024,15,135,NULL),
+(6,2024,16,129,NULL),
+(6,2024,17,80,NULL),
+(6,2024,18,5,NULL),
+(6,2024,19,1764569,NULL),
+(6,2024,20,21370,NULL),
+(6,2024,21,80.9,NULL),
+(6,2024,22,9595,NULL),
+(6,2024,23,3197.8,NULL),
+(6,2024,24,2123125,NULL),
+(6,2024,25,5701944,NULL),
+(6,2025,1,148908193,NULL),
+(6,2025,2,1017516,NULL),
+(6,2025,3,1410356,NULL),
+(6,2025,4,4330,NULL),
+(6,2025,5,838,NULL),
+(6,2025,6,1715,NULL),
+(6,2025,7,62,NULL),
+(6,2025,8,12722,NULL),
+(6,2025,9,34431,NULL),
+(6,2025,10,1961,NULL),
+(6,2025,11,6179,NULL),
+(6,2025,12,1002,NULL),
+(6,2025,13,612,NULL),
+(6,2025,14,55,NULL),
+(6,2025,15,107,NULL),
+(6,2025,16,84,NULL),
+(6,2025,17,227,NULL),
+(6,2025,18,3,NULL),
+(6,2025,19,1655501,NULL),
+(6,2025,20,2932,NULL),
+(6,2025,21,88,NULL),
+(6,2025,22,503.8,NULL),
+(6,2025,23,16809.5,NULL),
+(6,2025,24,8600250,NULL),
+(6,2025,25,18564458,NULL),
+(7,2024,1,1409980984,NULL),
+(7,2024,2,1452166,NULL),
+(7,2024,3,1579683,NULL),
+(7,2024,4,2162,NULL),
+(7,2024,5,425,NULL),
+(7,2024,6,802,NULL),
+(7,2024,7,25,NULL),
+(7,2024,8,4084,NULL),
+(7,2024,9,24736,NULL),
+(7,2024,10,1515,NULL),
+(7,2024,11,867,NULL),
+(7,2024,12,1617,NULL),
+(7,2024,13,381,NULL),
+(7,2024,14,51,NULL),
+(7,2024,15,79,NULL),
+(7,2024,16,33,NULL),
+(7,2024,17,582,NULL),
+(7,2024,18,2,NULL),
+(7,2024,19,2239616,NULL),
+(7,2024,20,18616,NULL),
+(7,2024,21,84.9,NULL),
+(7,2024,22,6707.1,NULL),
+(7,2024,23,865.1,NULL),
+(7,2024,24,9651022,NULL),
+(7,2024,25,9534738,NULL),
+(7,2025,1,1438205311,NULL),
+(7,2025,2,1480481,NULL),
+(7,2025,3,1747369,NULL),
+(7,2025,4,2254,NULL),
+(7,2025,5,184,NULL),
+(7,2025,6,598,NULL),
+(7,2025,7,43,NULL),
+(7,2025,8,4214,NULL),
+(7,2025,9,23355,NULL),
+(7,2025,10,2129,NULL),
+(7,2025,11,1738,NULL),
+(7,2025,12,1416,NULL),
+(7,2025,13,412,NULL),
+(7,2025,14,28,NULL),
+(7,2025,15,44,NULL),
+(7,2025,16,90,NULL),
+(7,2025,17,2154,NULL),
+(7,2025,18,1,NULL),
+(7,2025,19,2493934,NULL),
+(7,2025,20,16018,NULL),
+(7,2025,21,79.5,NULL),
+(7,2025,22,11919.7,NULL),
+(7,2025,23,12900.8,NULL),
+(7,2025,24,9249637,NULL),
+(7,2025,25,16429793,NULL),
+(8,2024,1,67498163,NULL),
+(8,2024,2,153857,NULL),
+(8,2024,3,116449,NULL),
+(8,2024,4,929,NULL),
+(8,2024,5,136,NULL),
+(8,2024,6,264,NULL),
+(8,2024,7,16,NULL),
+(8,2024,8,211,NULL),
+(8,2024,9,898,NULL),
+(8,2024,10,87,NULL),
+(8,2024,11,75,NULL),
+(8,2024,12,33,NULL),
+(8,2024,13,77,NULL),
+(8,2024,14,10,NULL),
+(8,2024,15,13,NULL),
+(8,2024,16,14,NULL),
+(8,2024,17,194,NULL),
+(8,2024,18,1,NULL),
+(8,2024,19,983322,NULL),
+(8,2024,20,15309,NULL),
+(8,2024,21,68.9,NULL),
+(8,2024,22,1432,NULL),
+(8,2024,23,6897.7,NULL),
+(8,2024,24,8190914,NULL),
+(8,2024,25,15471033,NULL),
+(8,2025,1,68848929,NULL),
+(8,2025,2,151786,NULL),
+(8,2025,3,214217,NULL),
+(8,2025,4,946,NULL),
+(8,2025,5,94,NULL),
+(8,2025,6,287,NULL),
+(8,2025,7,21,NULL),
+(8,2025,8,278,NULL),
+(8,2025,9,1803,NULL),
+(8,2025,10,119,NULL),
+(8,2025,11,151,NULL),
+(8,2025,12,96,NULL),
+(8,2025,13,71,NULL),
+(8,2025,14,11,NULL),
+(8,2025,15,18,NULL),
+(8,2025,16,12,NULL),
+(8,2025,17,186,NULL),
+(8,2025,18,1,NULL),
+(8,2025,19,2793324,NULL),
+(8,2025,20,23508,NULL),
+(8,2025,21,63.7,NULL),
+(8,2025,22,3742.2,NULL),
+(8,2025,23,1332.9,NULL),
+(8,2025,24,2826272,NULL),
+(8,2025,25,2535037,NULL),
+(9,2024,1,65486071,NULL),
+(9,2024,2,207248,NULL),
+(9,2024,3,245312,NULL),
+(9,2024,4,1007,NULL),
+(9,2024,5,153,NULL),
+(9,2024,6,386,NULL),
+(9,2024,7,13,NULL),
+(9,2024,8,466,NULL),
+(9,2024,9,1326,NULL),
+(9,2024,10,203,NULL),
+(9,2024,11,333,NULL),
+(9,2024,12,54,NULL),
+(9,2024,13,117,NULL),
+(9,2024,14,22,NULL),
+(9,2024,15,28,NULL),
+(9,2024,16,25,NULL),
+(9,2024,17,59,NULL),
+(9,2024,18,1,NULL),
+(9,2024,19,1943072,NULL),
+(9,2024,20,5697,NULL),
+(9,2024,21,51.4,NULL),
+(9,2024,22,4315.4,NULL),
+(9,2024,23,3424,NULL),
+(9,2024,24,1664943,NULL),
+(9,2024,25,1984565,NULL),
+(9,2025,1,66829962,NULL),
+(9,2025,2,211743,NULL),
+(9,2025,3,296342,NULL),
+(9,2025,4,1114,NULL),
+(9,2025,5,140,NULL),
+(9,2025,6,525,NULL),
+(9,2025,7,18,NULL),
+(9,2025,8,464,NULL),
+(9,2025,9,2368,NULL),
+(9,2025,10,268,NULL),
+(9,2025,11,121,NULL),
+(9,2025,12,96,NULL),
+(9,2025,13,119,NULL),
+(9,2025,14,18,NULL),
+(9,2025,15,28,NULL),
+(9,2025,16,11,NULL),
+(9,2025,17,132,NULL),
+(9,2025,18,1,NULL),
+(9,2025,19,1231825,NULL),
+(9,2025,20,18622,NULL),
+(9,2025,21,56.5,NULL),
+(9,2025,22,7791.4,NULL),
+(9,2025,23,1498.2,NULL),
+(9,2025,24,4716752,NULL),
+(9,2025,25,7475924,NULL),
+(10,2024,1,83200327,NULL),
+(10,2024,2,180069,NULL),
+(10,2024,3,117710,NULL),
+(10,2024,4,672,NULL),
+(10,2024,5,73,NULL),
+(10,2024,6,211,NULL),
+(10,2024,7,18,NULL),
+(10,2024,8,283,NULL),
+(10,2024,9,2094,NULL),
+(10,2024,10,93,NULL),
+(10,2024,11,198,NULL),
+(10,2024,12,84,NULL),
+(10,2024,13,75,NULL),
+(10,2024,14,4,NULL),
+(10,2024,15,10,NULL),
+(10,2024,16,7,NULL),
+(10,2024,17,201,NULL),
+(10,2024,18,1,NULL),
+(10,2024,19,829581,NULL),
+(10,2024,20,4125,NULL),
+(10,2024,21,74.1,NULL),
+(10,2024,22,3581.3,NULL),
+(10,2024,23,13773.6,NULL),
+(10,2024,24,6132084,NULL),
+(10,2024,25,3840504,NULL),
+(10,2025,1,84857548,NULL),
+(10,2025,2,187667,NULL),
+(10,2025,3,154584,NULL),
+(10,2025,4,675,NULL),
+(10,2025,5,87,NULL),
+(10,2025,6,167,NULL),
+(10,2025,7,8,NULL),
+(10,2025,8,274,NULL),
+(10,2025,9,1429,NULL),
+(10,2025,10,120,NULL),
+(10,2025,11,176,NULL),
+(10,2025,12,86,NULL),
+(10,2025,13,57,NULL),
+(10,2025,14,3,NULL),
+(10,2025,15,10,NULL),
+(10,2025,16,6,NULL),
+(10,2025,17,237,NULL),
+(10,2025,18,1,NULL),
+(10,2025,19,777939,NULL),
+(10,2025,20,3573,NULL),
+(10,2025,21,68,NULL),
+(10,2025,22,4287.4,NULL),
+(10,2025,23,2259.7,NULL),
+(10,2025,24,5822810,NULL),
+(10,2025,25,10099957,NULL);
+
+-- [removed VIEW definition]
+
+-- [removed VIEW definition]
+
+-- ==============
+-- EJERCICIOS SQL
+-- ==============
+-- 1) Top-5 pwrindx (2025)
+-- SELECT name, rank, pwrindx FROM v_rank WHERE year=2025 ORDER BY pwrindx ASC LIMIT 5;
+
+-- 2) Δ% de presupuesto 2024→2025
+-- SELECT a.country, ROUND((b.defense_budget_usd_bn-a.defense_budget_usd_bn)/a.defense_budget_usd_bn*100,2) AS delta_pct
+-- FROM v_powerpack a JOIN v_powerpack b ON a.country=b.country AND a.year=2024 AND b.year=2025
+-- ORDER BY delta_pct DESC;
+
+-- 3) Intensidad aérea: fighters/total_aircraft (2025)
+-- SELECT country, ROUND(fighters/NULLIF(total_aircraft,0)*100,2) AS pct FROM v_powerpack WHERE year=2025 ORDER BY pct DESC;
+
+-- 4) Score terrestre: tanks*1.5 + afvs*0.8 + (sp_artillery+towed_artillery)*1.2 (2025)
+-- SELECT country, ROUND(tanks*1.5 + afvs*0.8 + (sp_artillery+towed_artillery)*1.2,1) AS ground_score
+-- FROM v_powerpack WHERE year=2025 ORDER BY ground_score DESC;
+
+-- 5) Personal activo per cápita (2025)
+-- SELECT country, ROUND(active_personnel/pop_total*1000,3) AS active_per_1k FROM v_powerpack WHERE year=2025 ORDER BY active_per_1k DESC;
+
+-- 6) Top-3 incremento de aeronaves totales (2024→2025)
+-- SELECT b.country, (b.total_aircraft-a.total_aircraft) AS delta_aircraft FROM v_powerpack a
+-- JOIN v_powerpack b ON a.country=b.country AND a.year=2024 AND b.year=2025 ORDER BY delta_aircraft DESC LIMIT 3;
+
+-- 7) Relación deuda/reservas (2025)
+-- SELECT country, ROUND(external_debt_usd_bn/NULLIF(forex_gold_usd_bn,0),2) AS debt_fx_ratio
+-- FROM v_powerpack WHERE year=2025 ORDER BY debt_fx_ratio DESC;
+
+-- 8) Naval ponderado (subs*3 + frag*2 + corv)
+-- SELECT country, (submarines*3 + frigates*2 + corvettes) AS naval_score FROM v_powerpack WHERE year=2025 ORDER BY naval_score DESC;
+
+-- 9) Puertos y costa (2025): países con ports>20 y coastline>10000
+-- SELECT country, ports, geo_coastline FROM v_powerpack WHERE year=2025 AND ports>20 AND geo_coastline>10000;
+
+-- 10) Oil balance (2025): prod - cons
+-- SELECT country, (oil_prod_bpd - oil_cons_bpd) AS oil_balance FROM v_powerpack WHERE year=2025 ORDER BY oil_balance DESC;
+                </div>
+            </article>
+        </div>
+
+        <footer>
+            Ingeniería de Datos • 2do Parcial • 2025
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.theme-switch');
+            if(document.body.classList.contains('dark-mode')){
+                btn.innerText = "Modo Claro";
+            } else {
+                btn.innerText = "Modo Oscuro";
+            }
+        }
+    </script>
+</body>
+</html>

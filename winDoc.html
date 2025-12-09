@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Técnico: Restauración Windows 11 & Store</title>
+    <style>
+        :root {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-header: #334155;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --code-bg: #0f172a;
+            --code-text: #a5b4fc;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Styles */
+        header {
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+        }
+
+        h1 { font-size: 2.5rem; margin: 0; color: var(--accent); }
+        h2 { font-size: 1.5rem; margin-top: 40px; border-left: 5px solid var(--accent); padding-left: 15px; color: #fff; }
+        h3 { font-size: 1.2rem; color: var(--text-muted); margin-top: 25px; }
+        
+        .subtitle { color: var(--text-muted); font-family: monospace; }
+
+        /* Card System */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        pre::before {
+            content: "PowerShell / CMD";
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--border);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-bottom-left-radius: 8px;
+        }
+
+        code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            color: var(--code-text);
+        }
+
+        .cmd-comment { color: #64748b; font-style: italic; }
+        .cmd-var { color: #f472b6; }
+        .cmd-string { color: #86efac; }
+
+        /* Alerts */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid;
+            background: rgba(0,0,0,0.2);
+        }
+        .alert-warning { border-color: var(--warning); color: #fcd34d; }
+        .alert-danger { border-color: var(--danger); color: #fca5a5; }
+        .alert-info { border-color: var(--accent); color: #bae6fd; }
+
+        /* Steps Indicator */
+        .step-badge {
+            background: var(--accent);
+            color: #000;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* Button-like links for Winget */
+        .key-command {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Guía de Recuperación del Entorno</h1>
+        <p class="subtitle">Windows 11 Insider Preview | Reparación de Store, Servicios y Dependencias</p>
+    </header>
+
+    <div class="card">
+        <h2><span class="step-badge">Fase 1</span>Diagnóstico y Logs en Tiempo Real</h2>
+        <p>Cuando herramientas como <code>DISM</code> parecen congelarse (ej. al 62.3%), es necesario inspeccionar los logs crudos para confirmar actividad.</p>
+        
+        <h3>Comandos de visualización de Logs</h3>
+        <p>Ejecutar en una terminal paralela mientras se realiza la reparación:</p>
+        <pre><code><span class="cmd-comment"># Ver Log de DISM (El "Gerente" del proceso)</span>
+Get-Content C:\Windows\Logs\DISM\dism.log -Wait -Tail 20
+
+<span class="cmd-comment"># Ver Log de CBS (El "Obrero" - Component Based Servicing)</span>
+<span class="cmd-comment"># Útil cuando DISM parece trabado pero está descargando</span>
+Get-Content C:\Windows\Logs\CBS\CBS.log -Wait -Tail 20</code></pre>
+
+        <h3>Comandos de Reparación de Imagen</h3>
+        <pre><code><span class="cmd-comment"># 1. Reparar archivos locales corruptos</span>
+sfc /scannow
+
+<span class="cmd-comment"># 2. Descargar imagen sana desde Windows Update (Requiere Internet)</span>
+DISM /Online /Cleanup-Image /RestoreHealth</code></pre>
+    </div>
+
+    <div class="card">
+        <h2><span class="step-badge">Fase 2</span>Reactivación de Servicios (El Núcleo)</h2>
+        <div class="alert alert-danger">
+            <strong>Problema Crítico:</strong> El error <code>0x80070422</code> indica servicios deshabilitados. En servicios protegidos como <em>AppXSvc</em>, PowerShell arrojará <strong>"Acceso Denegado"</strong>.
+        </div>
+
+        <h3>Método A: PowerShell (Intento Estándar)</h3>
+        <p>Útil para servicios no protegidos (Windows Update, BITS).</p>
+        <pre><code>$servicios = @("wuauserv", "bits", "cryptSvc", "InstallService")
+
+foreach ($s in $servicios) {
+    Set-Service -Name $s -StartupType Automatic
+    Start-Service -Name $s
+}</code></pre>
+
+        <h3>Método B: Registro de Windows (Solución Definitiva)</h3>
+        <p>Este método fuerza el cambio a nivel de Kernel, ignorando la protección de la interfaz de usuario. <strong>Requiere Reinicio.</strong></p>
+        <pre><code><span class="cmd-comment"># Forzar inicio AUTOMÁTICO (Start=2) en servicios bloqueados</span>
+
+<span class="cmd-comment"># Servicio de Implementación de AppX (Core de Apps Modernas)</span>
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\AppXSvc" /v Start /t REG_DWORD /d 2 /f
+
+<span class="cmd-comment"># Servicio de Licencias de Cliente (Validación de descargas)</span>
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\ClipSVC" /v Start /t REG_DWORD /d 2 /f
+
+<span class="cmd-comment"># Windows Update (Motor de descarga)</span>
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\wuauserv" /v Start /t REG_DWORD /d 2 /f</code></pre>
+    </div>
+
+    <div class="card">
+        <h2><span class="step-badge">Fase 3</span>Uso de Winget (CLI)</h2>
+        <p>Si la interfaz gráfica de la Microsoft Store falla (pantalla blanca, cierres), <strong>Winget</strong> es la alternativa oficial robusta que interactúa directamente con el backend.</p>
+
+        <div class="alert alert-info">
+            <strong>Tip:</strong> Winget no necesita abrir la Store visualmente, pero sí requiere que los servicios de la Fase 2 estén activos.
+        </div>
+
+        <h3>Comandos Esenciales</h3>
+        
+        <p><strong>1. Buscar una aplicación</strong></p>
+        <pre><code>winget search "<span class="cmd-string">Nombre de la App</span>"
+<span class="cmd-comment"># Ejemplo: winget search WhatsApp</span></code></pre>
+
+        <p><strong>2. Instalar una aplicación (Por ID)</strong></p>
+        <p>Se recomienda usar el ID (columna izquierda) para evitar ambigüedades.</p>
+        <pre><code>winget install <span class="cmd-var">ID_DEL_PAQUETE</span>
+<span class="cmd-comment"># Ejemplo WhatsApp: winget install 9NKSQGP7F2NH</span>
+<span class="cmd-comment"># Ejemplo Calculadora: winget install Microsoft.WindowsCalculator</span></code></pre>
+
+        <p><strong>3. Actualizar todo el software</strong></p>
+        <pre><code>winget upgrade --all</code></pre>
+
+        <p><strong>4. Reinstalar la propia Store (Si es necesario)</strong></p>
+        <pre><code>winget install --id Microsoft.WindowsStore --source winget --force</code></pre>
+    </div>
+
+    <div class="card">
+        <h2><span class="step-badge">Extra</span>Reset de la Interfaz Gráfica (Store)</h2>
+        <p>Si los servicios funcionan (Winget baja apps) pero la ventana de la Store sigue fallando, ejecuta este comando para registrar el XML de la interfaz nuevamente.</p>
+        <pre><code>Get-AppxPackage -AllUsers *WindowsStore* | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}</code></pre>
+    </div>
+
+</div>
+
+</body>
+</html>

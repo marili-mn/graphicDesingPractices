@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad S13-A1: Gestión de usuarios y grupos en Ubuntu Linux</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+            --accent-color: #2ecc71; /* Bash Green */
+            --header-bg: #2c3e50;
+            --header-text: #ecf0f1;
+            --card-bg: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --border-color: #dee2e6;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .header {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .header .signature {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .header .signature span {
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 960px;
+        }
+
+        h2.section-title {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--accent-color);
+            background-color: #fcfdff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 0.75rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .card-body h5 {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        img.step-image {
+            max-width: 100%;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            border-top: 1px solid #e0e5eb;
+        }
+
+        .code-block {
+            background-color: #e9ecef;
+            color: #000;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'Roboto Mono', 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid #ced4da;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+
+            body {
+                background-color: #fff !important;
+                color: #000 !important;
+                font-family: 'Times New Roman', Times, serif;
+            }
+            
+            .header {
+                background-color: transparent !important;
+                color: #000 !important;
+                text-align: center;
+                padding: 0 0 1rem 0;
+                border-bottom: 2px solid #000;
+                margin-bottom: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 18pt;
+                margin-bottom: 0.5rem !important;
+                color: #000 !important;
+            }
+
+            .header p {
+                font-size: 12pt;
+                color: #000 !important;
+            }
+            
+            .header .signature {
+                display: none;
+            }
+
+            h2.section-title, .card-header, .card-body h5 {
+                color: #000 !important;
+            }
+
+            .card {
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+                box-shadow: none;
+            }
+
+            .card-header {
+                 background-color: #e9ecef !important;
+                 -webkit-print-color-adjust: exact;
+            }
+
+            .container {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .code-block {
+                background-color: #f0f0f0 !important;
+                border: 1px solid #ccc;
+                -webkit-print-color-adjust: exact;
+            }
+
+            img.step-image {
+                max-width: 75% !important;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .footer {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Sistemas Operativos II</h1>
+        <p>Actividad S13-A1: Gestión de usuarios y grupos en Ubuntu Linux</p>
+        <p><strong>Alumno:</strong> Nahuel Marcilli</p>
+        <p class="signature"><span>&lt;/&gt;</span> Documentado con HTML y CSS</p>
+    </div>
+
+    <div class="container">
+        
+        <section id="entorno">
+            <div class="card">
+                <div class="card-header">Entorno de Trabajo</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Sistema Anfitrión (Host)</h5>
+                            <p>Se utilizó Windows 11 como sistema operativo principal.</p>
+                            <img src="image0.png" alt="Sistema Anfitrión" class="img-fluid step-image">
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Máquina Virtual (Guest)</h5>
+                            <p>La práctica se desarrolló sobre una máquina virtual con Lubuntu.</p>
+                            <img src="image1.png" alt="Máquina Virtual" class="img-fluid step-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="objetivos">
+            <div class="card">
+                <div class="card-header">1.1 Objetivos</div>
+                <div class="card-body">
+                    <ul>
+                        <li>Conocer y comprender la sintaxis y función de los comandos básicos de terminal para la gestión de cuentas de usuario y grupos en Ubuntu Linux.</li>
+                        <li>Aplicar estos comandos para crear, modificar y eliminar usuarios y grupos.</li>
+                        <li>Administrar la pertenencia de usuarios a grupos para simular la configuración de permisos de acceso.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="desarrollo">
+            <h2 class="text-center my-4 section-title">1.3 Desarrollo de la Actividad</h2>
+
+            <!-- Paso 1 -->
+            <div class="card">
+                <div class="card-header">Paso 1: Conocer el usuario actual</div>
+                <div class="card-body">
+                    <p>Se utilizan los comandos <code>whoami</code>, <code>groups</code>, y <code>id</code> para obtener información sobre el usuario actual y los grupos a los que pertenece.</p>
+                    <img src="step1.png" alt="Paso 1" class="step-image">
+                </div>
+            </div>
+
+            <!-- Paso 2 -->
+            <div class="card">
+                <div class="card-header">Paso 2: Conocer los grupos existentes</div>
+                <div class="card-body">
+                    <p>Se consulta el archivo <code>/etc/group</code> para listar todos los grupos del sistema.</p>
+                    <img src="step2.png" alt="Paso 2" class="step-image">
+                </div>
+            </div>
+
+            <!-- Paso 3 -->
+            <div class="card">
+                <div class="card-header">Paso 3: Filtrar un grupo específico</div>
+                <div class="card-body">
+                    <p>Usando <code>grep</code>, se busca la existencia de un grupo específico, en este caso `sudo`.</p>
+                    <img src="step3.png" alt="Paso 3" class="step-image">
+                </div>
+            </div>
+
+            <!-- Paso 4 -->
+            <div class="card">
+                <div class="card-header">Paso 4: Crear grupos de usuario</div>
+                <div class="card-body">
+                    <p>Se crean dos nuevos grupos, "personal" y "gerencia", con <code>groupadd</code> y se verifica su creación.</p>
+                    <img src="step4.png" alt="Paso 4" class="step-image">
+                </div>
+            </div>
+
+            <!-- Paso 5 -->
+            <div class="card">
+                <div class="card-header">Paso 5: Crear cuentas de usuario</div>
+                <div class="card-body">
+                    <p>Se crean los usuarios "cmartinez" y "dsanchez" con <code>useradd -m</code>, asegurando la creación de su directorio home.</p>
+                    <img src="step5.png" alt="Paso 5" class="step-image">
+                </div>
+            </div>
+
+            <!-- Paso 6 -->
+            <div class="card">
+                <div class="card-header">Paso 6: Establecer Contraseñas</div>
+                <div class="card-body">
+                    <p>Se asigna una contraseña a cada nuevo usuario mediante el comando <code>passwd</code>.</p>
+                    <img src="step6.png" alt="Paso 6" class="step-image">
+                </div>
+            </div>
+
+            <!-- Paso 7 -->
+            <div class="card">
+                <div class="card-header">Paso 7: Asignar usuarios a grupos secundarios</div>
+                <div class="card-body">
+                    <p>Con <code>gpasswd -a</code>, se añade cada usuario a su grupo de trabajo correspondiente y se verifica la pertenencia.</p>
+                    <img src="step7.png" alt="Paso 7" class="step-image">
+                </div>
+            </div>
+
+            <!-- Paso 8 -->
+            <div class="card">
+                <div class="card-header">Paso 8: Eliminación de un usuario de un grupo</div>
+                <div class="card-body">
+                    <p>Se simula una colaboración temporal agregando a "dsanchez" al grupo "personal" y luego eliminándolo con <code>deluser</code>.</p>
+                    <img src="step8.png" alt="Paso 8" class="step-image">
+                </div>
+            </div>
+
+            <!-- Paso 9 -->
+            <div class="card">
+                <div class="card-header">Paso 9: Eliminación de cuentas y limpieza</div>
+                <div class="card-body">
+                    <p>Finalmente, se eliminan los usuarios creados (con <code>userdel -r</code> para borrar sus directorios home) y los grupos.</p>
+                    <img src="step9.png" alt="Paso 9" class="step-image">
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusiones">
+            <div class="card">
+                <div class="card-header">1.3.3 Conclusiones e Informe</div>
+                <div class="card-body">
+
+                    <div class="alert alert-info">
+                        <strong>Nota sobre la implementación:</strong> A diferencia de la guía original que crea el usuario y luego lo asigna a un grupo, en el <strong>Paso 5</strong> se utilizó una variante más directa. Se usó el comando <code>sudo useradd -m -g [grupo] [usuario]</code> para crear el usuario y asignarlo a su grupo primario correspondiente en una sola sentencia.
+                    </div>
+
+                    <h5 class="mt-4">1. ¿Cuál es la diferencia principal entre <code>userdel nombre_usuario</code> y <code>userdel -r nombre_usuario</code>?</h5>
+                    <p class="code-block">La diferencia principal es que <code>userdel -r nombre_usuario</code> elimina al usuario y también su directorio personal (home) y todo su contenido, mientras que <code>userdel nombre_usuario</code> solo elimina la cuenta del usuario del sistema, pero deja intacto su directorio personal.</p>
+
+                    <h5>2. ¿Qué comando usaría para añadir a un usuario llamado <code>invitado</code> a un grupo secundario llamado <code>Ventas</code>?</h5>
+                    <p class="code-block">sudo gpasswd -a invitado Ventas</p>
+
+                    <h5>3. Si olvidas el grupo primario de un usuario, ¿qué comando de la práctica permite verlo rápidamente?</h5>
+                    <p class="code-block">El comando <code>id nombre_usuario</code> muestra rápidamente el UID, el GID (ID del grupo primario) y los grupos a los que pertenece el usuario.</p>
+
+                    <h5>4. ¿Qué comando usaría para crear un grupo nuevo llamado <code>Auditoria</code>?</h5>
+                    <p class="code-block">sudo groupadd Auditoria</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="footer">
+        <p>FADENA - Facultad de Defensa Nacional | Universidad de la Defensa Nacional</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

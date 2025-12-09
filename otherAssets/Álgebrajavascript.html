@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal en JavaScript</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #output {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 25px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            max-height: 600px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            border: 2px solid #4a5568;
+        }
+
+        .section-title {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .matrix {
+            color: #98fb98;
+        }
+
+        .vector {
+            color: #87ceeb;
+        }
+
+        .result {
+            color: #ffa500;
+        }
+
+        .error {
+            color: #ff6b6b;
+        }
+
+        .input-section {
+            background: rgba(255,255,255,0.9);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 2px solid #667eea;
+        }
+
+        .input-section h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .input-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 10px 15px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .user-inputs {
+            display: none;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .input-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .input-help {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .matrix-input {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 5px;
+            max-width: 300px;
+        }
+
+        .matrix-input input {
+            text-align: center;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧮 Álgebra Lineal en JavaScript</h1>
+
+        <div class="controls">
+            <button onclick="runMatrixAddition()">Suma de Matrices</button>
+            <button onclick="runVectorAddition()">Suma de Vectores</button>
+            <button onclick="runMatrixTranspose()">Transpuesta</button>
+            <button onclick="runMatrixDeterminant()">Determinante</button>
+            <button onclick="runLinearSystem()">Sistema Lineal</button>
+            <button onclick="runMatrixMultiplication()">Multiplicación</button>
+            <button onclick="runVectorNorm()">Norma del Vector</button>
+            <button onclick="runInversions()">Inversiones</button>
+            <button onclick="runCrossProduct()">Producto Vectorial</button>
+            <button onclick="runRREF()">RREF y Rango</button>
+            <button onclick="runSubspace()">Subespacio</button>
+            <button onclick="runAllExamples()">Ejecutar Todos</button>
+            <button onclick="clearOutput()">Limpiar</button>
+        </div>
+
+        <div class="input-section">
+            <h2>📝 Entrada Personalizada</h2>
+            <div class="input-controls">
+                <select id="operationType">
+                    <option value="matrixAdd">Suma de Matrices</option>
+                    <option value="vectorAdd">Suma de Vectores</option>
+                    <option value="transpose">Transpuesta</option>
+                    <option value="determinant">Determinante</option>
+                    <option value="multiply">Multiplicación</option>
+                    <option value="norm">Norma del Vector</option>
+                    <option value="crossProduct">Producto Vectorial</option>
+                    <option value="linearSystem">Sistema Lineal</option>
+                </select>
+                <button onclick="showInputs()">Configurar Entrada</button>
+                <button onclick="executeUserInput()">Ejecutar</button>
+            </div>
+
+            <div id="userInputs" class="user-inputs"></div>
+        </div>
+
+        <div id="output"></div>
+    </div>
+
+    <script>
+        // Utilidades matemáticas
+        const MathUtils = {
+            // Crear matriz de ceros
+            zeros: (rows, cols) => Array(rows).fill().map(() => Array(cols).fill(0)),
+
+            // Verificar si es matriz cuadrada
+            isSquare: (matrix) => matrix.length === matrix[0].length,
+
+            // Obtener dimensiones de la matriz
+            shape: (matrix) => [matrix.length, matrix[0].length],
+
+            // Multiplicar escalar por matriz
+            scalarMultiply: (scalar, matrix) => matrix.map(row => row.map(val => scalar * val)),
+
+            // Sumar dos matrices
+            matrixAdd: (a, b) => a.map((row, i) => row.map((val, j) => val + b[i][j])),
+
+            // Multiplicar dos matrices
+            matrixMultiply: (a, b) => {
+                const result = MathUtils.zeros(a.length, b[0].length);
+                for (let i = 0; i < a.length; i++) {
+                    for (let j = 0; j < b[0].length; j++) {
+                        for (let k = 0; k < b.length; k++) {
+                            result[i][j] += a[i][k] * b[k][j];
+                        }
+                    }
+                }
+                return result;
+            },
+
+            // Transponer matriz
+            transpose: (matrix) => matrix[0].map((_, i) => matrix.map(row => row[i])),
+
+            // Calcular determinante (recursivo para matrices nxn)
+            determinant: (matrix) => {
+                const n = matrix.length;
+                if (n === 1) return matrix[0][0];
+                if (n === 2) return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+
+                let det = 0;
+                for (let j = 0; j < n; j++) {
+                    const minor = matrix.slice(1).map(row => row.filter((_, k) => k !== j));
+                    det += Math.pow(-1, j) * matrix[0][j] * MathUtils.determinant(minor);
+                }
+                return det;
+            },
+
+            // Norma euclidiana de un vector
+            norm: (vector) => Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0)),
+
+            // Producto vectorial 3D
+            crossProduct: (u, v) => [
+                u[1] * v[2] - u[2] * v[1],
+                u[2] * v[0] - u[0] * v[2],
+                u[0] * v[1] - u[1] * v[0]
+            ],
+
+            // Resolver sistema lineal (método de Gauss)
+            solveLinearSystem: (A, b) => {
+                const n = A.length;
+                const augmented = A.map((row, i) => [...row, b[i]]);
+
+                // Eliminación hacia adelante
+                for (let i = 0; i < n; i++) {
+                    // Encontrar pivote
+                    let maxRow = i;
+                    for (let k = i + 1; k < n; k++) {
+                        if (Math.abs(augmented[k][i]) > Math.abs(augmented[maxRow][i])) {
+                            maxRow = k;
+                        }
+                    }
+                    [augmented[i], augmented[maxRow]] = [augmented[maxRow], augmented[i]];
+
+                    // Hacer ceros debajo del pivote
+                    for (let k = i + 1; k < n; k++) {
+                        const factor = augmented[k][i] / augmented[i][i];
+                        for (let j = i; j < n + 1; j++) {
+                            augmented[k][j] -= factor * augmented[i][j];
+                        }
+                    }
+                }
+
+                // Sustitución hacia atrás
+                const x = Array(n).fill(0);
+                for (let i = n - 1; i >= 0; i--) {
+                    x[i] = augmented[i][n];
+                    for (let j = i + 1; j < n; j++) {
+                        x[i] -= augmented[i][j] * x[j];
+                    }
+                    x[i] /= augmented[i][i];
+                }
+                return x;
+            },
+
+            // RREF (Forma Escalonada Reducida por Filas)
+            rref: (matrix) => {
+                const result = matrix.map(row => [...row]);
+                const rows = result.length;
+                const cols = result[0].length;
+                let lead = 0;
+
+                for (let r = 0; r < rows; r++) {
+                    if (lead >= cols) break;
+
+                    let i = r;
+                    while (Math.abs(result[i][lead]) < 1e-10) {
+                        i++;
+                        if (i === rows) {
+                            i = r;
+                            lead++;
+                            if (lead === cols) return result;
+                        }
+                    }
+
+                    // Intercambiar filas
+                    [result[i], result[r]] = [result[r], result[i]];
+
+                    // Escalar fila
+                    const pivot = result[r][lead];
+                    for (let j = 0; j < cols; j++) {
+                        result[r][j] /= pivot;
+                    }
+
+                    // Eliminar
+                    for (let i = 0; i < rows; i++) {
+                        if (i !== r) {
+                            const factor = result[i][lead];
+                            for (let j = 0; j < cols; j++) {
+                                result[i][j] -= factor * result[r][j];
+                            }
+                        }
+                    }
+                    lead++;
+                }
+                return result;
+            },
+
+            // Calcular rango de la matriz
+            matrixRank: (matrix) => {
+                const rref = MathUtils.rref(matrix);
+                let rank = 0;
+                for (let i = 0; i < rref.length; i++) {
+                    if (rref[i].some(val => Math.abs(val) > 1e-10)) {
+                        rank++;
+                    }
+                }
+                return rank;
+            }
+        };
+
+        // Sistema de registro
+        const Logger = {
+            output: document.getElementById('output'),
+
+            log: (message, className = '') => {
+                const span = document.createElement('span');
+                span.className = className;
+                span.textContent = message + '\n';
+                Logger.output.appendChild(span);
+            },
+
+            logSection: (title) => Logger.log(`\n--- ${title} ---`, 'section-title'),
+            logMatrix: (label, matrix) => {
+                Logger.log(`${label}:`, 'matrix');
+                matrix.forEach(row => Logger.log(`[${row.map(val => val.toFixed(3)).join(', ')}]`, 'matrix'));
+            },
+            logVector: (label, vector) => Logger.log(`${label}: [${vector.map(val => val.toFixed(3)).join(', ')}]`, 'vector'),
+            logResult: (label, value) => Logger.log(`${label}: ${typeof value === 'number' ? value.toFixed(3) : value}`, 'result'),
+            logError: (message) => Logger.log(`Error: ${message}`, 'error'),
+            clear: () => Logger.output.innerHTML = ''
+        };
+
+        // Sistema de entrada del usuario
+        const UserInput = {
+            parseMatrix: (input) => {
+                try {
+                    if (!input || input.trim() === '') {
+                        throw new Error('Entrada vacía');
+                    }
+
+                    if (input.includes('[')) {
+                        return JSON.parse(input);
+                    } else {
+                        return input.split(';').map(row =>
+                            row.split(',').map(val => parseFloat(val.trim()))
+                        );
+                    }
+                } catch (error) {
+                    throw new Error('Formato de matriz inválido. Use [[1,2],[3,4]] o "1,2;3,4"');
+                }
+            },
+
+            parseVector: (input) => {
+                try {
+                    if (!input || input.trim() === '') {
+                        throw new Error('Entrada vacía');
+                    }
+
+                    if (input.includes('[')) {
+                        return JSON.parse(input);
+                    } else {
+                        return input.split(',').map(val => parseFloat(val.trim()));
+                    }
+                } catch (error) {
+                    throw new Error('Formato de vector inválido. Use [1,2,3] o "1,2,3"');
+                }
+            }
+        };
+
+        function createMatrixInputs(containerId, matrixId, label, rows = 2, cols = 2) {
+            const container = document.getElementById(containerId);
+            if (!container) {
+                Logger.logError('Contenedor no encontrado: ' + containerId);
+                return;
+            }
+
+            const div = document.createElement('div');
+            div.className = 'input-group';
+            div.innerHTML = `
+                <label>${label}:</label>
+                <div class="matrix-controls" style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
+                    <span>Dimensiones:</span>
+                    <input type="number" id="${matrixId}_rows" value="${rows}" min="1" max="5" style="width:50px">
+                    <span>×</span>
+                    <input type="number" id="${matrixId}_cols" value="${cols}" min="1" max="5" style="width:50px">
+                    <button onclick="generateMatrixInputs('${matrixId}')" style="padding:5px 10px">Generar</button>
+                </div>
+                <div id="${matrixId}_inputs" class="matrix-input" style="margin-top: 10px;"></div>
+            `;
+            container.appendChild(div);
+
+            // Generar inputs iniciales
+            setTimeout(() => generateMatrixInputs(matrixId), 100);
+        }
+
+        function generateMatrixInputs(matrixId) {
+            const rowsElement = document.getElementById(`${matrixId}_rows`);
+            const colsElement = document.getElementById(`${matrixId}_cols`);
+            const container = document.getElementById(`${matrixId}_inputs`);
+
+            if (!rowsElement || !colsElement || !container) {
+                Logger.logError('Elementos no encontrados para matriz: ' + matrixId);
+                return;
+            }
+
+            const rows = parseInt(rowsElement.value) || 2;
+            const cols = parseInt(colsElement.value) || 2;
+
+            container.innerHTML = '';
+            container.style.gridTemplateColumns = `repeat(${cols}, 60px)`;
+            container.style.gap = '5px';
+            container.style.display = 'grid';
+            container.style.justifyContent = 'start';
+
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.step = 'any';
+                    input.value = '0';
+                    input.id = `${matrixId}_${i}_${j}`;
+                    input.style.textAlign = 'center';
+                    input.style.padding = '5px';
+                    input.style.border = '1px solid #ccc';
+                    input.style.borderRadius = '3px';
+                    container.appendChild(input);
+                }
+            }
+        }
+
+        function getMatrixFromInputs(matrixId) {
+            const rowsElement = document.getElementById(`${matrixId}_rows`);
+            const colsElement = document.getElementById(`${matrixId}_cols`);
+
+            if (!rowsElement || !colsElement) {
+                throw new Error('Elementos de matriz no encontrados: ' + matrixId);
+            }
+
+            const rows = parseInt(rowsElement.value) || 2;
+            const cols = parseInt(colsElement.value) || 2;
+            const matrix = [];
+
+            for (let i = 0; i < rows; i++) {
+                const row = [];
+                for (let j = 0; j < cols; j++) {
+                    const element = document.getElementById(`${matrixId}_${i}_${j}`);
+                    if (!element) {
+                        throw new Error(`Elemento de matriz no encontrado: ${matrixId}_${i}_${j}`);
+                    }
+                    const value = parseFloat(element.value) || 0;
+                    row.push(value);
+                }
+                matrix.push(row);
+            }
+            return matrix;
+        }
+
+        function showInputs() {
+            const operationElement = document.getElementById('operationType');
+            if (!operationElement) {
+                Logger.logError('Elemento de selección de operación no encontrado');
+                return;
+            }
+
+            const operationType = operationElement.value;
+            const container = document.getElementById('userInputs');
+            if (!container) {
+                Logger.logError('Contenedor de inputs no encontrado');
+                return;
+            }
+
+            container.innerHTML = '';
+            container.style.display = 'block';
+
+            switch(operationType) {
+                case 'matrixAdd':
+                    createMatrixInputs('userInputs', 'matrixA', 'Matriz A');
+                    createMatrixInputs('userInputs', 'matrixB', 'Matriz B');
+                    break;
+
+                case 'vectorAdd':
+                    container.innerHTML = `
+                        <div class="input-group">
+                            <label>Vector U:</label>
+                            <input type="text" id="vectorU" placeholder="Ej: 1,2,3 o [1,2,3]">
+                            <div class="input-help">Separe los elementos por coma</div>
+                        </div>
+                        <div class="input-group">
+                            <label>Vector V:</label>
+                            <input type="text" id="vectorV" placeholder="Ej: 4,5,6 o [4,5,6]">
+                        </div>
+                    `;
+                    break;
+
+                case 'transpose':
+                case 'determinant':
+                    createMatrixInputs('userInputs', 'matrix', 'Matriz');
+                    break;
+
+                case 'multiply':
+                    createMatrixInputs('userInputs', 'matrixA', 'Matriz A', 2, 3);
+                    createMatrixInputs('userInputs', 'matrixB', 'Matriz B', 3, 2);
+                    break;
+
+                case 'norm':
+                    container.innerHTML = `
+                        <div class="input-group">
+                            <label>Vector:</label>
+                            <input type="text" id="vector" placeholder="Ej: 3,4,5 o [3,4,5]">
+                            <div class="input-help">Ingrese los componentes del vector</div>
+                        </div>
+                    `;
+                    break;
+
+                case 'crossProduct':
+                    container.innerHTML = `
+                        <div class="input-group">
+                            <label>Vector U (3D):</label>
+                            <input type="text" id="vectorU" placeholder="Ej: 1,0,0">
+                            <div class="input-help">Vector tridimensional</div>
+                        </div>
+                        <div class="input-group">
+                            <label>Vector V (3D):</label>
+                            <input type="text" id="vectorV" placeholder="Ej: 0,1,0">
+                        </div>
+                    `;
+                    break;
+
+                case 'linearSystem':
+                    createMatrixInputs('userInputs', 'coeffMatrix', 'Matriz de Coeficientes A');
+                    setTimeout(() => {
+                        const container = document.getElementById('userInputs');
+                        if (container) {
+                            container.innerHTML += `
+                                <div class="input-group">
+                                    <label>Vector de Constantes b:</label>
+                                    <input type="text" id="constants" placeholder="Ej: 5,1 o [5,1]">
+                                    <div class="input-help">Valores del lado derecho de las ecuaciones</div>
+                                </div>
+                            `;
+                        }
+                    }, 200);
+                    break;
+            }
+        }
+
+        function executeUserInput() {
+            const operationElement = document.getElementById('operationType');
+            if (!operationElement) {
+                Logger.logError('Elemento de selección de operación no encontrado');
+                return;
+            }
+
+            const operationType = operationElement.value;
+
+            try {
+                switch(operationType) {
+                    case 'matrixAdd':
+                        const matA = getMatrixFromInputs('matrixA');
+                        const matB = getMatrixFromInputs('matrixB');
+                        matrixAddition(matA, matB);
+                        break;
+
+                    case 'vectorAdd':
+                        const vecUElement = document.getElementById('vectorU');
+                        const vecVElement = document.getElementById('vectorV');
+                        if (!vecUElement || !vecVElement) {
+                            throw new Error('Campos de vector no encontrados');
+                        }
+                        const vecU = UserInput.parseVector(vecUElement.value);
+                        const vecV = UserInput.parseVector(vecVElement.value);
+                        vectorAddition(vecU, vecV);
+                        break;
+
+                    case 'transpose':
+                        const matrix = getMatrixFromInputs('matrix');
+                        matrixTranspose(matrix);
+                        break;
+
+                    case 'determinant':
+                        const detMatrix = getMatrixFromInputs('matrix');
+                        matrixDeterminant(detMatrix);
+                        break;
+
+                    case 'multiply':
+                        const mulA = getMatrixFromInputs('matrixA');
+                        const mulB = getMatrixFromInputs('matrixB');
+                        matrixMultiplication(mulA, mulB);
+                        break;
+
+                    case 'norm':
+                        const vectorElement = document.getElementById('vector');
+                        if (!vectorElement) {
+                            throw new Error('Campo de vector no encontrado');
+                        }
+                        const normVec = UserInput.parseVector(vectorElement.value);
+                        vectorNorm(normVec);
+                        break;
+
+                    case 'crossProduct':
+                        const crossUElement = document.getElementById('vectorU');
+                        const crossVElement = document.getElementById('vectorV');
+                        if (!crossUElement || !crossVElement) {
+                            throw new Error('Campos de vector no encontrados');
+                        }
+                        const crossU = UserInput.parseVector(crossUElement.value);
+                        const crossV = UserInput.parseVector(crossVElement.value);
+                        vectorCrossProduct(crossU, crossV);
+                        break;
+
+                    case 'linearSystem':
+                        const coeffMatrix = getMatrixFromInputs('coeffMatrix');
+                        const constantsElement = document.getElementById('constants');
+                        if (!constantsElement) {
+                            throw new Error('Campo de constantes no encontrado');
+                        }
+                        const constants = UserInput.parseVector(constantsElement.value);
+                        solveLinearSystem(coeffMatrix, constants);
+                        break;
+                }
+            } catch (error) {
+                Logger.logError(error.message);
+            }
+        }
+
+        // 1. Suma de Matrices
+        function matrixAddition(matrixA, matrixB) {
+            try {
+                if (matrixA.length !== matrixB.length || matrixA[0].length !== matrixB[0].length) {
+                    throw new Error('Las matrices deben tener las mismas dimensiones');
+                }
+
+                const result = MathUtils.matrixAdd(matrixA, matrixB);
+                Logger.logSection('Suma de Matrices');
+                Logger.logMatrix('Matriz A', matrixA);
+                Logger.logMatrix('Matriz B', matrixB);
+                Logger.logMatrix('A + B', result);
+                return result;
+            } catch (error) {
+                Logger.logError(error.message);
+                return null;
+            }
+        }
+
+        // 2. Suma de Vectores
+        function vectorAddition(vecU, vecV) {
+            try {
+                if (vecU.length !== vecV.length) {
+                    throw new Error('Los vectores deben tener las mismas dimensiones');
+                }
+
+                const result = vecU.map((val, i) => val + vecV[i]);
+                Logger.logSection('Suma de Vectores');
+                Logger.logVector('Vector u', vecU);
+                Logger.logVector('Vector v', vecV);
+                Logger.logVector('u + v', result);
+                return result;
+            } catch (error) {
+                Logger.logError(error.message);
+                return null;
+            }
+        }
+
+        // 3. Transpuesta de Matriz
+        function matrixTranspose(matrix) {
+            const transposed = MathUtils.transpose(matrix);
+            Logger.logSection('Transpuesta de Matriz');
+            Logger.logMatrix('Matriz Original', matrix);
+            Logger.logMatrix('Matriz Transpuesta', transposed);
+            return transposed;
+        }
+
+        // 4. Determinante de Matriz
+        function matrixDeterminant(matrix) {
+            try {
+                if (!MathUtils.isSquare(matrix)) {
+                    throw new Error('La matriz debe ser cuadrada');
+                }
+
+                const det = MathUtils.determinant(matrix);
+                Logger.logSection('Determinante de Matriz');
+                Logger.logMatrix('Matriz', matrix);
+                Logger.logResult('Determinante', det);
+                return det;
+            } catch (error) {
+                Logger.logError(error.message);
+                return null;
+            }
+        }
+
+        // 5. Resolver Sistema Lineal
+        function solveLinearSystem(coefficientsMatrix, constantsVector) {
+            try {
+                const solution = MathUtils.solveLinearSystem(coefficientsMatrix, constantsVector);
+                Logger.logSection('Sistema de Ecuaciones Lineales');
+                Logger.logMatrix('Matriz de Coeficientes A', coefficientsMatrix);
+                Logger.logVector('Vector de Constantes b', constantsVector);
+                Logger.logVector('Solución x', solution);
+                return solution;
+            } catch (error) {
+                Logger.logError('El sistema puede ser singular o mal condicionado');
+                return null;
+            }
+        }
+
+        // 6. Multiplicación de Matrices
+        function matrixMultiplication(matrixA, matrixB) {
+            try {
+                if (matrixA[0].length !== matrixB.length) {
+                    throw new Error('El número de columnas de A debe ser igual al número de filas de B');
+                }
+
+                const product = MathUtils.matrixMultiply(matrixA, matrixB);
+                Logger.logSection('Multiplicación de Matrices');
+                Logger.logMatrix('Matriz A', matrixA);
+                Logger.logMatrix('Matriz B', matrixB);
+                Logger.logMatrix('A × B', product);
+                return product;
+            } catch (error) {
+                Logger.logError(error.message);
+                return null;
+            }
+        }
+
+        // 7. Norma de Vector
+        function vectorNorm(vector) {
+            const norm = MathUtils.norm(vector);
+            Logger.logSection('Norma de Vector');
+            Logger.logVector('Vector', vector);
+            Logger.logResult('Norma (Magnitud)', norm);
+            return norm;
+        }
+
+        // 8. Contar Inversiones en Permutación
+        function countInversions(permutation) {
+            let inversions = 0;
+            const n = permutation.length;
+            for (let i = 0; i < n; i++) {
+                for (let j = i + 1; j < n; j++) {
+                    if (permutation[i] > permutation[j]) {
+                        inversions++;
+                    }
+                }
+            }
+            Logger.logSection('Inversiones en Permutación');
+            Logger.logVector('Permutación', permutation);
+            Logger.logResult('Número de Inversiones', inversions);
+            return inversions;
+        }
+
+        // 9. Producto Vectorial 3D
+        function vectorCrossProduct(vecU, vecV) {
+            try {
+                if (vecU.length !== 3 || vecV.length !== 3) {
+                    throw new Error('Los vectores deben ser 3D');
+                }
+
+                const crossProd = MathUtils.crossProduct(vecU, vecV);
+                Logger.logSection('Producto Vectorial 3D');
+                Logger.logVector('Vector u', vecU);
+                Logger.logVector('Vector v', vecV);
+                Logger.logVector('u × v', crossProd);
+                return crossProd;
+            } catch (error) {
+                Logger.logError(error.message);
+                return null;
+            }
+        }
+
+        // 10. RREF y Rango
+        function getRREFAndRank(matrix) {
+            try {
+                const rrefMatrix = MathUtils.rref(matrix);
+                const rank = MathUtils.matrixRank(matrix);
+                Logger.logSection('RREF y Rango');
+                Logger.logMatrix('Matriz Original', matrix);
+                Logger.logMatrix('Forma Escalonada Reducida', rrefMatrix);
+                Logger.logResult('Rango de la matriz', rank);
+                return { rref: rrefMatrix, rank };
+            } catch (error) {
+                Logger.logError(error.message);
+                return null;
+            }
+        }
+
+        // 11. Verificar Pertenencia a Subespacio
+        function checkSubspaceMembership(basisVectors, testVector = null) {
+            Logger.logSection('Análisis de Subespacio');
+
+            if (testVector) {
+                // Verificar si el vector de prueba pertenece al espacio generado por los vectores base
+                const matrixA = MathUtils.transpose(basisVectors);
+                const augmented = matrixA.map((row, i) => [...row, testVector[i]]);
+
+                const rankA = MathUtils.matrixRank(matrixA);
+                const rankAugmented = MathUtils.matrixRank(augmented);
+
+                const isMember = rankA === rankAugmented;
+
+                Logger.logMatrix('Vectores Base', basisVectors);
+                Logger.logVector('Vector de Prueba', testVector);
+                Logger.logResult('Rango de la matriz base', rankA);
+                Logger.logResult('Rango de la matriz aumentada', rankAugmented);
+                Logger.logResult('Pertenece al subespacio', isMember ? 'Sí' : 'No');
+
+                return isMember;
+            }
+
+            // Calcular dimensión del espacio nulo
+            const rank = MathUtils.matrixRank(basisVectors);
+            const numCols = basisVectors[0].length;
+            const nullity = numCols - rank;
+
+            Logger.logMatrix('Matriz A (definiendo espacio nulo)', basisVectors);
+            Logger.logResult('Dimensión del espacio nulo (nulidad)', nullity);
+
+            return nullity;
+        }
+
+        // Funciones de ejemplo específicas
+        function runMatrixAddition() {
+            const A = [[1, 2], [3, 4]];
+            const B = [[0, 1], [-1, 2]];
+            matrixAddition(A, B);
+        }
+
+        function runVectorAddition() {
+            const u = [2, -1, 3];
+            const v = [1, 4, -2];
+            vectorAddition(u, v);
+        }
+
+        function runMatrixTranspose() {
+            const A = [[1, -1], [0, 2], [3, 4]];
+            matrixTranspose(A);
+        }
+
+        function runMatrixDeterminant() {
+            const A2x2 = [[1, 2], [3, 4]];
+            matrixDeterminant(A2x2);
+
+            const A3x3 = [[1, 2, 3], [0, 1, 4], [5, 6, 0]];
+            matrixDeterminant(A3x3);
+        }
+
+        function runLinearSystem() {
+            // x + 2y = 5
+            // 3x - y = 1
+            const A = [[1, 2], [3, -1]];
+            const b = [5, 1];
+            solveLinearSystem(A, b);
+        }
+
+        function runMatrixMultiplication() {
+            const A = [[1, 2]];
+            const B = [[3], [4]];
+            matrixMultiplication(A, B);
+        }
+
+        function runVectorNorm() {
+            const w = [4, 0, -3];
+            vectorNorm(w);
+        }
+
+        function runInversions() {
+            const permutation = [2, 3, 4, 1];
+            countInversions(permutation);
+        }
+
+        function runCrossProduct() {
+            const i = [1, 0, 0];
+            const j = [0, 1, 0];
+            vectorCrossProduct(i, j);
+
+            const k = [0, 0, 1];
+            vectorCrossProduct(j, k);
+        }
+
+        function runRREF() {
+            const matrix1 = [[1, 2, 3], [0, 1, 2]];
+            getRREFAndRank(matrix1);
+
+            const matrix2 = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]];
+            getRREFAndRank(matrix2);
+        }
+
+        function runSubspace() {
+            // Ejemplo: W = span{(1,0,-1), (2,1,3)}
+            const basisVectors = [[1, 0, -1], [2, 1, 3]];
+
+            const testVectors = {
+                'a': [1, 1, 1],
+                'b': [3, 1, 1],
+                'c': [4, 2, 5],
+                'd': [0, 1, 5]
+            };
+
+            Logger.logSection('Verificación de Pertenencia al Subespacio');
+            Logger.log('W = span{(1,0,-1), (2,1,3)}');
+
+            for (const [key, vec] of Object.entries(testVectors)) {
+                const isMember = checkSubspaceMembership(basisVectors, vec);
+                Logger.log(`Vector ${key} ${JSON.stringify(vec)}: ${isMember ? 'Pertenece' : 'No pertenece'} a W`);
+            }
+
+            // Espacio nulo ejemplo
+            Logger.log('\n--- Dimensión del Espacio Nulo ---');
+            const nullSpaceMatrix = [[1, -1, 1, -1], [2, 1, -1, 2]];
+            const nullity = checkSubspaceMembership(nullSpaceMatrix);
+            Logger.log(`S = {(x,y,z,w) | x-y+z-w=0, 2x+y-z+2w=0}`);
+            Logger.log(`Dimensión de S: ${nullity}`);
+        }
+
+        function runAllExamples() {
+            Logger.clear();
+            Logger.log('🚀 Ejecutando todos los ejemplos de Álgebra Lineal\n', 'section-title');
+
+            runMatrixAddition();
+            runVectorAddition();
+            runMatrixTranspose();
+            runMatrixDeterminant();
+            runLinearSystem();
+            runMatrixMultiplication();
+            runVectorNorm();
+            runInversions();
+            runCrossProduct();
+            runRREF();
+            runSubspace();
+
+            Logger.log('\n✅ Todos los ejemplos ejecutados con éxito!', 'result');
+        }
+
+        function clearOutput() {
+            Logger.clear();
+        }
+
+        // Ejecutar ejemplos automáticamente al cargar
+        window.onload = function() {
+            Logger.log('🎓 Sistema de Álgebra Lineal en JavaScript cargado!', 'section-title');
+            Logger.log('Haga clic en los botones arriba para ejecutar los ejemplos.\n');
+        };
+    </script>
+</body>
+</html>

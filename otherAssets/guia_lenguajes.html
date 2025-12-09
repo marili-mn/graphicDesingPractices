@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Industrial | Lenguajes de Programación</title>
+    <style>
+        /* --- VARIABLES & THEME CONFIG --- */
+        :root {
+            --bg-color: #f0f2f5;
+            --text-color: #1a1a1a;
+            --card-bg: #ffffff;
+            --accent: #ff3d00; /* Industrial Orange */
+            --accent-secondary: #2979ff; /* Technical Blue */
+            --code-bg: #e0e0e0;
+            --dim-text: #555;
+            --success: #00c853;
+            --shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --accent: #00e676; /* Cyber Green */
+            --accent-secondary: #00b0ff;
+            --code-bg: #2d2d2d;
+            --dim-text: #aaa;
+            --success: #00e676;
+            --shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        /* --- RESET & TYPOGRAPHY --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background 0.3s, color 0.3s; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* --- UTILS --- */
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        code { font-family: 'Courier New', monospace; background: var(--code-bg); padding: 2px 6px; color: var(--accent); font-weight: bold; font-size: 0.9em; }
+        
+        /* --- HEADER --- */
+        header {
+            padding: 50px 0 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid var(--text-color);
+            margin-bottom: 40px;
+        }
+        h1 { font-size: 2.5rem; letter-spacing: -1px; text-transform: uppercase; font-weight: 900; line-height: 1; }
+        .subtitle { color: var(--accent); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 5px; display: block;}
+
+        /* --- TOGGLE SWITCH --- */
+        .theme-switch {
+            cursor: pointer;
+            background: var(--text-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+        .theme-switch:hover { opacity: 0.8; }
+
+        /* --- GRID LAYOUT --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 4px; /* Minimal gap for "cut" effect */
+            background-color: transparent; 
+            margin-bottom: 60px;
+        }
+
+        /* --- CARD DESIGN --- */
+        .card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            position: relative;
+            height: 100%;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0%;
+            background-color: var(--accent); transition: height 0.3s ease;
+        }
+        .card:hover::before { height: 100%; }
+        .card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+        .card h3 { margin-bottom: 10px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card p, .card ul { font-size: 0.9rem; color: var(--dim-text); }
+        .card ul { list-style: none; margin-top: 15px; }
+        .card ul li { margin-bottom: 8px; padding-left: 12px; border-left: 2px solid var(--code-bg); }
+
+        /* --- SECTION TITLE --- */
+        .section-title {
+            font-size: 1.5rem; font-weight: 800; text-transform: uppercase; 
+            margin: 60px 0 20px 0; color: var(--text-color);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .section-title::before { content: ''; width: 20px; height: 20px; background: var(--accent); display: block; }
+
+        /* --- QA LOG STYLE --- */
+        .qa-list { display: flex; flex-direction: column; gap: 20px; margin-bottom: 80px; }
+        
+        .qa-item {
+            background: var(--card-bg);
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            border-left: 4px solid transparent;
+        }
+        .qa-item:hover { border-left-color: var(--accent-secondary); }
+
+        .question-header { font-weight: 700; font-size: 1.1rem; color: var(--text-color); }
+        .answer-block { 
+            background: var(--code-bg); 
+            padding: 15px; 
+            font-family: 'Courier New', monospace; 
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        .correct-label { color: var(--success); font-weight: bold; text-transform: uppercase; margin-right: 10px; }
+        .explanation { margin-top: 10px; font-size: 0.9rem; color: var(--dim-text); font-family: 'Segoe UI', sans-serif; }
+
+        /* --- FOOTER --- */
+        footer { 
+            text-align: center; padding: 40px; color: var(--dim-text); 
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; 
+            border-top: 1px solid var(--code-bg);
+        }
+
+        @media (min-width: 768px) {
+            .qa-item { grid-template-columns: 1fr 1fr; align-items: start; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div>
+                <span class="subtitle">Lenguajes de Programación</span>
+                <h1>Guía 2do Parcial</h1>
+            </div>
+            <button class="theme-switch" onclick="toggleTheme()">Modo Oscuro</button>
+        </header>
+
+        <div class="grid">
+            <article class="card">
+                <h3>C++ Polimorfismo</h3>
+                <p>Para activar el enlace dinámico (dynamic binding):</p>
+                <ul>
+                    <li>Método base debe ser <code>virtual</code>.</li>
+                    <li>Usar punteros/referencias a clase base.</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <h3>Modificadores</h3>
+                <p>Alcance de variables y métodos:</p>
+                <ul>
+                    <li><b>Private:</b> Solo su clase.</li>
+                    <li><b>Protected:</b> Su clase + Hijas.</li>
+                    <li><b>Public:</b> Todo el programa.</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <h3>PHP Clases</h3>
+                <p>Sintaxis crítica:</p>
+                <ul>
+                    <li>Herencia: <code>extends</code>.</li>
+                    <li>Constructor: <code>__construct</code> (doble guión).</li>
+                    <li>Self Reference: <code>$this->variable</code>.</li>
+                </ul>
+            </article>
+
+             <article class="card">
+                <h3>HTTP & Forms</h3>
+                <p>Protocolo y Web:</p>
+                <ul>
+                    <li>Redirección: <code>Location: url</code>.</li>
+                    <li>Métodos Form: GET y POST.</li>
+                    <li>Tipos: Texto, Archivos, Números.</li>
+                </ul>
+            </article>
+        </div>
+
+        <h2 class="section-title">Registro de Auditoría (Preguntas Resueltas)</h2>
+        
+        <div class="qa-list">
+            
+            <div class="qa-item">
+                <div class="question-header">01. La palabra clave private en un atributo indica:</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    d. Que solo es accesible desde dentro de la clase.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Encapsulamiento estricto. Ni siquiera las clases hijas pueden tocarlo.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">02. En C++, para polimorfismo dinámico, un método debe ser virtual.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Verdadero</span>
+                    <div class="explanation">
+                        <strong>Razón:</strong> Sin <code>virtual</code>, el compilador usa enlace estático (mira el tipo del puntero, no el objeto real).
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">03. ¿Cuál afirmación es correcta en POO?</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    c. Los métodos protegidos son accesibles en las clases hijas.
+                    <div class="explanation">
+                        <strong>Razón:</strong> Es la definición de <code>protected</code>. (También es cierto que el comportamiento lo dan los métodos).
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">04. Función correcta para redireccionar en PHP.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    b. Ninguna opción es correcta.
+                    <div class="explanation">
+                        <strong>Razón:</strong> La opción "a" decía <code>Locate:</code>. Lo correcto es <code>header("Location: ...")</code>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">05. ¿Qué tipo de datos puede enviarse por un formulario HTML?</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    Archivos, Números y Textos.
+                    <div class="explanation">
+                        <strong>Razón:</strong> HTML soporta input text, number y file (multipart). Todo viaja técnicamente serializado, pero soporta esos tipos de datos semánticos.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">06. Método para enviar datos desde formulario HTML.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Respuesta:</span>
+                    POST (y GET).
+                    <div class="explanation">
+                        <strong>Razón:</strong> Si es opción única, elige <strong>POST</strong>. PUT y DELETE no son nativos de form HTML.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">07. [IMG] PHP Herencia (Empleado extends Persona con protected).</div>
+                <div class="answer-block">
+                    <span class="correct-label">Verdadero</span>
+                    <div class="explanation">
+                        <strong>Razón:</strong> La sintaxis es correcta y al ser <code>protected $nombre</code>, la clase hija puede acceder sin error.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">08. [IMG] C++ Acceso p.nombre desde main().</div>
+                <div class="answer-block">
+                    <span class="correct-label">Falso</span>
+                    <div class="explanation">
+                        <strong>Razón:</strong> El atributo no es público. Desde el <code>main</code> (afuera de la clase) no se puede acceder a miembros privados o protegidos.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">09. [IMG] PHP "NO es una implementación correcta" (function construct).</div>
+                <div class="answer-block">
+                    <span class="correct-label">Verdadero</span>
+                    <div class="explanation">
+                        <strong>Razón:</strong> La afirmación es verdadera porque el código ESTÁ MAL. Al constructor le faltan los guiones bajos: <code>__construct</code>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question-header">10. [IMG] C++ Constructor con parámetros y llamada vacía en main.</div>
+                <div class="answer-block">
+                    <span class="correct-label">Falso</span>
+                    <div class="explanation">
+                        <strong>Razón:</strong> Error de compilación. Al crear un constructor personalizado <code>Persona(string)</code>, se borra el constructor por defecto <code>Persona()</code>.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            Desarrollo Web & Lenguajes de Programación • 2025
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.theme-switch');
+            if(document.body.classList.contains('dark-mode')){
+                btn.innerText = "Modo Claro";
+            } else {
+                btn.innerText = "Modo Oscuro";
+            }
+        }
+    </script>
+</body>
+</html>
